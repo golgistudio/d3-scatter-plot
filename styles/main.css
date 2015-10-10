@@ -1,0 +1,81 @@
+body {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #CCC;
+    shape-rendering: crispEdges;
+}
+
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.reg {
+    fill: none;
+    stroke: orange;
+    stroke-width: 1.5px;
+}
+
+.xLabel, .yLabel, .title {
+    font-size: 16px;
+}
+
+.dot, .cdot, .ddot {
+    stroke: #000;
+}
+
+.legendBox {
+
+    stroke: lightgrey;
+}
+
+.legendCircle {
+    stroke: #808080;
+}
+
+.legendText {
+    color: black;
+    stoke: #000;
+    fill: black;
+}
+
+.tick text{
+    font-size: 12px;
+}
+
+.tick line{
+    opacity: 0.2;
+}
+
+.tooltip {
+    position: absolute;
+    width: auto ;
+    height: auto;
+    pointer-events: none;
+    background-color: #b2d3cd;
+    font-size: 16px;
+}
+
+.legendBox {
+    fill:white;
+    stroke:black;
+    opacity:0.8;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.legend circle {
+    stroke:black;
+    opacity:0.8;
+}
+
+.legend path {
+    stroke:black;
+    opacity:0.8;
+}
+
