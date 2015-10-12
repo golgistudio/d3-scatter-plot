@@ -17,7 +17,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     var hoverDelayAmount = 500;
     var hoverTransitionDuration = 1000;
 
-    plot = plot.append("path")
+    plot = plot.enter().append("path")
         .attr("class", plotProp.plotClassName)
         .attr("d", d3.svg.symbol().type("triangle-up"))
         .attr("width", plotProp.width)
@@ -89,24 +89,23 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
  * @param dataset
  * @param transitionTimes
  */
-function updateTrianglePlot( svg, plotProp, scales, dataset, transitionTimes) {
+function updateTriangleSymbols( svg, plotProp, scales, data, transitionTimes) {
+    "use strict";
+    // Update
 
-
-
-
-    // Update circles
-    svg.selectAll("path")
-        .data(dataset)  // Update with new data
-        .transition()  // Transition from old to new
-        .duration(transitionTimes.startDurationTime)  // Length of animation
+        svg.transition()  // Transition from old to new
+        .duration(transitionTimes.startTransitionTimes)  // Length of animation
         .each("start", function() {  // Start animation
             d3.select(this)  // 'this' means the current element
-                .attr("fill", "red")  // Change color
-                .attr("r", 5);  // Change size
+                .style("fill", "orange")  // Change color
+                .attr("width", plotProp.width * transitionTimes.sizeFactor)
+                .attr("height", plotProp.height * transitionTimes.sizeFactor);
         })
         .delay(function(d, i) {
-            return i / dataset.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
+            return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
+        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+
         .attr("x", function(d) {
             return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
         })
@@ -116,8 +115,12 @@ function updateTrianglePlot( svg, plotProp, scales, dataset, transitionTimes) {
         .each("end", function() {  // End animation
             d3.select(this)  // 'this' means the current element
                 .transition()
-                .duration(transitionTimes.exitDurationtime)
-                .attr("fill", "black")  // Change color
-                .attr("r", 2);  // Change radius
+                .duration(transitionTimes.endDurationTime)
+                .style("fill", plotProp.fillColor)  // Change color
+                .attr("width", plotProp.width)
+                .attr("height", plotProp.height);
         });
+
+
+    return svg;
 }

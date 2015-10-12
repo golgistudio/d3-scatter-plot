@@ -11,13 +11,14 @@
  * @returns {*}
  */
 function addIconSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
-
+    "use strict";
     var enterColor = 'green';
     var hoverSize = plotProp.radius * 2;
     var hoverDelayAmount = 0;
     var hoverTransitionDuration = 1000;
 
-    var iconPlot = plot.append("image")
+    var iconPlot = plot.enter().append("image")
+
         .attr("class", plotProp.plotClassName)
         .attr("xlink:href", plotProp.icon)
         .attr("x", function(d) {
@@ -64,35 +65,34 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     return plot;
 };
 
-function updateIconPlot( svg, plotProp, scales, dataset, transitionTimes) {
+function updateIconSymbols( svg, plotProp, scales, data, transitionTimes) {
 
-
-    // Update circles
-    svg.selectAll("circle")
-        .data(dataset)  // Update with new data
-        .transition()  // Transition from old to new
+    "use strict";
+    svg.transition()  // Transition from old to new
         .duration(transitionTimes.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation
             d3.select(this)  // 'this' means the current element
-                .attr("fill", "red")  // Change color
-                .attr("r", 5);  // Change size
+                .attr("width", plotProp.width * transitionTimes.sizeFactor)
+                .attr("height", plotProp.height * transitionTimes.sizeFactor);
         })
         .delay(function(d, i) {
-            return i / dataset.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
+            return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        //.ease("linear")  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
-        .attr("cx", function(d) {
-            return scales.xScale(d[plotProp.xProp]);  // Circle's X
+        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .attr("x", function(d) {
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
         })
-        .attr("cy", function(d) {
-            return scales.yScale(d[plotProp.yProp]);  // Circle's Y
+        .attr("y", function(d) {
+            return scales.yScale(d[plotProp.yProp]);
         })
         .each("end", function() {  // End animation
             d3.select(this)  // 'this' means the current element
-                .transition()
-                .duration(transitionTimes.exitDurationtime)
-                .attr("fill", "black")  // Change color
-                .attr("r", 2);  // Change radius
+               // .transition()
+               // .duration(transitionTimes.exitDurationtime)
+                .attr("width", plotProp.width)
+                .attr("height", plotProp.height);
         });
+
+    return svg;
 }
 

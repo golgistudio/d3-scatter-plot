@@ -18,7 +18,8 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     var hoverTransitionDuration = 1000;
 
 
-    plot  = plot.append("rect")
+    plot  = plot.enter().append("rect")
+
         .attr("class", plotProp.plotClassName)
         .attr("width", plotProp.width)
         .attr("height", plotProp.height)
@@ -42,7 +43,6 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
 
 
     plot.on("mouseover", function (d) {
-
 
         var currentFillColor = d3.select(this).style("fill");
         var hoverFillColor = d3.rgb(currentFillColor).brighter();
@@ -84,34 +84,35 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
  * @param dataset
  * @param transitionTimes
  */
-function updateSquarePlot( svg, plotProp, scales, dataset, transitionTimes) {
+function updateSquareSymbols( svg, plotProp, scales, data, transitionTimes) {
 
-
-    // Update circles
-    svg.selectAll("rect")
-        .data(dataset)  // Update with new data
-        .transition()  // Transition from old to new
+    "use strict";
+    svg.transition()  // Transition from old to new
         .duration(transitionTimes.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation
             d3.select(this)  // 'this' means the current element
-                .attr("fill", "red")  // Change color
-                .attr("r", 5);  // Change size
+                .style("fill", "pink")  // Change color
+                .attr("width", plotProp.width * transitionTimes.sizeFactor)
+                .attr("height", plotProp.height * transitionTimes.sizeFactor);
         })
         .delay(function(d, i) {
-            return i / dataset.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
+            return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        //.ease("linear")  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
-        .attr("x", function(d) {
+        //.ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .attr("x", function (d) {
             return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
         })
-        .attr("y", function(d) {
+        .attr("y", function (d) {
             return scales.yScale(d[plotProp.yProp]);
         })
         .each("end", function() {  // End animation
             d3.select(this)  // 'this' means the current element
                 .transition()
-                .duration(transitionTimes.exitDurationtime)
-                .attr("fill", "black")  // Change color
-                .attr("r", 2);  // Change radius
+                .duration(transitionTimes.endDurationTime)
+                .style("fill", plotProp.fillColor)  // Change color
+                .attr("width", plotProp.width)
+                .attr("height", plotProp.height);
         });
+
+    return svg;
 }

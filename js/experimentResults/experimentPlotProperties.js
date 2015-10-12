@@ -2,7 +2,7 @@
  *
  * @type {{incongruent: {plotClassName: string, xProp: string, yProp: string, width: number, height: number, fillColor: string, symbol: string, name: string}, congruent: {plotClassName: string, xProp: string, yProp: string, radius: number, fillColor: string, symbol: string, name: string}, difference: {plotClassName: string, xProp: string, yProp: string, radius: number, fillColor: string, textStroke: string, textFill: string, symbol: string, name: string, fontSize: string, unicode: string, textOffset: number}}}
  */
-var stroopPlotProperties = [
+var experimentPlotProperties = [
     {
         plotClassName: "dot",
         xProp: "Participant",
@@ -10,7 +10,7 @@ var stroopPlotProperties = [
         width: 10,
         height: 10,
         fillColor: "#1f77b4",
-        symbol: "triangle",
+        symbol: "square",
         name: "incongruent"
     },
 
@@ -24,7 +24,7 @@ var stroopPlotProperties = [
         name: "congruent"
     },
 
-    //"difference": {
+    //{
     //    plotClassName: "ddot",
     //    xProp: "Participant",
     //    yProp: "Difference",
@@ -37,7 +37,7 @@ var stroopPlotProperties = [
     //    fontSize: "2em",
     //    unicode: "\uf0e7",
     //    textOffset: 5
-    //}
+    //}];
 
      {
         plotClassName: "ddot",

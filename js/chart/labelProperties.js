@@ -7,7 +7,7 @@ var labelProperties = {
     xAxisClassName: "xLabel",
     xAxisLabel: "Paticipants",
     yAxisLabel: "Time (seconds)",
-    title: "Stroop Effect Test Timings",
+    title: "Golgi Lab Study Results",
     titleClassName: "title"
 };
 

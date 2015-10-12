@@ -9,7 +9,9 @@ var chartProperties = {
         bottom: 100,
         left: 80
     },
-    width: 700,
-    height: 600,
+    width: 200,
+    height: 100,
+    heightMargin: 250,
+    widthMargin: 35,
     containerID: ""
 };

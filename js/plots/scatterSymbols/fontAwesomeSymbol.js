@@ -9,13 +9,14 @@
  * @returns {*}
  */
 function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
-
+    "use strict";
     var enterColor = 'green';
     var hoverSize = plotProp.radius * 2;
     var hoverDelayAmount = 0;
     var hoverTransitionDuration = 500;
 
-    var textPlot = plot.append("text")
+    var textPlot = plot.enter()
+        .append("text")
         .attr("class", plotProp.plotClassName)
         .attr("x", function(d) {
             return scales.xScale(d[plotProp.xProp]) - plotProp.textOffset;
@@ -88,37 +89,16 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) 
         });
 }
 
-function updateFontAwesomePlot( svg, plotProp, scales, dataset, transitionTimes) {
+/**
+ * ToDo: Implement update for FontAwesomeSymbol
+ * @param svg
+ * @param plotProp
+ * @param scales
+ * @param data
+ * @param transitionTimes
+ */
+function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionTimes) {
+    "use strict";
 
-
-
-
-    // Update circles
-    svg.selectAll("circle")
-        .data(dataset)  // Update with new data
-        .transition()  // Transition from old to new
-        .duration(transitionTimes.startDurationTime)  // Length of animation
-        .each("start", function() {  // Start animation
-            d3.select(this)  // 'this' means the current element
-                .attr("fill", "red")  // Change color
-                .attr("r", 5);  // Change size
-        })
-        .delay(function(d, i) {
-            return i / dataset.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
-        })
-        //.ease("linear")  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
-        .attr("cx", function(d) {
-            return scales.xScale(d[plotProp.xProp]);  // Circle's X
-        })
-        .attr("cy", function(d) {
-            return scales.yScale(d[plotProp.yProp]);  // Circle's Y
-        })
-        .each("end", function() {  // End animation
-            d3.select(this)  // 'this' means the current element
-                .transition()
-                .duration(transitionTimes.exitDurationtime)
-                .attr("fill", "black")  // Change color
-                .attr("r", 2);  // Change radius
-        });
 }
 

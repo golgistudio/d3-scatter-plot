@@ -2,7 +2,7 @@
  *
  * @type {*[]}
  */
-var stroopSampleData = [{
+var experimentAddData = [{
     "Participant": "P-100",
     "Congruent": 12.079,
     "Incongruent": 19.278,
@@ -122,4 +122,24 @@ var stroopSampleData = [{
     "Congruent": 16.004,
     "Incongruent": 21.157,
     "Difference": 5.153
-}];
+},{
+        "Participant": "P-124",
+        "Congruent": 23.944,
+        "Incongruent": 58.894,
+        "Difference": 13.95
+    }, {
+        "Participant": "P-125",
+        "Congruent": 24.233,
+        "Incongruent": 55.96,
+        "Difference": 6.727
+    }, {
+        "Participant": "P-126",
+        "Congruent": 29.71,
+        "Incongruent": 22.058,
+        "Difference": 5.348
+    }, {
+        "Participant": "P-127",
+        "Congruent": 26.004,
+        "Incongruent": 60.157,
+        "Difference": 8.153
+    }];

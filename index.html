@@ -7,8 +7,36 @@
     <link href="styles/main.css" rel="stylesheet"/>
 </head>
 <body>
+<div id="title">
+<h1>D3 Scatter Plot</h1>
+</div>
+<form>
+<div id="controlPanel">
 
-<div id="stroop"></div>
+    <div id="managePointsPanel">
+        <input class="buttons" id="resetPointsButton" type="button" value="Reset Points">
+        <input class="buttons" id="addPointButton" type="button" value="Add Points">
+        <input class="buttons" id="removePointButton" type="button" value="Remove Points">
+        <input class="buttons" id="changePointButton"type="button" value="Change Points">
+    </div>
+    <div id="stylePanel">
+        <div id="symbolPanel" class="radioPanel">
+            <h3>Symbol</h3>
+            <input type="radio" id="circleSymbol" name="symbol" value="circle" checked>Circle
+            <br>
+            <input type="radio" id="squareSymbol" name="symbol" value="square">Square
+        </div>
+        <div id="symbolColorPanel" class="radioPanel">
+            <h3>Symbol Color</h3>
+            <input type="radio" id="blueColor" name="symbolColor" value="blue" checked>Blue
+            <br>
+            <input type="radio" id="pinkColor" name="symbolColor" value="pink">Pink
+        </div>
+    </div>
+
+</div>
+</form>
+<div id="experiment"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="js/chart/toolTipProperties.js"></script>
 <script src="js/chart/toolTips.js"></script>
@@ -24,10 +52,13 @@
 <script src="js/chart/legendProperties.js"></script>
 <script src="js/plots/scatter.js"></script>
 <script src="js/chart/chart.js"></script>
-<script src="js/stroopExperiment/stroopSampleData.js"></script>
-<script src="js/stroopExperiment/stroopPlotProperties.js"></script>
-<script src="js/stroopExperiment/stroopToolTipContent.js"></script>
-<script src="js/stroopExperiment/stroopExperiment.js"></script>
+<script src="js/experimentResults/data/experimentAddData.js"></script>
+<script src="js/experimentResults/data/experimentDifferentTimesData.js"></script>
+<script src="js/experimentResults/data/experimentRemoveData.js"></script>
+<script src="js/experimentResults/data/experimentOriginalData.js"></script>
+<script src="js/experimentResults/experimentPlotProperties.js"></script>
+<script src="js/experimentResults/experimentAnnotations.js"></script>
+<script src="js/experimentResults/experimentDataManager.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

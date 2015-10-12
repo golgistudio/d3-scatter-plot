@@ -2,11 +2,11 @@
  *
  * @type {{_dataDomains: null, init: Function, calcDomains: Function, mapData: Function}}
  */
-var stroopExperiment = {
+var experimentDataManager = {
     _dataDomains: null,
 
-    init: function (experimentParameters ) {
-        this._dataDomains = this.calcDomains(experimentParameters.data);
+    init: function (data ) {
+        this._dataDomains = this.calcDomains(data);
     },
 
     /**
@@ -28,7 +28,7 @@ var stroopExperiment = {
         });
         xDomain.push(" ");
 
-        var yDomain = [0, maxY + 5];
+        var yDomain = [-5, maxY + 5];
 
         return {"xDomain": xDomain,
                 "yDomain": yDomain};

@@ -17,7 +17,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     var hoverTransitionDuration = 1000;
     var strokeColor = "black";
 
-    plot = plot.append("circle")
+    plot = plot.enter().append("circle")
         .attr("class", plotProp.plotClassName)
         .attr("r", plotProp.radius)
         .attr("cx", function(d) {
@@ -77,36 +77,39 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
  * @param dataset
  * @param transitionTimes
  */
-function updateDotPlot( svg, plotProp, scales, dataset, transitionTimes) {
-
-    var transitionSize = plotProp * 2;
+function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
+    "use strict";
+    var transitionSize  = plotProp.radius * transitionTimes.sizeFactor;
     var transitionColor = "black";
 
-    // udpate
-    return svg.transition()
-        .duration(transitionTimes.startDurationTime)
-        .attr({
-            "cx": function(d) { return scales.xScale(d[plotProp.xProp]); },
-            "cy": function(d) { return scales.yScale(d[plotProp.yProp]); },
-            "r": function(d) { return plotProp.radius; }
-        })
-        .each("start", function() {  // Start animation
+
+    svg.transition()  // Transition from old to new
+        .duration(transitionTimes.startDurationTime)  // Length of animation
+        .each("start", function () {  // Start animation
             d3.select(this)  // 'this' means the current element
-                .attr("fill", transitionSize)  // Change color
+                .style("fill", "orange")  // Change color
                 .attr("r", transitionSize);  // Change size
         })
-        .delay(function(d, i) {
-            return i / dataset.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
+        .delay(function (d, i) {
+            return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        .each("end", function() {  // End animation
+        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .attr("cx", function (d) {
+            return scales.xScale(d[plotProp.xProp]);
+        })
+        .attr("cy", function (d) {
+            return scales.yScale(d[plotProp.yProp]);
+        })
+        .each("end", function () {  // End animation
             d3.select(this)  // 'this' means the current element
                 .transition()
-                .duration(transitionTimes.exitDurationtime)
-                .style("fill", function (d) {
-                    return plotProp.fillColor;
-                })
+                .duration(transitionTimes.endDurationTime)
+                .style("fill", plotProp.fillColor)  // Change color
                 .attr("r", plotProp.radius);  // Change radius
         });
+
+
+    return svg;
 
 };
 

@@ -1,7 +1,7 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Legend
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// http://bl.ocks.org/ZJONSSON/3918369
+
 
 /**
  *
@@ -62,7 +62,7 @@ function drawLegend(svg, width, height, properties) {
         });
 
     legendCollection.selectAll("triangle")
-        .data([ {"stroop": "Incongruent", "active": true}], function(d) {
+        .data([ {"experiment": "Incongruent", "active": true}], function(d) {
             return d;
         })
         .call(function(d) {
@@ -101,7 +101,7 @@ function drawLegend(svg, width, height, properties) {
         });
 
     legendCollection.selectAll("circle")
-        .data([ {"stroop": "Congruent", "active": true}], function(d) {
+        .data([ {"experiment": "Congruent", "active": true}], function(d) {
             return d;
         })
         .call(function(d) {
@@ -136,7 +136,7 @@ function drawLegend(svg, width, height, properties) {
         });
 
     legendCollection.selectAll("rect")
-        .data([{"stroop": "Difference", "active": true}], function(d) {
+        .data([{"experiment": "Difference", "active": true}], function(d) {
             return d;
         })
         .call(function(d) {

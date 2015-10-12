@@ -4,7 +4,7 @@
  * @param plotPropIndex
  * @returns {string}
  */
-function stroopToolTipContent(d, plotPropIndex ) {
+function experimentToolTipContent(d, plotPropIndex ) {
     "use strict";
 
     return (d[plotPropIndex] + "<br/>" + "<br/> Congruent:      " + d.Congruent + " secs" +

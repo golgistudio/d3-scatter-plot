@@ -1,13 +1,4 @@
-//http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
 
-// zoom
-// http://jsfiddle.net/Nu95q/12/
-// http://bl.ocks.org/stepheneb/1182434
-//http://bl.ocks.org/peterssonjonas/4a0e7cb8d23231243e0e
-// Ordinal scales - http://jsfiddle.net/9rypxf10/
-
-// Append lines
-// http://bl.ocks.org/nsonnad/4481531
 
 /**
  *
@@ -123,6 +114,8 @@ var chart = {
         var yOuterTickSize         = 0;
         var xTickPadding           = 10;
         var yTickPadding           = 10;
+        var yBorderInnerTickSize   = 0;
+        var yBorderOuterTickSize   = 0;
 
         // Create x scale
         // For this example it is ordinal
@@ -162,9 +155,9 @@ var chart = {
         var rightBorder = d3.svg.axis()
             .scale(yScale)
             .orient("right")
-            .innerTickSize(0)
-            .outerTickSize(0)
-            .tickPadding(10);
+            .innerTickSize(yBorderInnerTickSize)
+            .outerTickSize(yBorderOuterTickSize)
+            .tickPadding(xTickPadding);
 
         return {
             'xAxis':       xAxis,
@@ -189,19 +182,33 @@ var chart = {
     drawAxes: function (svg, axes, width, height) {
         "use strict";
 
+        var yPosition = 6;
+        var xPosition = 6;
+
+        var xAxis_dx = "-.8em";
+        var xAxis_dy = ".15em";
+        var yAxis_dy = ".72em";
+
+        var xAxisClassName = "x axis";
+        var xBorderClassName = "xBorder axis";
+
+        var yAxisClassName = "y axis";
+        var yBorderClassName = "yBorder axis";
+
         // Add the x axis
         svg.append("g")
-            .attr("class", "x axis")
+            .attr("class", xAxisClassName)
             .attr("transform", "translate(0," + height + ")")
             .call(axes.xAxis)
             .selectAll("text")
             .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
+            .attr("dx", xAxis_dx)
+            .attr("dy", xAxis_dy)
             .attr("transform", "rotate(-50)");
 
+        // Add the x border
         svg.append("g")
-            .attr("class", "xBorder axis")
+            .attr("class", xAxisClassName)
             .call(axes.topBorder);
 
         // Add the y axis
@@ -210,21 +217,19 @@ var chart = {
             .call(axes.yAxis)
             .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
+            .attr("y", yPosition)
+            .attr("dy", yAxis_dy)
             .style("text-anchor", "end");
 
         // Add the y border
         svg.append("g")
-            .attr("class", "yBorder axis")
+            .attr("class", yBorderClassName)
             .call(axes.rightBorder)
             .attr("transform", "translate(" + width + " ,0)")
-            .attr("y", 6)
-            .attr("dy", ".71em");
-
+            .attr("y", xPosition)
+            .attr("dy", yAxis_dy);
 
         return svg;
-
     },
 
     /**
@@ -238,20 +243,32 @@ var chart = {
     updateAxes: function (svg, axes) {
         "use strict";
 
-        var yTransitionDuration = 1000;
-        var xTransitionDuration = 100;
+        var yTransitionDuration = 500;
+        var xTransitionDuration = 500;
+        var xAxis_dx = "-.8em";
+        var xAxis_dy = ".15em";
 
-        // Update X Axis
-        svg.select(".x.axis")
-            .transition()
-            .duration(1000)
-            .call(axes.xAxis);
+        if (axes.hasOwnProperty("xAxis")) {
+            // Update X Axis
+            svg.select(".x.axis")
+                .transition()
+                .duration(yTransitionDuration)
+                .call(axes.xAxis)
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", xAxis_dx)
+                .attr("dy", xAxis_dy)
+                .attr("transform", "rotate(-50)");
+        }
 
-        // Update Y Axis
-        svg.select(".y.axis")
-            .transition()
-            .duration(100)
-            .call(axes.yAxis);
+        if (axes.hasOwnProperty("yAxis")) {
+
+            // Update Y Axis
+            svg.select(".y.axis")
+                .transition()
+                .duration(xTransitionDuration)
+                .call(axes.yAxis);
+        }
 
         return svg;
 
@@ -291,16 +308,26 @@ var chart = {
      * @param data
      * @param plotProperties
      * @param svg
-     * @param axes
+     * @param scales
      * @param tooltip
      * @param plotRenderer
      */
-    drawPlots: function (data, plotProperties, svg, axes, tooltip, plotRenderer) {
+    drawPlots: function (data, plotProperties, svg, scales, tooltip, plotRenderer) {
         "use strict";
 
         chart._plotProperties.forEach( function (configItem) {
-            plotRenderer.renderPlot(data, svg, configItem, axes, tooltip);
+            plotRenderer.renderPlot(data, svg, configItem, scales, tooltip);
         });
+    },
+
+    updatePlots: function (data, plotProperties, svg, scales, tooltip, plotRenderer) {
+        "use strict";
+
+        chart._plotProperties.forEach( function (itemProperties) {
+            plotRenderer.updatePlot(data, scales, svg, itemProperties, tooltip);
+
+        });
+
     },
 
     /**
@@ -324,12 +351,19 @@ var chart = {
         drawLegend(svg, this._width, this._height, this._legendProperties);
     },
 
+    /**
+     *
+     * @param chart
+     */
+
     zoomHandler: function(chart) {
+        "use strict";
 
         var svgSelected = d3.select("svg");
-        svgSelected.attr("transform", "translate( 1," + d3.event.translate + ")scale(1," + d3.event.scale + ")");
+        svgSelected.attr("transform", "translate("+ d3.event.translate + ")scale(1," + d3.event.scale + ")");
 
-        var yAxis = svgSelected.select("g.y.axis").call(chart._axes.yAxis);
+        var zoomAxes = {yAxis: chart._axes.yAxis};
+        this.updateAxes(svgSelected, zoomAxes);
         //chart.drawPlots(chart._data, chart._plotProperties, svgSelected, chart._axes.scales, chart._toolTip, chart._plotRenderer);
 
        chart._plotProperties.forEach( function (itemProperties) {
@@ -339,24 +373,31 @@ var chart = {
 
     },
 
+    /**
+     *
+     * @param data
+     * @param domains
+     */
+    updateData: function(data, domains) {
+        "use strict";
 
-    updateData: function(newDataSet) {
-            var numValues = dataset.length;  // Get original dataset's length
-            var maxRange = Math.random() * 1000;  // Get max range of new values
-            dataset = [];  // Initialize empty array
-            for(var i=0; i<numValues; i++) {
-                var newNumber1 = Math.floor(Math.random() * maxRange);  // Random int for x
-                var newNumber2 = Math.floor(Math.random() * maxRange);  // Random int for y
-                dataset.push([newNumber1, newNumber2]);  // Add new numbers to array
-            }
+        this._data = data;
+        this._domains = domains;
+        var dataMapper = this._dataMapper;
 
-            // Update scale domains
-            xScale.domain([0, d3.max(dataset, function(d) {
-                return d[0]; })]);
-            yScale.domain([0, d3.max(dataset, function(d) {
-                return d[1]; })]);
+            // Update domain
+            // Update Axis
+            // Update Plots
+        var svg = d3.select("#" + this._containerID).select("svg");
+        svg.selectAll("g.node").data(data, function (d) {
+            return dataMapper(d);
+        });
+        this._axes = this.createAxes(this._domains, this._width, this._height);
 
-            svg  = this.updateAxes(svg, this._axes);
-        }
+        this.updatePlots(this._data, this._plotProperties, svg, this._axes.scales, this._toolTip, this._plotRenderer);
+
+        this.updateAxes(svg, this._axes);
+
+    }
 
 };
