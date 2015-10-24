@@ -175,25 +175,4 @@ function drawLegend(svg, width, height, properties) {
             d.active = active;
         });
 
-
-    //http://bl.ocks.org/d3noob/e99a762017060ce81c76
-   // svg.append("text")
-    //    .attr("x", (legendSpace/2)+i*legendSpace)  // space legend
-      //  .attr("y", height + (margin.bottom/2)+ 5)
-       // .attr("class", "legend")    // style the legend
-      //  .style("fill", function() { // Add the colours dynamically
-      //      return d.color = color(d.key); })
-      //  .on("click", function(){
-      //      // Determine if current line is visible
-      //      var active   = d.active ? false : true,
-      //          newOpacity = active ? 0 : 1;
-            // Hide or show the elements based on the ID
-      //      d3.select("#tag"+d.key.replace(/\s+/g, ''))
-       //         .transition().duration(100)
-        //        .style("opacity", newOpacity);
-            // Update whether or not the elements are active
-         //   d.active = active;
-        //})
-        //.text(d.key);
-
 };

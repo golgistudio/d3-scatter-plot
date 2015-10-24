@@ -1,3 +1,5 @@
+"use strict";
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Scatter Plot
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -5,30 +7,65 @@
 
 /**
  *
- * @type {{renderPlot: Function, addSymbols: Function}}
  */
-var scatterPlot = {
+function scatterPlot() {
 
-    renderPlot: function (data, svg, plotProp, scales, toolTip) {
-        "use strict";
+    /**
+     *
+     * @param request
+     * @param parameters
+     */
+    this.plotInterface = function (request, parameters) {
 
-        var plot = this.setData(svg, data, plotProp.plotClassName);
+        switch(request) {
+            case "render" : renderPlot(parameters);
+                break;
+            case "update" : updatePlot(parameters);
+                break;
 
-        plot = this.addSymbols(plot, plotProp, scales, toolTip);
-    },
+        };
 
-    setData: function (svg, data, plotClassName) {
+    };
+
+    /**
+     *
+     * @param parameters
+     */
+    function renderPlot (parameters) {
+
+        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
+
+        addSymbols(plot, parameters.plotProp, parameters.scales, parameters.toolTip);
+
+    };
+
+    /**
+     *
+     * @param svg
+     * @param data
+     * @param plotClassName
+     * @returns {*}
+     */
+    function setData(svg, data, plotClassName) {
         return svg.selectAll("." + plotClassName)
             .data(data);
-    },
+    };
 
-    addSymbols: function (plot, plotProp, scales) {
-        "use strict";
+    /**
+     *
+     * @param plot
+     * @param plotProp
+     * @param scales
+     * @param toolTip
+     * @returns {*}
+     */
+    function addSymbols(plot, plotProp, scales, toolTip) {
 
         var transitionTimes = {
             startDurationTime : 1000,
             delayAdjustment : 500,
-            exitDurationtime : 500
+            exitDurationtime : 500,
+            sizeFactor: 2
         };
 
         switch (plotProp.symbol) {
@@ -49,13 +86,14 @@ var scatterPlot = {
                 break;
         }
         return plot;
-    },
+    };
+
 
     /**
      *
+     * @param parameters
      */
-    updatePlot: function(data, scales, svg, plotProp, toolTip) {
-        "use strict";
+    function updatePlot(parameters) {
 
         var transitionTimes = {
             startDurationTime : 1000,
@@ -65,13 +103,13 @@ var scatterPlot = {
             easeType: "bounce"
         };
 
-        var plot = this.setData(svg, data, plotProp.plotClassName);
+        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
-        svg = this.updateSymbols(data, scales, plot, plotProp, transitionTimes);
-        this.removeSymbols(plot, plotProp, scales, data, transitionTimes);
-        plot = this.addSymbols(plot, plotProp, scales, toolTip);
+        updateSymbols(parameters.data, parameters.scales, plot, parameters.plotProp, transitionTimes);
+        addSymbols(plot, parameters.plotProp, parameters.scales, parameters.toolTip);
+        removeSymbols(plot, parameters.plotProp, parameters.scales, parameters.data, transitionTimes);
 
-    },
+    };
 
     /**
      *
@@ -81,10 +119,7 @@ var scatterPlot = {
      * @param dataset
      * @param transitionTimes
      */
-    removeSymbols: function ( svg, plotProp, scales, dataset, transitionTimes) {
-        "use strict";
-
-        console.log("remove - " + plotProp.symbol);
+    function removeSymbols( svg, plotProp, scales, dataset, transitionTimes) {
 
         var exitTransitionColor = "red";
 
@@ -92,18 +127,19 @@ var scatterPlot = {
         svg.style('fill', exitTransitionColor);
         svg.transition().delay(transitionTimes.endDurationTime).remove();
 
+    };
 
-            //.transition()
-           // .duration(transitionTimes.endDurationTime)
-           // .remove();
+    /**
+     *
+     * @param data
+     * @param scales
+     * @param svg
+     * @param plotProp
+     * @param transitionTimes
+     * @returns {*}
+     */
 
-        //svg.style('fill', exitTransitionColor);
-    },
-
-
-    updateSymbols: function(data, scales, svg, plotProp, transitionTimes) {
-
-        console.log("update - " + plotProp.symbol);
+    function updateSymbols(data, scales, svg, plotProp, transitionTimes) {
 
         var plot = null;
 
@@ -126,7 +162,7 @@ var scatterPlot = {
         }
 
         return svg;
-    }
+    };
 
 };
 

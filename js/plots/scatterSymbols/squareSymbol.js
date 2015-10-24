@@ -17,7 +17,6 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     var hoverDelayAmount        = 0;
     var hoverTransitionDuration = 1000;
 
-
     plot  = plot.enter().append("rect")
 
         .attr("class", plotProp.plotClassName)
@@ -40,7 +39,6 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         .style("fill", function (d) {
             return plotProp.fillColor;
         });
-
 
     plot.on("mouseover", function (d) {
 

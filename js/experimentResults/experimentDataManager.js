@@ -1,21 +1,27 @@
+"use strict";
+
 /**
  *
  * @type {{_dataDomains: null, init: Function, calcDomains: Function, mapData: Function}}
  */
-var experimentDataManager = {
-    _dataDomains: null,
+function experimentDataManager() {
 
-    init: function (data ) {
-        this._dataDomains = this.calcDomains(data);
-    },
+    var _dataDomains = null;
+
+    /**
+     *
+     */
+    this.init =  function (data ) {
+        this._dataDomains = calcDomains(data);
+    };
 
     /**
      *
      * @param data
      * @returns {{xDomain: Array, yDomain: *[]}}
      */
-    calcDomains: function (data) {
-        "use strict";
+    function calcDomains (data) {
+
 
         var maxY = d3.max(data, function (d) {
             return +d.Incongruent;
@@ -32,15 +38,14 @@ var experimentDataManager = {
 
         return {"xDomain": xDomain,
                 "yDomain": yDomain};
-    },
+    };
 
     /**
      *
      * @param d
      * @returns {Array}
      */
-    mapData: function (d) {
-        "use strict";
+    this.mapData = function (d) {
 
         var item = [];
         item.Participant = d.Participant;
@@ -48,5 +53,5 @@ var experimentDataManager = {
         item.Congruent = +d.Congruent;
         item.Difference = +d.Difference;
         return item;
-    }
+    };
 };

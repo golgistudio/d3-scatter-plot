@@ -100,7 +100,7 @@ var experimentDifferentTimesData = [{
 }, {
     "Participant": "P-119",
     "Congruent": 12.369,
-    "Incongruent": 27.288,
+    "Incongruent": 52.288,
     "Difference": 21.919
 }, {
     "Participant": "P-120",
@@ -120,6 +120,6 @@ var experimentDifferentTimesData = [{
 }, {
     "Participant": "P-123",
     "Congruent": 16.004,
-    "Incongruent": 21.157,
+    "Incongruent": 65.157,
     "Difference": 5.153
 }];

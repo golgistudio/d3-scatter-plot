@@ -1,26 +1,28 @@
+"use strict";
+
 /**
  *
  * @type {{_toolTip: null, _toolTipFormatter: null, _showTransitionTime: number, _hideTransitionTime: number, _leftOffset: number, _topOffset: number, create: Function, show: Function, hide: Function}}
  */
-var toolTip = {
+function toolTip() {
 
-    _toolTip: null,
-    _toolTipFormatter: null,
-    _showTransitionTime: 200,
-    _hideTransitionTime: 500,
-    _leftOffset : 20,
-    _topOffset: 28,
+    var _toolTip= null,
+    _toolTipFormatter= null,
+    _showTransitionTime= 200,
+    _hideTransitionTime=500,
+    _leftOffset = 20,
+    _topOffset= 28;
 
     /**
      *
      * @param properties
      */
-    create: function(properties) {
-        "use strict";
-        this._toolTipFormatter = properties.formatter;
-        this._toolTip =  d3.select("#" + properties.containerID).append("div")
+    this.create = function(properties) {
+
+        _toolTipFormatter = properties.formatter;
+        _toolTip =  d3.select("#" + properties.containerID).append("div")
             .attr("class", properties.className);
-    },
+    };
 
     /**
      *
@@ -29,24 +31,24 @@ var toolTip = {
      * @param pageY
      * @param plotPropIndex
      */
-    show: function(d, pageX, pageY, plotPropIndex) {
+    this.show = function(d, pageX, pageY, plotPropIndex) {
         "use strict";
-        this._toolTip.transition()
-            .duration(this._showTransitionTime)
+        _toolTip.transition()
+            .duration(_showTransitionTime)
             .style("opacity", 0.9)
-            .style("left", (pageX + this._leftOffset) + "px")
-            .style("top",  (pageY - this._topOffset) + "px");
-        this._toolTip.html(this._toolTipFormatter(d, plotPropIndex));
+            .style("left", (pageX + _leftOffset) + "px")
+            .style("top",  (pageY - _topOffset) + "px");
+        _toolTip.html(_toolTipFormatter(d, plotPropIndex));
 
-    },
+    };
 
     /**
      *
      */
-    hide: function () {
+    this.hide = function () {
         "use strict";
-        this._toolTip.transition()
-            .duration(this._hideTransitionTime)
+        _toolTip.transition()
+            .duration(_hideTransitionTime)
             .style("opacity", 0);
     }
 };

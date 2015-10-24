@@ -1,5 +1,6 @@
-// example with data updating - http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
-//http://jsfiddle.net/zhFbn/
+"use strict";
+
+
 
 
 /**
@@ -10,7 +11,6 @@
  * @returns {*}
  */
 function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
-    "use strict";
 
     var enterColor = 'green';
     var strokeColor = 'black';
@@ -94,8 +94,8 @@ function updateTriangleSymbols( svg, plotProp, scales, data, transitionTimes) {
     // Update
 
         svg.transition()  // Transition from old to new
-        .duration(transitionTimes.startTransitionTimes)  // Length of animation
-        .each("start", function() {  // Start animation
+        .duration(transitionTimes.startDurationTime)  // Length of animation
+        .each("start", function(d) {  // Start animation
             d3.select(this)  // 'this' means the current element
                 .style("fill", "orange")  // Change color
                 .attr("width", plotProp.width * transitionTimes.sizeFactor)
@@ -104,7 +104,7 @@ function updateTriangleSymbols( svg, plotProp, scales, data, transitionTimes) {
         .delay(function(d, i) {
             return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        //.ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
 
         .attr("x", function(d) {
             return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
@@ -121,6 +121,5 @@ function updateTriangleSymbols( svg, plotProp, scales, data, transitionTimes) {
                 .attr("height", plotProp.height);
         });
 
-
     return svg;
-}
+};

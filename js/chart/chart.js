@@ -1,84 +1,95 @@
-
+"use strict";
 
 /**
  *
- * @type {{_data: null, _width: number, _height: number, _margin: {top: number, right: number, bottom: number, left: number}, _totalWidth: null, _totalHeight: null, _toolTip: null, _legendProperties: null, _labelProperties: null, _domains: null, _dataMapper: null, _containerID: null, _plotProperties: null, _plotRenderer: null, create: Function, updateChartProperties: Function, initializeChartSize: Function, createAxes: Function, drawAxes: Function, initializeChart: Function, drawPlots: Function, resize: Function}}
+ * @type {{_data=null, _width=number, _height=number, _margin={top=number, right=number, bottom=number, left=number}, _totalWidth=null, _totalHeight=null, _toolTip=null, _legendProperties=null, _labelProperties=null, _domains=null, _dataMapper=null, _containerID=null, _plotProperties=null, _plotRenderer=null, create=Function, updateChartProperties=Function, initializeChartSize=Function, createAxes=Function, drawAxes=Function, initializeChart=Function, drawPlots=Function, resize=Function}}
  */
-var chart = {
-    _data:             null,
-    _width:            700,
-    _height:           600,
-    _margin:           {
-        top:    50,
-        right:  10,
-        bottom: 100,
-        left:   80
-    }
-    ,
-    _totalWidth:       null,
-    _totalHeight:      null,
-    _toolTip:          null,
-    _legendProperties: null,
-    _labelProperties:  null,
-    _domains:          null,
-    _dataMapper:       null,
-    _containerID:      null,
-    _plotProperties:   null,
-    _plotRenderer:     null,
-    _axes:             null,
-    _zoomListener:     null,
+function chart() {
+    var _data             = null,
+        _width            = 700,
+        _height           = 600,
+        _margin           = {
+            top:    50,
+            right:  10,
+            bottom: 100,
+            left:   80
+        }
+        ,
+        _totalWidth       = null,
+        _totalHeight      = null,
+        _toolTip          = null,
+        _legendProperties = null,
+        _labelProperties  = null,
+        _domains          = null,
+        _dataMapper       = null,
+        _containerID      = null,
+        _plotProperties   = null,
+        _plotRenderer     = null,
+        _zoomListener     = null,
+        _axes             = null;
 
+    this.handleRequest = function (request, parameters) {
+
+        switch(request) {
+            case "create" : create(parameters);
+                break;
+            case "update" : updateData(parameters);
+                break;
+            case "resize" : resize(parameters);
+
+        };
+
+    };
 
     /**
      *
      * @param chartParameters
      */
-    create: function (chartParameters) {
-        "use strict";
+    function create (chartParameters) {
 
         var that = this;
 
-        this._zoomListener = d3.behavior.zoom()
+        setChartProperties(chartParameters);
+        initializeChartSize(_totalWidth, _totalHeight, _margin);
+        _axes = createAxes(_domains, _width, _height);
+        _zoomListener = d3.behavior.zoom()
+            .y(_axes.scales.yScale)
             .on("zoom", function () {
-                that.zoomHandler(that);
+                zoomHandler(that);
             });
+        _zoomListener.y(_axes.scales.yScale);
+        var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
+        svg      = drawAxes(svg, _axes, _width, _height);
+        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer);
+        drawChartLabels(svg, _labelProperties, _width, _height, _margin);
+        drawLegend(svg, _width, _height, _legendProperties);
 
-        this.setChartProperties(chartParameters);
-        this.initializeChartSize(this._totalWidth, this._totalHeight, this._margin);
-        this._axes = this.createAxes(this._domains, this._width, this._height);
-        this._zoomListener.y(this._axes.scales.yScale);
-        var svg  = this.initializeChart(this._data, this._dataMapper, this._width, this._height, this._margin, this._containerID, this._zoomListener);
-        svg      = this.drawAxes(svg, this._axes, this._width, this._height);
-        this.drawPlots(this._data, this._plotProperties, svg, this._axes.scales, this._toolTip, this._plotRenderer);
-        drawChartLabels(svg, this._labelProperties, this._width, this._height, this._margin);
-        drawLegend(svg, this._width, this._height, this._legendProperties);
-
-    },
+    };
 
     /**
      *
      * @param chartParameters
      */
-    setChartProperties: function (chartParameters) {
-        "use strict";
-        this._margin.top    = chartParameters.chartProperties.margin.top;
-        this._margin.right  = chartParameters.chartProperties.margin.right;
-        this._margin.bottom = chartParameters.chartProperties.margin.bottom;
-        this._margin.left   = chartParameters.chartProperties.margin.left;
+    function setChartProperties (chartParameters) {
 
-        this._totalWidth       = chartParameters.chartProperties.width;
-        this._totalHeight      = chartParameters.chartProperties.height;
-        this._toolTip          = chartParameters.toolTip;
-        this._domains          = chartParameters.domains;
-        this._dataMapper       = chartParameters.dataMapper;
-        this._containerID      = chartParameters.containerID;
-        this._plotProperties   = chartParameters.plotProperties;
-        this._plotRenderer     = chartParameters.plotRenderer;
-        this._data             = chartParameters.data;
-        this._containerID      = chartParameters.chartProperties.containerID;
-        this._labelProperties  = chartParameters.labelProperties;
-        this._legendProperties = chartParameters.legendProperties;
-    },
+        _margin.top    = chartParameters.chartProperties.margin.top;
+        _margin.right  = chartParameters.chartProperties.margin.right;
+        _margin.bottom = chartParameters.chartProperties.margin.bottom;
+        _margin.left   = chartParameters.chartProperties.margin.left;
+
+        _totalWidth       = chartParameters.chartProperties.width;
+        _totalHeight      = chartParameters.chartProperties.height;
+        _toolTip          = chartParameters.toolTip;
+        _domains          = chartParameters.domains;
+        _dataMapper       = chartParameters.dataMapper;
+        _containerID      = chartParameters.containerID;
+        _plotProperties   = chartParameters.plotProperties;
+        _plotRenderer     = chartParameters.plotRenderer;
+        _data             = chartParameters.data;
+        _containerID      = chartParameters.chartProperties.containerID;
+        _labelProperties  = chartParameters.labelProperties;
+        _legendProperties = chartParameters.legendProperties;
+    };
 
     /**
      *
@@ -86,13 +97,13 @@ var chart = {
      * @param totalHeight
      * @param margin
      */
-    initializeChartSize: function (totalWidth, totalHeight, margin) {
-        "use strict";
+    function initializeChartSize (totalWidth, totalHeight, margin) {
+
 
         //var containerStyleWidth = parseInt(d3.select("#" + config.containerID).style('width'), 10);
-        this._width  = totalWidth - margin.left - margin.right;
-        this._height = totalHeight - margin.top - margin.bottom;
-    },
+        _width  = totalWidth - margin.left - margin.right;
+        _height = totalHeight - margin.top - margin.bottom;
+    };
 
     /**
      * ToDo - Use Factory to create axes
@@ -101,10 +112,10 @@ var chart = {
      * @param domains
      * @param width
      * @param height
-     * @returns {{xAxis: *, yAxis: *, topBorder: *, rightBorder: *}}
+     * @returns {{xAxis=*, yAxis=*, topBorder=*, rightBorder=*}}
      */
-    createAxes: function (domains, width, height) {
-        "use strict";
+    function createAxes (domains, width, height) {
+
 
         // Properties - ToDo - Extract out
         var xScaleRangeStart       = 0;
@@ -169,7 +180,7 @@ var chart = {
                 'xScale': xScale
             }
         };
-    },
+    };
 
     /**
      *
@@ -179,8 +190,8 @@ var chart = {
      * @param height
      * @returns {*}
      */
-    drawAxes: function (svg, axes, width, height) {
-        "use strict";
+    function drawAxes  (svg, axes, width, height) {
+
 
         var yPosition = 6;
         var xPosition = 6;
@@ -230,7 +241,7 @@ var chart = {
             .attr("dy", yAxis_dy);
 
         return svg;
-    },
+    };
 
     /**
      *
@@ -240,8 +251,8 @@ var chart = {
      * @param height
      * @returns {*}
      */
-    updateAxes: function (svg, axes) {
-        "use strict";
+    function updateAxes (svg, axes) {
+
 
         var yTransitionDuration = 500;
         var xTransitionDuration = 500;
@@ -272,7 +283,7 @@ var chart = {
 
         return svg;
 
-    },
+    };
 
     /**
      *
@@ -284,13 +295,13 @@ var chart = {
      * @param containerID
      * @returns {*}
      */
-    initializeChart: function (data, mapDataCallback, width, height, margin, containerID, zoomListener) {
-        "use strict";
+    function initializeChart (data, mapDataCallback, width, height, margin, containerID, zoomListener) {
+
 
         var svg = d3.select("#" + containerID).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
-            .attr("style", "outline: thin solid lightgrey;")
+            .attr("style", "outline=thin solid lightgrey;")
             .call(zoomListener)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -299,9 +310,8 @@ var chart = {
             return mapDataCallback(d);
         });
 
-
         return svg;
-    },
+    };
 
     /**
      *
@@ -312,92 +322,104 @@ var chart = {
      * @param tooltip
      * @param plotRenderer
      */
-    drawPlots: function (data, plotProperties, svg, scales, tooltip, plotRenderer) {
+    function drawPlots  (data, plotProperties, svg, scales, tooltip, plotRenderer) {
+
+
+        _plotProperties.forEach( function (configItem) {
+            var params = {
+                "data": data,
+                "svg": svg,
+                "plotProp": configItem,
+                "scales": scales,
+                "toolTip": tooltip
+            };
+
+            plotRenderer.plotInterface("render",params);
+        });
+    };
+
+    function updatePlots (data, plotProperties, svg, scales, tooltip, plotRenderer) {
         "use strict";
 
-        chart._plotProperties.forEach( function (configItem) {
-            plotRenderer.renderPlot(data, svg, configItem, scales, tooltip);
+        _plotProperties.forEach( function (itemProperties) {
+            var params = {
+                "data": data,
+                "svg": svg,
+                "plotProp": itemProperties,
+                "scales": scales,
+                "toolTip": tooltip
+            };
+
+            plotRenderer.plotInterface("update",params);
+
         });
-    },
 
-    updatePlots: function (data, plotProperties, svg, scales, tooltip, plotRenderer) {
-        "use strict";
-
-        chart._plotProperties.forEach( function (itemProperties) {
-            plotRenderer.updatePlot(data, scales, svg, itemProperties, tooltip);
-
-        });
-
-    },
+    };
 
     /**
      *
      * @param width
      * @param height
      */
-    resize: function (width, height) {
-        "use strict";
+     function resize (params) {
 
-        this._totalWidth  = width;
-        this._totalHeight = height;
+        _totalWidth  = params.width;
+        _totalHeight = params.height;
         d3.select("svg").remove();
 
-        this.initializeChartSize(this._totalWidth, this._totalHeight, this._margin);
-        this._axes = this.createAxes(this._domains, this._width, this._height);
-        var svg  = this.initializeChart(this._data, this._dataMapper, this._width, this._height, this._margin, this._containerID, this._zoomListener);
-        svg      = this.drawAxes(svg, this._axes, this._width, this._height);
-        this.drawPlots(this._data, this._plotProperties, svg, this._axes.scales, this._toolTip, this._plotRenderer);
-        drawChartLabels(svg, this._labelProperties, this._width, this._height, this._margin);
-        drawLegend(svg, this._width, this._height, this._legendProperties);
-    },
+        initializeChartSize(_totalWidth, _totalHeight, _margin);
+        _axes = createAxes(_domains, _width, _height);
+        var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
+        svg      = drawAxes(svg, _axes, _width, _height);
+        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer);
+        drawChartLabels(svg, _labelProperties, _width, _height, _margin);
+        drawLegend(svg, _width, _height, _legendProperties);
+    };
 
     /**
      *
      * @param chart
      */
-
-    zoomHandler: function(chart) {
-        "use strict";
+    function zoomHandler() {
 
         var svgSelected = d3.select("svg");
         svgSelected.attr("transform", "translate("+ d3.event.translate + ")scale(1," + d3.event.scale + ")");
 
-        var zoomAxes = {yAxis: chart._axes.yAxis};
-        this.updateAxes(svgSelected, zoomAxes);
-        //chart.drawPlots(chart._data, chart._plotProperties, svgSelected, chart._axes.scales, chart._toolTip, chart._plotRenderer);
+        var zoomAxes = {yAxis: _axes.yAxis};
+        updateAxes(svgSelected, zoomAxes);
 
-       chart._plotProperties.forEach( function (itemProperties) {
+        _plotProperties.forEach( function (itemProperties) {
             svgSelected.selectAll("." + itemProperties.plotClassName).attr("transform","translate("+
                 d3.event.translate.join(1," ")+")scale(1, "+d3.event.scale+")"); //
         });
 
-    },
+    };
 
     /**
      *
      * @param data
      * @param domains
      */
-    updateData: function(data, domains) {
-        "use strict";
+    function updateData(parameters) {
 
-        this._data = data;
-        this._domains = domains;
-        var dataMapper = this._dataMapper;
+        _data = parameters.data;
+        _domains = parameters.domains;
+        var dataMapper = _dataMapper;
 
             // Update domain
             // Update Axis
             // Update Plots
-        var svg = d3.select("#" + this._containerID).select("svg");
-        svg.selectAll("g.node").data(data, function (d) {
+
+        var svg = d3.select("#" + _containerID).select("g");
+        svg.selectAll("g.node").data(_data, function (d) {
             return dataMapper(d);
         });
-        this._axes = this.createAxes(this._domains, this._width, this._height);
+        _axes = createAxes(_domains, _width, _height);
 
-        this.updatePlots(this._data, this._plotProperties, svg, this._axes.scales, this._toolTip, this._plotRenderer);
+        updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer);
 
-        this.updateAxes(svg, this._axes);
+        updateAxes(svg, _axes);
 
-    }
+    };
 
 };

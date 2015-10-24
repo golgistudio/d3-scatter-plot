@@ -24,31 +24,42 @@ var experimentPlotProperties = [
         name: "congruent"
     },
 
+    {
+        plotClassName: "font-awe",
+        xProp: "Participant",
+        yProp: "Difference",
+        radius: 10,
+        fillColor: "#ff7f0e",
+        textStroke: "orange",
+        textFill: "orange",
+        symbol: "font",
+        name: "difference",
+        fontSize: "2em",
+        unicode: "\uf0e7",
+        textOffset: 5
+    }];
+
     //{
     //    plotClassName: "ddot",
     //    xProp: "Participant",
     //    yProp: "Difference",
-    //    radius: 10,
-    //    fillColor: "#ff7f0e",
-    //    textStroke: "orange",
-    //    textFill: "orange",
-    //    symbol: "font",
     //    name: "difference",
-    //    fontSize: "2em",
-    //    unicode: "\uf0e7",
-    //    textOffset: 5
+    //    symbol: "triangle",
+    //    width: 10,
+    //    height: 10,
+    //    fillColor: "orange",
     //}];
 
-     {
-        plotClassName: "ddot",
-        xProp: "Participant",
-        yProp: "Difference",
-        name: "difference",
-        symbol: "icon",
-        width: 20,
-        height: 20,
-        icon: "images/cloud.png"
-    }];
+    // {
+    //    plotClassName: "ddot",
+    //    xProp: "Participant",
+    //    yProp: "Difference",
+    //    name: "difference",
+    //    symbol: "icon",
+    //    width: 20,
+    //    height: 20,
+    //    icon: "images/cloud.png"
+    //}];
 
 
 

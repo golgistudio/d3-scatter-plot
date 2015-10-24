@@ -19,6 +19,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
 
     plot = plot.enter().append("circle")
         .attr("class", plotProp.plotClassName)
+        .attr("clip-path", "url(#clip)")
         .attr("r", plotProp.radius)
         .attr("cx", function(d) {
             return scales.xScale(d[plotProp.xProp]);
