@@ -36,7 +36,11 @@ function chart() {
             case "update" : updateData(parameters);
                 break;
             case "resize" : resize(parameters);
-
+                break;
+            case "styleUpdate" : styleUpdate(parameters);
+                break;
+            case "symbolUpdate" : symbolUpdate(parameters);
+                break;
         };
 
     };
@@ -325,7 +329,7 @@ function chart() {
     function drawPlots  (data, plotProperties, svg, scales, tooltip, plotRenderer) {
 
 
-        _plotProperties.forEach( function (configItem) {
+        plotProperties.forEach( function (configItem) {
             var params = {
                 "data": data,
                 "svg": svg,
@@ -338,10 +342,27 @@ function chart() {
         });
     };
 
+    function drawSelectedPlot  (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName) {
+
+        plotProperties.forEach( function (configItem) {
+            if (configItem.name === plotName) {
+                var params = {
+                    "data":     data,
+                    "svg":      svg,
+                    "plotProp": configItem,
+                    "scales":   scales,
+                    "toolTip":  tooltip
+                };
+                svg.selectAll("." + configItem.plotClassName).data([]).exit().remove();
+                plotRenderer.plotInterface("render", params);
+            }
+        });
+    };
+
     function updatePlots (data, plotProperties, svg, scales, tooltip, plotRenderer) {
         "use strict";
 
-        _plotProperties.forEach( function (itemProperties) {
+        plotProperties.forEach( function (itemProperties) {
             var params = {
                 "data": data,
                 "svg": svg,
@@ -351,6 +372,27 @@ function chart() {
             };
 
             plotRenderer.plotInterface("update",params);
+
+        });
+
+    };
+
+    function updateSelectedPlot (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName) {
+        "use strict";
+
+        plotProperties.forEach( function (itemProperties) {
+
+            if (itemProperties.name === plotName) {
+                var params = {
+                    "data":     data,
+                    "svg":      svg,
+                    "plotProp": itemProperties,
+                    "scales":   scales,
+                    "toolTip":  tooltip
+                };
+
+                plotRenderer.plotInterface("update", params);
+            }
 
         });
 
@@ -419,6 +461,34 @@ function chart() {
         updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer);
 
         updateAxes(svg, _axes);
+
+    };
+
+    function styleUpdate(parameters) {
+
+        _plotProperties = parameters.plotProperties;
+        _data = parameters.data;
+        _domains = parameters.domains;
+
+        var svg = d3.select("#" + _containerID).select("g");
+        updateSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName);
+
+    };
+
+    function symbolUpdate(parameters) {
+
+        _plotProperties = parameters.plotProperties;
+        _data = parameters.data;
+        _domains = parameters.domains;
+        var dataMapper = _dataMapper;
+
+        // Update domain
+        // Update Axis
+        // Update Plots
+
+        var svg = d3.select("#" + _containerID).select("g");
+
+        drawSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName);
 
     };
 

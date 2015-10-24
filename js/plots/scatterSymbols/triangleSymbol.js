@@ -13,7 +13,6 @@
 function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
 
     var enterColor = 'green';
-    var strokeColor = 'black';
     var hoverDelayAmount = 500;
     var hoverTransitionDuration = 1000;
 
@@ -36,6 +35,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         .style('opacity', 1)
         .transition()
         .duration(transitionTimes.startDurationTime)
+        .style("stroke", plotProp.strokeColor)
         .style("fill", function (d) {
             return plotProp.fillColor;
         });
@@ -96,8 +96,11 @@ function updateTriangleSymbols( svg, plotProp, scales, data, transitionTimes) {
         svg.transition()  // Transition from old to new
         .duration(transitionTimes.startDurationTime)  // Length of animation
         .each("start", function(d) {  // Start animation
+
+                var currentFillColor = d3.select(this).style("fill");
+                var transitionColor = d3.rgb(currentFillColor).darker();
             d3.select(this)  // 'this' means the current element
-                .style("fill", "orange")  // Change color
+                .style("fill", transitionColor)  // Change color
                 .attr("width", plotProp.width * transitionTimes.sizeFactor)
                 .attr("height", plotProp.height * transitionTimes.sizeFactor);
         })

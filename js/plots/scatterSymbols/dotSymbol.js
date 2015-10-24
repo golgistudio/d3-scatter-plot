@@ -35,6 +35,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         .style('opacity', 1)
         .transition()
         .duration(transitionTimes.startDurationTime)
+        .style("stroke", plotProp.strokeColor)
         .style("fill", function (d) {
             return plotProp.fillColor;
         });
@@ -43,7 +44,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
             var currentFillColor = d3.select(this).style("fill");
-            var hoverFillColor = d3.rgb(currentFillColor).darker();
+            var hoverFillColor = d3.rgb(currentFillColor).brighter();
 
             d3.select(this).transition()
                 .delay(hoverDelayAmount)
@@ -81,14 +82,17 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
 function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
     "use strict";
     var transitionSize  = plotProp.radius * transitionTimes.sizeFactor;
-    var transitionColor = "black";
-
 
     svg.transition()  // Transition from old to new
         .duration(transitionTimes.startDurationTime)  // Length of animation
         .each("start", function () {  // Start animation
+
+            var currentFillColor = d3.select(this).style("fill");
+            var transitionColor = d3.rgb(currentFillColor).darker();
+
             d3.select(this)  // 'this' means the current element
-                .style("fill", "orange")  // Change color
+                .style("fill", transitionColor)  // Change color
+                .style("stroke", transitionColor)
                 .attr("r", transitionSize);  // Change size
         })
         .delay(function (d, i) {
@@ -106,6 +110,7 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
                 .transition()
                 .duration(transitionTimes.endDurationTime)
                 .style("fill", plotProp.fillColor)  // Change color
+                .style("stroke", plotProp.strokeColor)
                 .attr("r", plotProp.radius);  // Change radius
         });
 

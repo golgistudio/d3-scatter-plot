@@ -13,7 +13,6 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     "use strict";
 
     var enterColor              = 'green';
-    var hoverSize               = plotProp.radius * 2;
     var hoverDelayAmount        = 0;
     var hoverTransitionDuration = 1000;
 
@@ -35,6 +34,7 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         .style('fill', enterColor)
         .style('opacity', 1)
         .transition()
+        .style('stroke', plotProp.strokeColor)
         .duration(transitionTimes.startDurationTime)
         .style("fill", function (d) {
             return plotProp.fillColor;
@@ -44,8 +44,8 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
 
         var currentFillColor = d3.select(this).style("fill");
         var hoverFillColor = d3.rgb(currentFillColor).brighter();
-        var hoverWidth = plotProp.width * 2;
-        var hoverHeight = plotProp.height  * 2;
+        var hoverWidth = plotProp.width * transitionTimes.sizeFactor;
+        var hoverHeight = plotProp.height  * transitionTimes.sizeFactor;
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
@@ -88,8 +88,10 @@ function updateSquareSymbols( svg, plotProp, scales, data, transitionTimes) {
     svg.transition()  // Transition from old to new
         .duration(transitionTimes.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation
+            var currentFillColor = d3.select(this).style("fill");
+            var transitionColor = d3.rgb(currentFillColor).darker();
             d3.select(this)  // 'this' means the current element
-                .style("fill", "pink")  // Change color
+                .style("fill", transitionColor)  // Change color
                 .attr("width", plotProp.width * transitionTimes.sizeFactor)
                 .attr("height", plotProp.height * transitionTimes.sizeFactor);
         })

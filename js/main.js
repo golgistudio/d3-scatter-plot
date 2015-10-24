@@ -56,25 +56,32 @@ function addEventHandlers() {
 
     document.getElementById("circleSymbol").addEventListener("click", function(event) {
         "use strict";
-        pageManager.setSymbol("circle", pageManager);
+        pageManager.setSymbol("dot", pageManager, "congruent");
         event.stopPropagation();
     });
 
-    document.getElementById("squareSymbol").addEventListener("click", function(event) {
+    document.getElementById("triangleSymbol").addEventListener("click", function(event) {
         "use strict";
-        pageManager.setSymbol("square", pageManager);
+        pageManager.setSymbol("triangle", pageManager, "congruent");
         event.stopPropagation();
     });
 
+
+    /**
+     *  update of the incongruent plot
+     */
     document.getElementById("blueColor").addEventListener("click", function(event) {
         "use strict";
-        pageManager.setSymbolColor("blue", pageManager);
+        pageManager.setSymbolColor("blue", pageManager, "incongruent");
         event.stopPropagation();
     });
 
+    /**
+     *  update of the incongruent plot
+     */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
         "use strict";
-        pageManager.setSymbolColor("pink", pageManager);
+        pageManager.setSymbolColor("pink", pageManager, "incongruent");
         event.stopPropagation();
     });
 }

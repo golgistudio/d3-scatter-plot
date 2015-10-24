@@ -11,7 +11,6 @@
 function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     "use strict";
     var enterColor = 'green';
-    var hoverSize = plotProp.radius * 2;
     var hoverDelayAmount = 0;
     var hoverTransitionDuration = 500;
 
@@ -29,15 +28,25 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) 
         })
         .attr("font-family","FontAwesome")
         .attr('font-size', plotProp.fontSize )
-        .text(plotProp.unicode)
-        .style("stroke", plotProp.textStroke)
-        .style("fill", plotProp.textStroke);
+        .text(plotProp.unicode);
+
+    textPlot.style("opacity", "0")
+        .style('opacity', 1e-6)
+        .transition()
+        .style('fill', enterColor)
+        .style('opacity', 1)
+        .transition()
+        .duration(transitionTimes.startDurationTime)
+        .style("stroke", plotProp.strokeColor)
+        .style("fill", function (d) {
+            return plotProp.fillColor;
+        });
 
 
     textPlot.on("mouseover", function (d) {
 
             var currentFillColor = d3.select(this).style("fill");
-            var hoverFillColor = d3.rgb(currentFillColor).darker();
+            var hoverFillColor = d3.rgb(currentFillColor).brighter();
             var id = "#" + d3.select(this).attr("id");
             var fontSize = d3.select(id).attr("font-size");
             var fontVal =  +fontSize.replace(/em/g,'') * transitionTimes.sizeFactor + "em";
@@ -61,7 +70,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) 
                 .duration(hoverTransitionDuration)
                 .style("stroke", "black")
                 .style("stroke", plotProp.textStroke)
-                .style("fill", plotProp.textStroke)
+                .style("fill", plotProp.textFill)
                 .attr('font-size', plotProp.fontSize);
         });
 }
@@ -106,7 +115,7 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionTimes)
                 // .transition()
                 // .duration(transitionTimes.exitDurationtime)
                 .style("stroke", plotProp.textStroke)
-                .style("fill", plotProp.textStroke)
+                .style("fill", plotProp.textFill)
                 .attr('font-size', plotProp.fontSize );
         });
 

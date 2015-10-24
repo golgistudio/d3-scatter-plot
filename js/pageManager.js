@@ -10,6 +10,8 @@ var pageManager = {
     _chart: null,
     _chartProperties: null,
     _experiment : null,
+    _plotProperties: null,
+    _data : null,
 
     init: function (pageParameters) {
         
@@ -18,13 +20,15 @@ var pageManager = {
 
         this._experiment = pageParameters.experiment;
         this._chartProperties = pageParameters.chartProperties;
+        this._plotProperties = pageParameters.plotProperties;
+        this._data = pageParameters.data;
 
         toolTipProperties.containerID = "experiment";
         toolTipProperties.formatter = pageParameters.toolTipFormatter;
         var toolTipObject = new toolTip();
         toolTipObject.create(toolTipProperties);
 
-        this._experiment.init(pageParameters.data);
+        this._experiment.init(this._data);
 
         var chartParameters = {
             "chartProperties" : this._chartProperties,
@@ -34,7 +38,7 @@ var pageManager = {
             "toolTip" : toolTipObject,
             "dataMapper": this._experiment.mapData,
             "domains": this._experiment._dataDomains,
-            "plotProperties": pageParameters.plotProperties,
+            "plotProperties": this._plotProperties,
             "labelProperties" : pageParameters.labelProperties,
             "legendProperties" : pageParameters.legendProperties
         };
@@ -46,7 +50,6 @@ var pageManager = {
     },
 
     resize: function(){
-        "use strict";
 
         var height = window.innerHeight - pageManager._chartProperties.heightMargin;
         var width  = window.innerWidth - pageManager._chartProperties.widthMargin;
@@ -59,8 +62,9 @@ var pageManager = {
 
 
     updatePoints: function(data, pageControl) {
-        "use strict";
-        pageControl._experiment.init(data);
+
+        pageControl._data = data;
+        pageControl._experiment.init( pageControl._data);
         var params = {
             "data" : data,
             "domains": pageControl._experiment._dataDomains
@@ -68,13 +72,45 @@ var pageManager = {
         pageControl._chart.handleRequest("update", params);
     },
 
-    setSymbol: function(symbol, pageControl) {
-        "use strict";
-        console.log("setSymbol: " + symbol);
+    setSymbol: function(symbol, pageControl, plotName) {
+        pageControl._plotProperties.forEach( function (configItem) {
+            if (configItem.name === "congruent") {
+                configItem.symbol = symbol;
+                configItem.width = 10;
+                configItem.height = 10;
+                configItem.radius = 5;
+            }
+        });
+
+        var params = {
+            "data" : pageControl._data,
+            "domains": pageControl._experiment._dataDomains,
+            "plotProperties": pageControl._plotProperties,
+            "plotName": plotName
+        };
+        pageControl._chart.handleRequest("symbolUpdate", params);
     },
 
-    setSymbolColor: function(color, pageControl) {
-        "use strict";
-        console.log("setSymbolColor: " + color);
+    /**
+     *
+     * @param color
+     * @param pageControl
+     * @param plotName
+     */
+    setSymbolColor: function(color, pageControl, plotName) {
+
+        pageControl._plotProperties.forEach( function (configItem) {
+            if (configItem.name === plotName) {
+                configItem.fillColor = color;
+            }
+        });
+
+        var params = {
+            "data" : pageControl._data,
+            "domains": pageControl._experiment._dataDomains,
+            "plotProperties": pageControl._plotProperties,
+            "plotName": plotName
+        };
+        pageControl._chart.handleRequest("styleUpdate", params);
     }
 };

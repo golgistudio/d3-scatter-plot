@@ -4,33 +4,35 @@
  */
 var experimentPlotProperties = [
     {
-        plotClassName: "dot",
+        plotClassName: "incongruent",
         xProp: "Participant",
         yProp: "Incongruent",
         width: 10,
         height: 10,
         fillColor: "#1f77b4",
+        strokeColor: "black",
         symbol: "square",
         name: "incongruent"
     },
 
     {
-        plotClassName: "cdot",
+        plotClassName: "congruent",
         xProp: "Participant",
         yProp: "Congruent",
         radius: 5,
         fillColor: "lightgreen",
         symbol: "dot",
+        strokeColor: "black",
         name: "congruent"
     },
 
     {
-        plotClassName: "font-awe",
+        plotClassName: "difference",
         xProp: "Participant",
         yProp: "Difference",
         radius: 10,
         fillColor: "#ff7f0e",
-        textStroke: "orange",
+        textStroke: "black",
         textFill: "orange",
         symbol: "font",
         name: "difference",
@@ -45,6 +47,7 @@ var experimentPlotProperties = [
     //    yProp: "Difference",
     //    name: "difference",
     //    symbol: "triangle",
+    //    strokeColor: "black",
     //    width: 10,
     //    height: 10,
     //    fillColor: "orange",
