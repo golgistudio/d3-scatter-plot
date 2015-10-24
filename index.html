@@ -7,35 +7,51 @@
     <link href="styles/main.css" rel="stylesheet"/>
 </head>
 <body>
-<div id="title">
-<h1>D3 Scatter Plot</h1>
-</div>
-<form>
-<div id="controlPanel">
+<div>
+    <ul class="menu">
 
-    <div id="managePointsPanel">
-        <input class="buttons" id="resetPointsButton" type="button" value="Reset Points">
-        <input class="buttons" id="addPointButton" type="button" value="Add Points">
-        <input class="buttons" id="removePointButton" type="button" value="Remove Points">
-        <input class="buttons" id="changePointButton"type="button" value="Change Points">
-    </div>
-    <div id="stylePanel">
-        <div id="symbolPanel" class="radioPanel">
-            <h3>Symbol</h3>
-            <input type="radio" id="circleSymbol" name="symbol" value="dot" checked>Circle
-            <br>
-            <input type="radio" id="triangleSymbol" name="symbol" value="triangle">Triangle
-        </div>
-        <div id="symbolColorPanel" class="radioPanel">
-            <h3>Symbol Color</h3>
-            <input type="radio" id="blueColor" name="symbolColor" value="blue" checked>Blue
-            <br>
-            <input type="radio" id="pinkColor" name="symbolColor" value="pink">Pink
-        </div>
-    </div>
+        <li title="home"><a href="#" class="menu-button home" id="menuButton">menu</a></li>
+
+        <li title="search"><a href="#" class="search" id="symbolMenu">search</a></li>
+        <li title="pencil"><a href="#" class="pencil" id="colorMenu">pencil</a></li>
+        <li title="about"><a href="#" class="active about">about</a></li>
+        <li title="archive"><a href="#" class="archive">archive</a></li>
+        <li title="contact"><a href="#" class="contact">contact</a></li>
+    </ul>
+
+    <ul class="menu-bar" id="menuControl">
+        <li><a href="#">Data</a>
+        </li>
+        <li><a href="#" id="resetPointsButton">Reset</a>
+        </li>
+        <li><a href="#" id="addPointButton">Add</a>
+        </li>
+        <li><a href="#" id="removePointButton">Remove</a>
+        </li>
+        <li><a href="#" id="changePointButton">Change</a>
+        </li>
+    </ul>
+    <ul class="menu-bar" id="symbolControl">
+        <li><a href="#">Symbol</a>
+        </li>
+        <li><a href="#" id="circleSymbol">Circle</a>
+        </li>
+        <li><a href="#" id="triangleSymbol">Triangle</a>
+        </li>
+        <li><a href="#" id="iconSymbol">Icon</a>
+
+    </ul>
+    <ul class="menu-bar" id="colorControl">
+        <li><a href="#">Color</a>
+        </li>
+        <li><a href="#" id="blueColor">Blue</a>
+        </li>
+        <li><a href="#" id="pinkColor">Purple</a>
+        </li>
+    </ul>
 
 </div>
-</form>
+
 <div id="experiment"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="js/chart/toolTipProperties.js"></script>
@@ -52,6 +68,7 @@
 <script src="js/chart/legendProperties.js"></script>
 <script src="js/plots/scatter.js"></script>
 <script src="js/plots/plotManager.js"></script>
+<script src="js/chart/transitionProperties.js"></script>
 <script src="js/chart/chart.js"></script>
 <script src="js/experimentResults/data/experimentAddData.js"></script>
 <script src="js/experimentResults/data/experimentDifferentTimesData.js"></script>

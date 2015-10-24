@@ -1,5 +1,4 @@
-// example with data updating - http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
-//http://jsfiddle.net/zhFbn/
+
 
 /**
  *
@@ -8,18 +7,14 @@
  * @param scales
  * @returns {*}
  */
-function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
+function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
 
-    var enterColor = 'green';
-    var hoverSize = plotProp.radius * 2;
-    var hoverDelayAmount = 0;
-    var hoverTransitionDuration = 1000;
-    var strokeColor = "black";
+    var hoverSize = plotProp.radius * transitionProperties.sizeFactor;
+
 
     plot = plot.enter().append("circle")
         .attr("class", plotProp.plotClassName)
-        .attr("clip-path", "url(#clip)")
         .attr("r", plotProp.radius)
         .attr("cx", function(d) {
             return scales.xScale(d[plotProp.xProp]);
@@ -31,10 +26,10 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         plot.style("opacity", "0")
         .style('opacity', 1e-6)
         .transition()
-        .style('fill', enterColor)
+        .style('fill', transitionProperties.enterColor)
         .style('opacity', 1)
         .transition()
-        .duration(transitionTimes.startDurationTime)
+        .duration(transitionProperties.startDurationTime)
         .style("stroke", plotProp.strokeColor)
         .style("fill", function (d) {
             return plotProp.fillColor;
@@ -44,11 +39,11 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
             var currentFillColor = d3.select(this).style("fill");
-            var hoverFillColor = d3.rgb(currentFillColor).brighter();
+            var hoverFillColor = d3.rgb(currentFillColor).darker();
 
             d3.select(this).transition()
-                .delay(hoverDelayAmount)
-                .duration(hoverTransitionDuration)
+                .delay(transitionProperties.hoverDelayTime)
+                .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", hoverFillColor)
                 .style("fill", hoverFillColor)
                 .attr("r", hoverSize)
@@ -58,11 +53,12 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         .on("mouseout", function (d) {
             toolTip.hide();
             d3.select(this).transition()
-                .delay(hoverDelayAmount)
-                .duration(hoverTransitionDuration)
-                .style("stroke", strokeColor)
+                .delay(transitionProperties.hoverDelayTime)
+                .duration(transitionProperties.hoverTransitionDuration)
+                .style("stroke", plotProp.strokeColor)
                 .style("fill", plotProp.fillColor)
-                .attr("r", plotProp.radius);
+                .attr("r", plotProp.radius)
+                .ease(transitionProperties.hoverEaseType);
 
         });
     
@@ -88,7 +84,7 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
         .each("start", function () {  // Start animation
 
             var currentFillColor = d3.select(this).style("fill");
-            var transitionColor = d3.rgb(currentFillColor).darker();
+            var transitionColor = d3.rgb(currentFillColor).brighter();
 
             d3.select(this)  // 'this' means the current element
                 .style("fill", transitionColor)  // Change color

@@ -26,7 +26,9 @@ function chart() {
         _plotProperties   = null,
         _plotRenderer     = null,
         _zoomListener     = null,
-        _axes             = null;
+        _axes             = null,
+        _transitionProperties = null;
+
 
     this.handleRequest = function (request, parameters) {
 
@@ -58,13 +60,14 @@ function chart() {
         _axes = createAxes(_domains, _width, _height);
         _zoomListener = d3.behavior.zoom()
             .y(_axes.scales.yScale)
+            .scaleExtent([0.25, 10])
             .on("zoom", function () {
                 zoomHandler(that);
             });
         _zoomListener.y(_axes.scales.yScale);
         var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
         svg      = drawAxes(svg, _axes, _width, _height);
-        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer);
+        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
         drawChartLabels(svg, _labelProperties, _width, _height, _margin);
         drawLegend(svg, _width, _height, _legendProperties);
 
@@ -93,6 +96,7 @@ function chart() {
         _containerID      = chartParameters.chartProperties.containerID;
         _labelProperties  = chartParameters.labelProperties;
         _legendProperties = chartParameters.legendProperties;
+        _transitionProperties = chartParameters.transitionProperties;
     };
 
     /**
@@ -326,7 +330,7 @@ function chart() {
      * @param tooltip
      * @param plotRenderer
      */
-    function drawPlots  (data, plotProperties, svg, scales, tooltip, plotRenderer) {
+    function drawPlots  (data, plotProperties, svg, scales, tooltip, plotRenderer, transitionProperties) {
 
 
         plotProperties.forEach( function (configItem) {
@@ -335,14 +339,15 @@ function chart() {
                 "svg": svg,
                 "plotProp": configItem,
                 "scales": scales,
-                "toolTip": tooltip
+                "toolTip": tooltip,
+                "transitionProperties": transitionProperties
             };
 
             plotRenderer.plotInterface("render",params);
         });
     };
 
-    function drawSelectedPlot  (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName) {
+    function drawSelectedPlot  (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName, transitionProperties) {
 
         plotProperties.forEach( function (configItem) {
             if (configItem.name === plotName) {
@@ -351,7 +356,8 @@ function chart() {
                     "svg":      svg,
                     "plotProp": configItem,
                     "scales":   scales,
-                    "toolTip":  tooltip
+                    "toolTip":  tooltip,
+                    "transitionProperties": transitionProperties
                 };
                 svg.selectAll("." + configItem.plotClassName).data([]).exit().remove();
                 plotRenderer.plotInterface("render", params);
@@ -359,7 +365,7 @@ function chart() {
         });
     };
 
-    function updatePlots (data, plotProperties, svg, scales, tooltip, plotRenderer) {
+    function updatePlots (data, plotProperties, svg, scales, tooltip, plotRenderer, transitionProperties) {
         "use strict";
 
         plotProperties.forEach( function (itemProperties) {
@@ -368,7 +374,8 @@ function chart() {
                 "svg": svg,
                 "plotProp": itemProperties,
                 "scales": scales,
-                "toolTip": tooltip
+                "toolTip": tooltip,
+                "transitionProperties": transitionProperties
             };
 
             plotRenderer.plotInterface("update",params);
@@ -377,7 +384,7 @@ function chart() {
 
     };
 
-    function updateSelectedPlot (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName) {
+    function updateSelectedPlot (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName, transitionProperties) {
         "use strict";
 
         plotProperties.forEach( function (itemProperties) {
@@ -388,7 +395,8 @@ function chart() {
                     "svg":      svg,
                     "plotProp": itemProperties,
                     "scales":   scales,
-                    "toolTip":  tooltip
+                    "toolTip":  tooltip,
+                    "transitionProperties": transitionProperties
                 };
 
                 plotRenderer.plotInterface("update", params);
@@ -413,7 +421,7 @@ function chart() {
         _axes = createAxes(_domains, _width, _height);
         var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
         svg      = drawAxes(svg, _axes, _width, _height);
-        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer);
+        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
         drawChartLabels(svg, _labelProperties, _width, _height, _margin);
         drawLegend(svg, _width, _height, _legendProperties);
     };
@@ -424,15 +432,28 @@ function chart() {
      */
     function zoomHandler() {
 
+        var tx, ty;
+        tx = d3.event.translate[0];
+        ty = d3.event.translate[1];
+        //tx = Math.min(1, Math.max(tx, width - Math.round(x(maxDays) - x(1)), width - Math.round(x(maxDays) - x(1)) * d3.event.scale));
+        _zoomListener.translate([
+            tx,
+            ty
+        ]);
+
         var svgSelected = d3.select("svg");
-        svgSelected.attr("transform", "translate("+ d3.event.translate + ")scale(1," + d3.event.scale + ")");
 
         var zoomAxes = {yAxis: _axes.yAxis};
         updateAxes(svgSelected, zoomAxes);
 
         _plotProperties.forEach( function (itemProperties) {
-            svgSelected.selectAll("." + itemProperties.plotClassName).attr("transform","translate("+
-                d3.event.translate.join(1," ")+")scale(1, "+d3.event.scale+")"); //
+            if (itemProperties.name === "congruent") {
+                return svgSelected.selectAll('circle.' + itemProperties.plotClassName).attr('cy', function (d) {
+                    return _axes.scales.yScale(d[itemProperties.yProp]);
+                }).attr('cx', function (d) {
+                    return _axes.scales.xScale(d[itemProperties.xProp]);
+                });
+            }
         });
 
     };
@@ -458,7 +479,7 @@ function chart() {
         });
         _axes = createAxes(_domains, _width, _height);
 
-        updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer);
+        updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
 
         updateAxes(svg, _axes);
 
@@ -471,7 +492,7 @@ function chart() {
         _domains = parameters.domains;
 
         var svg = d3.select("#" + _containerID).select("g");
-        updateSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName);
+        updateSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName, _transitionProperties);
 
     };
 
@@ -488,7 +509,7 @@ function chart() {
 
         var svg = d3.select("#" + _containerID).select("g");
 
-        drawSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName);
+        drawSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName, _transitionProperties);
 
     };
 

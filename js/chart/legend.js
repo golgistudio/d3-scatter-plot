@@ -93,7 +93,7 @@ function drawLegend(svg, width, height, properties) {
             }
 
             // Hide or show the elements based on the ID
-            d3.selectAll(".dot")
+            d3.selectAll(".congruent")
                 .transition().duration(100)
                 .style("opacity", opacity);
             // Update whether or not the elements are active
@@ -127,7 +127,7 @@ function drawLegend(svg, width, height, properties) {
             }
 
             // Hide or show the elements based on the ID
-            d3.selectAll(".cdot")
+            d3.selectAll(".incongruent")
                 .transition().duration(100)
                 .style("opacity", opacity);
 
@@ -167,7 +167,7 @@ function drawLegend(svg, width, height, properties) {
             d.active = active;
 
             // Hide or show the elements based on the ID
-            d3.selectAll(".font-awe")
+            d3.selectAll(".difference")
                 .transition().duration(100)
                 .style("opacity", opacity);
 

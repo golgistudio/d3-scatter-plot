@@ -10,12 +10,11 @@
  * @param scales
  * @returns {*}
  */
-function addIconSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
+function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
-    var enterColor = 'green';
-    var hoverSize = plotProp.radius * 2;
-    var hoverDelayAmount = 0;
-    var hoverTransitionDuration = 1000;
+
+    var hoverSize = plotProp.radius * transitionProperties.sizeFactor;
+
 
     var iconPlot = plot.enter().append("image")
 
@@ -34,51 +33,53 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     iconPlot.on("mouseover", function (d) {
 
         var currentFillColor = d3.select(this).style("fill");
-        var hoverFillColor = d3.rgb(currentFillColor).brighter();
-        var hoverWidth = plotProp.width * 1.5;
-        var hoverHeight = plotProp.height  * 1.5;
+        var hoverFillColor = d3.rgb(currentFillColor).darker();
+
+        var hoverWidth = plotProp.width * transitionProperties.sizeFactor;
+        var hoverHeight = plotProp.height  * transitionProperties.sizeFactor;
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
         d3.select(this).transition()
-            .delay(hoverDelayAmount)
-            .duration(hoverTransitionDuration)
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
             .style("stroke", hoverFillColor)
             .style("fill", hoverFillColor)
             .attr("width", hoverWidth)
             .attr("height", hoverHeight)
-            .ease("elastic");
+            .ease(transitionProperties.hoverEaseType);
 
         })
         .on("mouseout", function (d) {
             toolTip.hide();
             d3.select(this).transition()
-                .delay(hoverDelayAmount)
-                .duration(hoverTransitionDuration)
+                .delay(transitionProperties.hoverDelayTime)
+                .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.strokeColor)
                 .style("fill", plotProp.fillColor)
                 .attr("width", plotProp.width)
-                .attr("height", plotProp.height);
+                .attr("height", plotProp.height)
+                .ease(transitionProperties.hoverEaseType);
 
         });
 
     return plot;
 };
 
-function updateIconSymbols( svg, plotProp, scales, data, transitionTimes) {
+function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
 
     "use strict";
     svg.transition()  // Transition from old to new
-        .duration(transitionTimes.startDurationTime)  // Length of animation
+        .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation
             d3.select(this)  // 'this' means the current element
                 .attr("width", plotProp.width * transitionTimes.sizeFactor)
                 .attr("height", plotProp.height * transitionTimes.sizeFactor);
         })
         .delay(function(d, i) {
-            return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
+            return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .ease(transitionProperties.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("x", function(d) {
             return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
         })
@@ -87,8 +88,8 @@ function updateIconSymbols( svg, plotProp, scales, data, transitionTimes) {
         })
         .each("end", function() {  // End animation
             d3.select(this)  // 'this' means the current element
-               // .transition()
-               // .duration(transitionTimes.exitDurationtime)
+                .transition()
+                .duration(transitionProperties.endDurationTime)
                 .attr("width", plotProp.width)
                 .attr("height", plotProp.height);
         });

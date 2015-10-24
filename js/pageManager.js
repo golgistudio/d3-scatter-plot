@@ -40,7 +40,8 @@ var pageManager = {
             "domains": this._experiment._dataDomains,
             "plotProperties": this._plotProperties,
             "labelProperties" : pageParameters.labelProperties,
-            "legendProperties" : pageParameters.legendProperties
+            "legendProperties" : pageParameters.legendProperties,
+            "transitionProperties" : pageParameters.transitionProperties
         };
 
         this._chart = new chart();
@@ -74,11 +75,23 @@ var pageManager = {
 
     setSymbol: function(symbol, pageControl, plotName) {
         pageControl._plotProperties.forEach( function (configItem) {
-            if (configItem.name === "congruent") {
+            if (configItem.name === plotName) {
                 configItem.symbol = symbol;
-                configItem.width = 10;
-                configItem.height = 10;
-                configItem.radius = 5;
+
+                switch (symbol) {
+                    case "icon":
+                        configItem.icon = "images/stopwatch-1-64x64.png";
+                        configItem.width = 20;
+                        configItem.height = 20;
+                        break;
+                    case "triangle" :
+                        configItem.size = 64;
+                        break;
+                    case "circle" :
+                        configItem.radius = 5;
+                        break;
+                }
+
             }
         });
 

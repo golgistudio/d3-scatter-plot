@@ -8,11 +8,9 @@
  * @param scales
  * @returns {*}
  */
-function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
+function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
-    var enterColor = 'green';
-    var hoverDelayAmount = 0;
-    var hoverTransitionDuration = 500;
+
 
     var textPlot = plot.enter()
         .append("text")
@@ -33,32 +31,33 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) 
     textPlot.style("opacity", "0")
         .style('opacity', 1e-6)
         .transition()
-        .style('fill', enterColor)
+        .style('fill', transitionProperties.enterColor)
         .style('opacity', 1)
         .transition()
-        .duration(transitionTimes.startDurationTime)
+        .duration(transitionProperties.startDurationTime)
         .style("stroke", plotProp.strokeColor)
         .style("fill", function (d) {
-            return plotProp.fillColor;
+            return plotProp.textFill;
         });
 
 
     textPlot.on("mouseover", function (d) {
 
             var currentFillColor = d3.select(this).style("fill");
-            var hoverFillColor = d3.rgb(currentFillColor).brighter();
+            var hoverFillColor = d3.rgb(currentFillColor).darker();
             var id = "#" + d3.select(this).attr("id");
             var fontSize = d3.select(id).attr("font-size");
-            var fontVal =  +fontSize.replace(/em/g,'') * transitionTimes.sizeFactor + "em";
+            var fontVal =  +fontSize.replace(/em/g,'') * transitionProperties.sizeFactor + "em";
 
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
             d3.select(id).transition()
-                .delay(hoverDelayAmount)
-                .duration(hoverTransitionDuration)
-                .style("stroke", hoverFillColor)
+                .delay(transitionProperties.hoverDelayTime)
+                .duration(transitionProperties.hoverTransitionDuration)
+                .style("stroke", plotProp.strokeColor)
                 .style("fill", hoverFillColor)
-                .attr('font-size', fontVal);
+                .attr('font-size', fontVal)
+                .ease(transitionProperties.hoverEaseType);
 
         })
         .on("mouseout", function (d) {
@@ -66,12 +65,12 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) 
             var id = "#" +  d3.select(this).attr("id");
 
             d3.select(id).transition()
-                .delay(hoverDelayAmount)
-                .duration(hoverTransitionDuration)
-                .style("stroke", "black")
-                .style("stroke", plotProp.textStroke)
+                .delay(transitionProperties.hoverDelayTime)
+                .duration(transitionProperties.hoverTransitionDuration)
+                .style("stroke", plotProp.strokeColor)
                 .style("fill", plotProp.textFill)
-                .attr('font-size', plotProp.fontSize);
+                .attr('font-size', plotProp.fontSize)
+                .ease(transitionProperties.hoverEaseType);
         });
 }
 
@@ -83,17 +82,17 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionTimes) 
  * @param data
  * @param transitionTimes
  */
-function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionTimes) {
+function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProperties) {
     "use strict";
 
     svg.transition()  // Transition from old to new
-        .duration(transitionTimes.startDurationTime)  // Length of animation
+        .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation
             var id = "#" + d3.select(this).attr("id");
             var fontSize = d3.select(id).attr("font-size");
-            var fontVal =  +fontSize.replace(/\D/g,'') * transitionTimes.sizeFactor + "em";
+            var fontVal =  +fontSize.replace(/\D/g,'') * transitionProperties.sizeFactor + "em";
             var currentFillColor = d3.select(this).style("fill");
-            var updateColor = d3.rgb(currentFillColor).darker();
+            var updateColor = d3.rgb(currentFillColor).brighter();
 
             d3.select(this)  // 'this' means the current element
                 .style("stroke", updateColor)
@@ -101,9 +100,9 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionTimes)
                 .attr('font-size', fontVal);
         })
         .delay(function(d, i) {
-            return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
+            return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .ease(transitionProperties.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("x", function(d) {
             return scales.xScale(d[plotProp.xProp]) - plotProp.textOffset;
         })
@@ -112,8 +111,8 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionTimes)
         })
         .each("end", function() {  // End animation
             d3.select(this)  // 'this' means the current element
-                // .transition()
-                // .duration(transitionTimes.exitDurationtime)
+                .transition()
+                .duration(transitionProperties.endDurationTime)
                 .style("stroke", plotProp.textStroke)
                 .style("fill", plotProp.textFill)
                 .attr('font-size', plotProp.fontSize );

@@ -41,28 +41,6 @@ var experimentPlotProperties = [
         textOffset: 5
     }];
 
-    //{
-    //    plotClassName: "ddot",
-    //    xProp: "Participant",
-    //    yProp: "Difference",
-    //    name: "difference",
-    //    symbol: "triangle",
-    //    strokeColor: "black",
-    //    width: 10,
-    //    height: 10,
-    //    fillColor: "orange",
-    //}];
-
-    // {
-    //    plotClassName: "ddot",
-    //    xProp: "Participant",
-    //    yProp: "Difference",
-    //    name: "difference",
-    //    symbol: "icon",
-    //    width: 20,
-    //    height: 20,
-    //    icon: "images/cloud.png"
-    //}];
 
 
 

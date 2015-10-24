@@ -1,6 +1,5 @@
 // Update with new values
 // http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
-
 //http://jsfiddle.net/zhFbn/
 
 // zoom
@@ -22,8 +21,22 @@
 // Understanding clipping issues
 // http://stackoverflow.com/questions/32978439/d3-clipping-issues-on-zoom
 
+// Menu
+// http://codepen.io/nikhil/pen/sicrK
 
 function addEventHandlers() {
+
+    document.getElementById("menuButton").addEventListener("click", function(){
+        document.getElementById("menuControl").classList.toggle( "open" );
+    });
+
+    document.getElementById("symbolMenu").addEventListener("click", function(){
+        document.getElementById("symbolControl").classList.toggle( "open" );
+    });
+
+    document.getElementById("colorMenu").addEventListener("click", function(){
+        document.getElementById("colorControl").classList.toggle( "open" );
+    });
 
     document.getElementById("addPointButton").addEventListener("click", function() {
         "use strict";
@@ -66,6 +79,12 @@ function addEventHandlers() {
         event.stopPropagation();
     });
 
+    document.getElementById("iconSymbol").addEventListener("click", function(event) {
+        "use strict";
+        pageManager.setSymbol("icon", pageManager, "congruent");
+        event.stopPropagation();
+    });
+
 
     /**
      *  update of the incongruent plot
@@ -81,7 +100,7 @@ function addEventHandlers() {
      */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
         "use strict";
-        pageManager.setSymbolColor("pink", pageManager, "incongruent");
+        pageManager.setSymbolColor("purple", pageManager, "incongruent");
         event.stopPropagation();
     });
 }
@@ -105,7 +124,8 @@ function main() {
         "plotStyle": "scatter",
         "plotProperties": experimentPlotProperties,
         "labelProperties": labelProperties,
-        "legendProperties": legendProperties
+        "legendProperties": legendProperties,
+        "transitionProperties" : transitionProperties
     };
 
     pageManager.init(pageProperties);
@@ -117,4 +137,6 @@ function main() {
 //
 //
 //############################
-main();
+document.addEventListener('DOMContentLoaded', function(){
+    main();
+});
