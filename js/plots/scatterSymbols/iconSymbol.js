@@ -1,7 +1,4 @@
-// example with data updating - http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
-//http://jsfiddle.net/zhFbn/
-
-
+"use strict";
 
 /**
  *
@@ -11,7 +8,7 @@
  * @returns {*}
  */
 function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
-    "use strict";
+";
 
     var hoverSize = plotProp.radius * transitionProperties.sizeFactor;
 
@@ -68,7 +65,7 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 
 function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
 
-    "use strict";
+
     svg.transition()  // Transition from old to new
         .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation

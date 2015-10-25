@@ -128,8 +128,6 @@ function Chart() {
      */
     function initializeChartSize (totalWidth, totalHeight, margin) {
 
-
-        //var containerStyleWidth = parseInt(d3.select("#" + config.containerID).style('width'), 10);
         _width  = totalWidth - margin.left - margin.right;
         _height = totalHeight - margin.top - margin.bottom;
     };
@@ -146,7 +144,6 @@ function Chart() {
      * @returns {*}
      */
     function initializeChart (data, mapDataCallback, width, height, margin, containerID, zoomListener) {
-
 
         var svg = d3.select("#" + containerID).append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -224,7 +221,7 @@ function Chart() {
     };
 
     function updatePlots (data, plotProperties, svg, scales, tooltip, plotRenderer, transitionProperties) {
-        "use strict";
+
 
         plotProperties.forEach( function (itemProperties) {
             var params = {
@@ -243,7 +240,7 @@ function Chart() {
     };
 
     function updateSelectedPlot (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName, transitionProperties) {
-        "use strict";
+
 
         plotProperties.forEach( function (itemProperties) {
 
@@ -359,7 +356,6 @@ function Chart() {
         // Update Plots
 
         var svg = d3.select("#" + _containerID).select("g");
-
         drawSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName, _transitionProperties);
 
     };

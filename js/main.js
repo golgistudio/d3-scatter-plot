@@ -1,3 +1,5 @@
+"use strict";
+
 // Update with new values
 // http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
 //http://jsfiddle.net/zhFbn/
@@ -44,14 +46,14 @@ function addEventHandlers() {
     });
 
     document.getElementById("addPointButton").addEventListener("click", function(event) {
-        "use strict";
+
         pageManager.updatePoints(experimentAddData, pageManager);
         event.stopPropagation();
 
     });
 
     document.getElementById("removePointButton").addEventListener("click", function(event) {
-        "use strict";
+
 
         pageManager.updatePoints(experimentRemoveData, pageManager);
         event.stopPropagation();
@@ -59,7 +61,7 @@ function addEventHandlers() {
     });
 
     document.getElementById("changePointButton").addEventListener("click", function(event) {
-        "use strict";
+
         console.log("changePointButton-start");
         pageManager.updatePoints(experimentDifferentTimesData, pageManager);
         event.stopPropagation();
@@ -67,19 +69,19 @@ function addEventHandlers() {
     });
 
     document.getElementById("resetPointsButton").addEventListener("click", function(event) {
-        "use strict";
+
         pageManager.updatePoints(experimentOriginalData, pageManager);
         event.stopPropagation();
     });
 
     document.getElementById("circleSymbol").addEventListener("click", function(event) {
-        "use strict";
+
         pageManager.setSymbol("dot", pageManager, "congruent");
         event.stopPropagation();
     });
 
     document.getElementById("triangleSymbol").addEventListener("click", function(event) {
-        "use strict";
+
         pageManager.setSymbol("triangle", pageManager, "congruent");
         event.stopPropagation();
     });
@@ -95,7 +97,7 @@ function addEventHandlers() {
      *  update of the incongruent plot
      */
     document.getElementById("blueColor").addEventListener("click", function(event) {
-        "use strict";
+
         pageManager.setSymbolColor("blue", pageManager, "incongruent");
         event.stopPropagation();
     });
@@ -104,7 +106,7 @@ function addEventHandlers() {
      *  update of the incongruent plot
      */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
-        "use strict";
+
         pageManager.setSymbolColor("purple", pageManager, "incongruent");
         event.stopPropagation();
     });
@@ -114,7 +116,7 @@ function addEventHandlers() {
  *
  */
 function main() {
-    "use strict";
+
 
     chartProperties.height = window.innerHeight - chartProperties.heightMargin;
     chartProperties.width = window.innerWidth - chartProperties.widthMargin;

@@ -1,6 +1,7 @@
 /**
  * Created by laurie on 10/24/15.
  */
+"use strict";
 
 var axesProperties = {
     yPosition: 6,

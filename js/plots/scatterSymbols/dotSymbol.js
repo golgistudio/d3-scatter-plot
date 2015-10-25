@@ -37,6 +37,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             return plotProp.fillColor;
         });
 
+
         plot.on("mouseover", function (d) {
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
@@ -77,12 +78,12 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
  * @param data
  * @param transitionTimes
  */
-function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
-    "use strict";
-    var transitionSize  = plotProp.radius * transitionTimes.sizeFactor;
+function updateDotSymbols( svg, plotProp, scales, data, transitionProperties) {
+
+    var transitionSize  = plotProp.radius * transitionProperties.sizeFactor;
 
     svg.transition()  // Transition from old to new
-        .duration(transitionTimes.startDurationTime)  // Length of animation
+        .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function () {  // Start animation
 
             var currentFillColor = d3.select(this).style("fill");
@@ -94,9 +95,9 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
                 .attr("r", transitionSize);  // Change size
         })
         .delay(function (d, i) {
-            return i / data.length * transitionTimes.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
+            return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .ease(transitionProperties.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("cx", function (d) {
             return scales.xScale(d[plotProp.xProp]);
         })
@@ -106,7 +107,7 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
         .each("end", function () {  // End animation
             d3.select(this)  // 'this' means the current element
                 .transition()
-                .duration(transitionTimes.endDurationTime)
+                .duration(transitionProperties.endDurationTime)
                 .style("fill", plotProp.fillColor)  // Change color
                 .style("stroke", plotProp.strokeColor)
                 .attr("r", plotProp.radius);  // Change radius

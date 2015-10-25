@@ -1,5 +1,4 @@
-// example with data updating - http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
-//http://jsfiddle.net/zhFbn/
+"use strict";
 
 
 /**
@@ -10,7 +9,7 @@
  * @returns {*}
  */
 function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
-    "use strict";
+
 
 
     plot  = plot.enter().append("rect")
@@ -81,7 +80,7 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
  */
 function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties) {
 
-    "use strict";
+
     svg.transition()  // Transition from old to new
         .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation

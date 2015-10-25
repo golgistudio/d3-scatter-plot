@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  *
  * @type {{colorArray: string[], domainNames: string[], legendClassName: string, textClassName: string, x: number, y: number, width: number, height: number, boxX: number, boxY: number, boxWidth: number, boxHeight: number, boxHeight: number, boxClassName: string, itemClassName: string, textYIncrement: number, font_size: number}}

@@ -80,7 +80,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
  * @param transitionTimes
  */
 function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties) {
-    "use strict";
+
     // Update
 
     svg.transition()  // Transition from old to new

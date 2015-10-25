@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  *
  * @param svg
@@ -7,7 +9,7 @@
  * @param margin
  */
 function drawChartLabels (svg, config, width, height, margin) {
-    "use strict";
+
 
     var titleProperties = {
         "className": config.titleClassName,
@@ -50,7 +52,7 @@ function drawChartLabels (svg, config, width, height, margin) {
  * @param properties
  */
 function drawLabel(svg, properties) {
-    "use strict";
+
     svg.append("text")
         .attr("class", properties.className)
         .attr("text-anchor", properties.textAnchor)

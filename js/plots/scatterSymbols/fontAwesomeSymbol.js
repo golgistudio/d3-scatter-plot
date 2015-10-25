@@ -1,5 +1,5 @@
-// example with data updating - http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
-//http://jsfiddle.net/zhFbn/
+"use strict";
+
 
 /**
  *
@@ -9,7 +9,6 @@
  * @returns {*}
  */
 function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
-    "use strict";
 
 
     var textPlot = plot.enter()
@@ -83,7 +82,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
  * @param transitionTimes
  */
 function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProperties) {
-    "use strict";
+
 
     svg.transition()  // Transition from old to new
         .duration(transitionProperties.startDurationTime)  // Length of animation

@@ -1,3 +1,5 @@
+"use strict";
+
 var transitionProperties = {
     startDurationTime : 1000,
     delayAdjustment : 500,

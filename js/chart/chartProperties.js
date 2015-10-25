@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  *
  * @type {{margin: {top: number, right: number, bottom: number, left: number}, width: number, height: number, containerID: string}}

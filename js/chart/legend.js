@@ -1,3 +1,5 @@
+"use strict";
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Legend
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -11,7 +13,7 @@
  * @param properties
  */
 function drawLegend(svg, width, height, properties) {
-    "use strict";
+
 
     // Legend
     var color = d3.scale.ordinal()
