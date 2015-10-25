@@ -16,8 +16,6 @@ var pageManager = {
 
     init: function (pageParameters) {
 
-        var plotRenderer = getPlotRenderer(pageParameters.plotStyle);
-
         this._experiment = pageParameters.experiment;
         this._chartProperties = pageParameters.chartProperties;
         this._plotProperties = pageParameters.plotProperties;
@@ -35,7 +33,6 @@ var pageManager = {
         var chartParameters = {
             "chartProperties" : this._chartProperties,
             "data" : pageParameters.data,
-            "plotRenderer" : plotRenderer,
             "toolTip" : toolTipObject,
             "dataMapper": this._experiment.mapData,
             "domains": this._experiment._dataDomains,
@@ -79,19 +76,19 @@ var pageManager = {
     setSymbol: function(symbol, pageControl, plotName) {
         pageControl._plotProperties.forEach( function (configItem) {
             if (configItem.name === plotName) {
-                configItem.symbol = symbol;
+                configItem.display.symbol = symbol;
 
                 switch (symbol) {
                     case "icon":
-                        configItem.icon = "images/stopwatch-1-64x64.png";
-                        configItem.width = 20;
-                        configItem.height = 20;
+                        configItem.display.icon = "images/stopwatch-1-64x64.png";
+                        configItem.display.width = 20;
+                        configItem.display.height = 20;
                         break;
                     case "triangle" :
-                        configItem.size = 64;
+                        configItem.display.size = 150;
                         break;
                     case "circle" :
-                        configItem.radius = 5;
+                        configItem.display.radius = 5;
                         break;
                 }
 
@@ -117,7 +114,7 @@ var pageManager = {
 
         pageControl._plotProperties.forEach( function (configItem) {
             if (configItem.name === plotName) {
-                configItem.fillColor = color;
+                configItem.display.fillColor = color;
             }
         });
 

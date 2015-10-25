@@ -9,38 +9,50 @@ var experimentPlotProperties = [
         plotClassName: "incongruent",
         xProp: "Participant",
         yProp: "Incongruent",
-        width: 20,
-        height: 20,
-        fillColor: "#1f77b4",
-        strokeColor: "black",
-        symbol: "square",
-        name: "incongruent"
+        name: "incongruent",
+        display: {
+            width:        20,
+            height:       20,
+            fillColor:    "#1f77b4",
+            strokeColor:  "black",
+            symbol:       "square",
+            plotRenderer: null,
+            plotStyle:    "scatter"
+        }
     },
 
     {
         plotClassName: "congruent",
         xProp: "Participant",
         yProp: "Congruent",
-        radius: 10,
-        fillColor: "lightgreen",
-        symbol: "dot",
-        strokeColor: "black",
-        name: "congruent"
+        name: "congruent",
+        display: {
+            radius:      10,
+            fillColor:   "lightgreen",
+            symbol:      "dot",
+            strokeColor: "black",
+            plotRenderer: null,
+            plotStyle:    "scatter"
+        }
     },
 
     {
         plotClassName: "difference",
         xProp: "Participant",
         yProp: "Difference",
-        radius: 10,
-        fillColor: "#ff7f0e",
-        textStroke: "black",
-        textFill: "orange",
-        symbol: "font",
         name: "difference",
-        fontSize: "3em",
-        unicode: "\uf0e7",
-        textOffset: 5
+        display : {
+            radius:     10,
+            fillColor:  "#ff7f0e",
+            textStroke: "black",
+            textFill:   "orange",
+            symbol:     "font",
+            fontSize:     "3em",
+            unicode:      "\uf0e7",
+            textOffset:   5,
+            plotRenderer: null,
+            plotStyle:    "scatter"
+        }
     }];
 
 

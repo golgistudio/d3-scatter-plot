@@ -8,36 +8,50 @@
  * @returns {*}
  */
 function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
-";
 
-    var hoverSize = plotProp.radius * transitionProperties.sizeFactor;
+
+    var hoverSize = plotProp.display.radius * transitionProperties.sizeFactor;
 
 
     var iconPlot = plot.enter().append("image")
 
         .attr("class", plotProp.plotClassName)
-        .attr("xlink:href", plotProp.icon)
-        .attr("x", function(d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+        .attr("xlink:href", plotProp.display.icon)
+        .attr("x", function (d) {
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
-        .attr("y", function(d) {
+        .attr("y", function (d) {
             return scales.yScale(d[plotProp.yProp]);
         })
-        .attr("width", plotProp.width)
-        .attr("height", plotProp.height);
-
+        .attr("width", plotProp.display.width)
+        .attr("height", plotProp.display.height);
 
     iconPlot.on("mouseover", function (d) {
+        handleHoverStart(d, this );
+    })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this );
+        })
+        .on("touchstart", function (d) {
+            handleHoverStart(d, this );
+        })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this );
+        });
 
-        var currentFillColor = d3.select(this).style("fill");
-        var hoverFillColor = d3.rgb(currentFillColor).darker();
+    return plot;
 
-        var hoverWidth = plotProp.width * transitionProperties.sizeFactor;
-        var hoverHeight = plotProp.height  * transitionProperties.sizeFactor;
+    function handleHoverStart(d, that ) {
+
+        var currentFillColor = d3.select(that).style("fill");
+        var hoverFillColor   = d3.rgb(currentFillColor).darker();
+
+        var hoverWidth  = plotProp.display.width * transitionProperties.sizeFactor;
+        var hoverHeight = plotProp.display.height * transitionProperties.sizeFactor;
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
-        d3.select(this).transition()
+        d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)
             .duration(transitionProperties.hoverTransitionDuration)
             .style("stroke", hoverFillColor)
@@ -46,21 +60,19 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             .attr("height", hoverHeight)
             .ease(transitionProperties.hoverEaseType);
 
-        })
-        .on("mouseout", function (d) {
-            toolTip.hide();
-            d3.select(this).transition()
-                .delay(transitionProperties.hoverDelayTime)
-                .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", plotProp.strokeColor)
-                .style("fill", plotProp.fillColor)
-                .attr("width", plotProp.width)
-                .attr("height", plotProp.height)
-                .ease(transitionProperties.hoverEaseType);
+    };
+    function handleHoverEnd(d, that ) {
+        toolTip.hide();
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", plotProp.display.strokeColor)
+            .style("fill", plotProp.display.fillColor)
+            .attr("width", plotProp.display.width)
+            .attr("height", plotProp.display.height)
+            .ease(transitionProperties.hoverEaseType);
 
-        });
-
-    return plot;
+    };
 };
 
 function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
@@ -70,15 +82,15 @@ function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
         .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation
             d3.select(this)  // 'this' means the current element
-                .attr("width", plotProp.width * transitionTimes.sizeFactor)
-                .attr("height", plotProp.height * transitionTimes.sizeFactor);
+                .attr("width", plotProp.display.width * transitionTimes.sizeFactor)
+                .attr("height", plotProp.display.height * transitionTimes.sizeFactor);
         })
         .delay(function(d, i) {
             return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
         .ease(transitionProperties.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("x", function(d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
         .attr("y", function(d) {
             return scales.yScale(d[plotProp.yProp]);
@@ -87,8 +99,8 @@ function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
             d3.select(this)  // 'this' means the current element
                 .transition()
                 .duration(transitionProperties.endDurationTime)
-                .attr("width", plotProp.width)
-                .attr("height", plotProp.height);
+                .attr("width", plotProp.display.width)
+                .attr("height", plotProp.display.height);
         });
 
     return svg;
@@ -98,7 +110,7 @@ function zoomIconSymbol(plot, plotProp, scales) {
 
     plot.selectAll('image.' + plotProp.plotClassName)
         .attr("x", function(d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
         .attr("y", function(d) {
             return scales.yScale(d[plotProp.yProp]);

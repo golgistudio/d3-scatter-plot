@@ -12,12 +12,12 @@
 function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 
 
-    var hoverSize = plotProp.radius * transitionProperties.sizeFactor;
+    var hoverSize = plotProp.display.radius * transitionProperties.sizeFactor;
 
 
     plot = plot.enter().append("circle")
         .attr("class", plotProp.plotClassName)
-        .attr("r", plotProp.radius)
+        .attr("r", plotProp.display.radius)
         .attr("cx", function(d) {
             return scales.xScale(d[plotProp.xProp]);
         })
@@ -32,42 +32,60 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
         .style('opacity', 1)
         .transition()
         .duration(transitionProperties.startDurationTime)
-        .style("stroke", plotProp.strokeColor)
+        .style("stroke", plotProp.display.strokeColor)
         .style("fill", function (d) {
-            return plotProp.fillColor;
+            return plotProp.display.fillColor;
         });
 
-
-        plot.on("mouseover", function (d) {
-            toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
-
-            var currentFillColor = d3.select(this).style("fill");
-            var hoverFillColor = d3.rgb(currentFillColor).darker();
-
-            d3.select(this).transition()
-                .delay(transitionProperties.hoverDelayTime)
-                .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", hoverFillColor)
-                .style("fill", hoverFillColor)
-                .attr("r", hoverSize)
-                .ease("elastic");
-
+    plot.on("mouseover", function (d) {
+            handleHoverStart(d, this);
         })
         .on("mouseout", function (d) {
-            toolTip.hide();
-            d3.select(this).transition()
-                .delay(transitionProperties.hoverDelayTime)
-                .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", plotProp.strokeColor)
-                .style("fill", plotProp.fillColor)
-                .attr("r", plotProp.radius)
-                .ease(transitionProperties.hoverEaseType);
-
+            handleHoverEnd(d, this);
+        })
+        .on("touchstart", function (d){
+            handleHoverStart(d, this);
+        })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this);
         });
     
     return plot;
 
+    function handleHoverStart (d, that) {
+
+        var currentFillColor = d3.select(that).style("fill");
+        var hoverFillColor = d3.rgb(currentFillColor).darker();
+
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
+
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", hoverFillColor)
+            .style("fill", hoverFillColor)
+            .attr("r", hoverSize)
+            .ease("elastic");
+
+    };
+
+    function handleHoverEnd(d, that) {
+
+        toolTip.hide();
+
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", plotProp.display.strokeColor)
+            .style("fill", plotProp.display.fillColor)
+            .attr("r", plotProp.display.radius)
+            .ease(transitionProperties.hoverEaseType);
+
+    };
+
 }
+
+
 
 /**
  * Points have changed values
@@ -80,7 +98,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
  */
 function updateDotSymbols( svg, plotProp, scales, data, transitionProperties) {
 
-    var transitionSize  = plotProp.radius * transitionProperties.sizeFactor;
+    var transitionSize  = plotProp.display.radius * transitionProperties.sizeFactor;
 
     svg.transition()  // Transition from old to new
         .duration(transitionProperties.startDurationTime)  // Length of animation
@@ -108,9 +126,9 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionProperties) {
             d3.select(this)  // 'this' means the current element
                 .transition()
                 .duration(transitionProperties.endDurationTime)
-                .style("fill", plotProp.fillColor)  // Change color
-                .style("stroke", plotProp.strokeColor)
-                .attr("r", plotProp.radius);  // Change radius
+                .style("fill", plotProp.display.fillColor)  // Change color
+                .style("stroke", plotProp.display.strokeColor)
+                .attr("r", plotProp.display.radius);  // Change radius
         });
 
 

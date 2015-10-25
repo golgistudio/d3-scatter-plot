@@ -16,9 +16,9 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
     plot = plot.enter().append("path")
         .attr("class", plotProp.plotClassName)
         .attr("d", d3.svg.symbol().type("triangle-up"))
-        .attr("d", symbol.size(plotProp.size))
+        .attr("d", symbol.size(plotProp.display.size))
         .attr("x", function (d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
         .attr("transform", function (d) {
             return "translate(" + scales.xScale(d[plotProp.xProp]) + "," + scales.yScale(d[plotProp.yProp]) + ")";
@@ -31,46 +31,59 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         .style('opacity', 1)
         .transition()
         .duration(transitionProperties.startDurationTime)
-        .style("stroke", plotProp.strokeColor)
+        .style("stroke", plotProp.display.strokeColor)
         .style("fill", function (d) {
-            return plotProp.fillColor;
+            return plotProp.display.fillColor;
         });
 
 
     plot.on("mouseover", function (d) {
-
-        var currentFillColor = d3.select(this).style("fill");
-        var hoverFillColor   = d3.rgb(currentFillColor).darker();
-
-        var hoverSize = plotProp.size * transitionTimes.sizeFactor;
-
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
-
-        d3.select(this).transition()
-            .delay(transitionProperties.hoverDelayTime)
-            .duration(transitionProperties.hoverTransitionDuration)
-            .style("stroke", plotProp.strokeColor)
-            .style("fill", hoverFillColor)
-            .attr('d', symbol.size(hoverSize))
-            .ease(transitionProperties.hoverEaseType);
-
-    })
+            handleHoverStart(d, this);
+        })
         .on("mouseout", function (d) {
-            var symbol = d3.svg.symbol().type('triangle-up');
-
-            toolTip.hide();
-            d3.select(this).transition()
-                .delay(transitionProperties.hoverDelayTime)
-                .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", plotProp.strokeColor)
-                .style("fill", plotProp.fillColor)
-                .attr("d", symbol.size(plotProp.size))
-                .ease(transitionProperties.hoverEaseType);
-
+            handleHoverEnd(d, this);
+        })
+        .on("touchstart", function (d){
+            handleHoverStart(d, this);
+        })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this);
         });
 
     return plot;
+
+    function handleHoverStart(d, that) {
+        var currentFillColor = d3.select(that).style("fill");
+        var hoverFillColor   = d3.rgb(currentFillColor).darker();
+
+        var hoverSize = plotProp.display.size * transitionTimes.sizeFactor;
+
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
+
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", plotProp.display.strokeColor)
+            .style("fill", hoverFillColor)
+            .attr('d', symbol.size(hoverSize))
+            .ease(transitionProperties.hoverEaseType);
+    }
+
+    function handleHoverEnd(d, that) {
+        var symbol = d3.svg.symbol().type('triangle-up');
+
+        toolTip.hide();
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", plotProp.display.strokeColor)
+            .style("fill", plotProp.display.fillColor)
+            .attr("d", symbol.size(plotProp.display.size))
+            .ease(transitionProperties.hoverEaseType);
+    }
 }
+
+
 /**
  *
  * @param svg
@@ -89,7 +102,7 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
 
             var symbolType     = 'triangle-up';
             var symbol         = d3.svg.symbol().type(symbolType);
-            var transitionSize = plotProp.size * transitionProperties.sizeFactor;
+            var transitionSize = plotProp.display.size * transitionProperties.sizeFactor;
 
             var currentFillColor = d3.select(this).style("fill");
             var transitionColor  = d3.rgb(currentFillColor).brighter();
@@ -105,7 +118,7 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
         .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
 
         .attr("x", function (d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
         .attr("transform", function (d) {
             return "translate(" + scales.xScale(d[plotProp.xProp]) + "," + scales.yScale(d[plotProp.yProp]) + ")";
@@ -114,8 +127,8 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
             d3.select(this)  // 'this' means the current element
                 .transition()
                 .duration(transitionProperties.endDurationTime)
-                .style("fill", plotProp.fillColor)  // Change color
-                .attr("d", symbol.size(plotProp.size))
+                .style("fill", plotProp.display.fillColor)  // Change color
+                .attr("d", symbol.size(plotProp.display.size))
         });
 
     return svg;
@@ -123,7 +136,7 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
 function zoomTriangleSymbol(plot, plotProp, scales) {
 
     plot.selectAll('path.' + plotProp.plotClassName).attr("x", function (d) {
-        return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+        return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
     })
         .attr("transform", function (d) {
             return "translate(" + scales.xScale(d[plotProp.xProp]) + "," + scales.yScale(d[plotProp.yProp]) + ")";

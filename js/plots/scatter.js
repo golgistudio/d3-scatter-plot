@@ -26,7 +26,6 @@ function scatterPlot() {
                 break;
 
         };
-
     };
 
     /**
@@ -63,7 +62,7 @@ function scatterPlot() {
      */
     function addSymbols(plot, plotProp, scales, toolTip, transitionProperties) {
 
-        switch (plotProp.symbol) {
+        switch (plotProp.display.symbol) {
             case "triangle":
                 plot = addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties);
                 break;
@@ -85,7 +84,7 @@ function scatterPlot() {
 
     function zoomSymbols(plot, plotProp, scales) {
 
-        switch (plotProp.symbol) {
+        switch (plotProp.display.symbol) {
             case "triangle":
                 plot = zoomTriangleSymbol(plot, plotProp, scales);
                 break;
@@ -155,7 +154,7 @@ function scatterPlot() {
 
     function updateSymbols(svg, data, scales, plotProp, transitionProperties) {
 
-        switch (plotProp.symbol) {
+        switch (plotProp.display.symbol) {
             case "triangle":
                 svg = updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties);
                 break;

@@ -11,13 +11,12 @@
 function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 
 
-
-    plot  = plot.enter().append("rect")
+    plot = plot.enter().append("rect")
         .attr("class", plotProp.plotClassName)
-        .attr("width", plotProp.width)
-        .attr("height", plotProp.height)
+        .attr("width", plotProp.display.width)
+        .attr("height", plotProp.display.height)
         .attr("x", function (d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
         .attr("y", function (d) {
             return scales.yScale(d[plotProp.yProp]);
@@ -29,22 +28,37 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
         .style('fill', transitionProperties.enterColor)
         .style('opacity', 1)
         .transition()
-        .style('stroke', plotProp.strokeColor)
+        .style('stroke', plotProp.display.strokeColor)
         .duration(transitionProperties.startDurationTime)
         .style("fill", function (d) {
-            return plotProp.fillColor;
+            return plotProp.display.fillColor;
         });
 
     plot.on("mouseover", function (d) {
+        handleHoverStart(d, this);
+    })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this);
+        })
+        .on("touchstart", function (d) {
+            handleHoverStart(d, this);
+        })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this);
+        });
 
-        var currentFillColor = d3.select(this).style("fill");
-        var hoverFillColor = d3.rgb(currentFillColor).darker();
-        var hoverWidth = plotProp.width * transitionProperties.sizeFactor;
-        var hoverHeight = plotProp.height  * transitionProperties.sizeFactor;
+    return plot;
+
+    function handleHoverStart(d, that) {
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
-        d3.select(this).transition()
+        var currentFillColor = d3.select(that).style("fill");
+        var hoverFillColor   = d3.rgb(currentFillColor).darker();
+        var hoverWidth       = plotProp.display.width * transitionProperties.sizeFactor;
+        var hoverHeight      = plotProp.display.height * transitionProperties.sizeFactor;
+
+        d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)
             .duration(transitionProperties.hoverTransitionDuration)
             .style("stroke", hoverFillColor)
@@ -53,21 +67,20 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
             .attr("height", hoverHeight)
             .ease(transitionProperties.hoverEaseType);
 
-        })
-        .on("mouseout", function (d) {
-            toolTip.hide();
-            d3.select(this).transition()
-                .delay(transitionProperties.hoverDelayTime)
-                .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", plotProp.strokeColor)
-                .style("fill", plotProp.fillColor)
-                .attr("width", plotProp.width)
-                .attr("height", plotProp.height)
-                .ease(transitionProperties.hoverEaseType);
+    };
+    function handleHoverEnd(d, that) {
+        toolTip.hide();
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", plotProp.display.strokeColor)
+            .style("fill", plotProp.display.fillColor)
+            .attr("width", plotProp.display.width)
+            .attr("height", plotProp.display.height)
+            .ease(transitionProperties.hoverEaseType);
 
-        });
+    };
 
-    return plot;
 };
 
 /**
@@ -88,15 +101,15 @@ function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties)
             var transitionColor = d3.rgb(currentFillColor).brighter();
             d3.select(this)  // 'this' means the current element
                 .style("fill", transitionColor)  // Change color
-                .attr("width", plotProp.width * transitionProperties.sizeFactor)
-                .attr("height", plotProp.height * transitionProperties.sizeFactor);
+                .attr("width", plotProp.display.width * transitionProperties.sizeFactor)
+                .attr("height", plotProp.display.height * transitionProperties.sizeFactor);
         })
         .delay(function(d, i) {
             return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
         .ease(transitionProperties.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
         .attr("x", function (d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
         .attr("y", function (d) {
             return scales.yScale(d[plotProp.yProp]);
@@ -105,9 +118,9 @@ function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties)
             d3.select(this)  // 'this' means the current element
                 .transition()
                 .duration(transitionProperties.endDurationTime)
-                .style("fill", plotProp.fillColor)  // Change color
-                .attr("width", plotProp.width)
-                .attr("height", plotProp.height);
+                .style("fill", plotProp.display.fillColor)  // Change color
+                .attr("width", plotProp.display.width)
+                .attr("height", plotProp.display.height);
         });
 
     return svg;

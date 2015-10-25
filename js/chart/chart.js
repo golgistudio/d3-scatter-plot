@@ -24,7 +24,6 @@ function Chart() {
         _dataMapper       = null,
         _containerID      = null,
         _plotProperties   = null,
-        _plotRenderer     = null,
         _zoomListener     = null,
         _axes             = null,
         _transitionProperties = null,
@@ -33,6 +32,7 @@ function Chart() {
         _axesProperties   = null;
 
     var _axesManager = null;
+    var _plotManager = null;
 
     this.handleRequest = function (request, parameters) {
 
@@ -60,16 +60,25 @@ function Chart() {
         _that = this;
 
         _axesManager = new axesManager();
+        _plotManager = new plotManager();
 
         setChartProperties(chartParameters);
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
-        var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        svg      = _axesManager.drawAxes(svg, _axes, _width, _height, _axesProperties);
-        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
-        drawChartLabels(svg, _labelProperties, _width, _height, _margin);
-        drawLegend(svg, _width, _height, _legendProperties);
+        var chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
+        chartComponents.svg      = _axesManager.drawAxes(chartComponents.svg, _axes, _width, _height, _axesProperties);
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : _plotProperties,
+            "svg": chartComponents.chartBody,
+            "scales": _axes.scales,
+            "toolTip" : _toolTip,
+            "transitionProperties" : _transitionProperties
+        };
+        _plotManager.plotManagerInterface("draw", plotParams);
+        drawChartLabels(chartComponents.svg, _labelProperties, _width, _height, _margin);
+        drawLegend(chartComponents.svg, _width, _height, _legendProperties);
 
     };
 
@@ -110,7 +119,6 @@ function Chart() {
         _domains          = chartParameters.domains;
         _dataMapper       = chartParameters.dataMapper;
         _plotProperties   = chartParameters.plotProperties;
-        _plotRenderer     = chartParameters.plotRenderer;
         _data             = chartParameters.data;
         _containerID      = chartParameters.chartProperties.containerID;
         _labelProperties  = chartParameters.labelProperties;
@@ -118,6 +126,13 @@ function Chart() {
         _transitionProperties = chartParameters.transitionProperties;
         _zoomScaleFactors = chartParameters.zoomScaleFactors;
         _axesProperties = chartParameters.axesProperties;
+
+        _plotProperties.forEach(function (configItem) {
+            var params = {
+                "plotStyle" : configItem.display.plotStyle
+            }
+            configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",params);
+        });
     };
 
     /**
@@ -149,117 +164,43 @@ function Chart() {
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .attr("style", "outline=thin solid lightgrey;")
-            .call(zoomListener)
-            .on("click", stopped, true)
+            //.call(zoomListener)
+           // .on("click", stopped, true)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        svg.selectAll("g.node").data(data, function (d) {
+        var clip = svg.append("defs").append("svg:clipPath")
+            .attr("id", "clip")
+            .append("svg:rect")
+            .attr("id", "clip-rect")
+            .attr("x", "0")
+            .attr("y", "0")
+            .attr("width", width)
+            .attr("height", height);
+
+        var chartBody = svg.append("g")
+            .attr("clip-path", "url(#clip)")
+            .call(zoomListener)
+            .on("click", stopped, true);
+
+        var rect = chartBody.append('svg:rect')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('fill', 'white');
+
+        chartBody.selectAll("g.node").data(data, function (d) {
             return mapDataCallback(d);
         });
 
-        return svg;
+        //return svg;
+
+        return {
+            "svg" : svg,
+            "chartBody" : chartBody
+        };
     };
 
-    function zoomPlots  (data, plotProperties, svg, scales,  plotRenderer) {
 
-
-        plotProperties.forEach( function (configItem) {
-            var params = {
-                "data": data,
-                "svg": svg,
-                "plotProp": configItem,
-                "scales": scales
-            };
-
-            plotRenderer.plotInterface("zoom",params);
-        });
-    };
-
-    /**
-     *
-     * @param data
-     * @param plotProperties
-     * @param svg
-     * @param scales
-     * @param tooltip
-     * @param plotRenderer
-     */
-    function drawPlots  (data, plotProperties, svg, scales, tooltip, plotRenderer, transitionProperties) {
-
-
-        plotProperties.forEach( function (configItem) {
-            var params = {
-                "data": data,
-                "svg": svg,
-                "plotProp": configItem,
-                "scales": scales,
-                "toolTip": tooltip,
-                "transitionProperties": transitionProperties
-            };
-
-            plotRenderer.plotInterface("render",params);
-        });
-    };
-
-    function drawSelectedPlot  (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName, transitionProperties) {
-
-        plotProperties.forEach( function (configItem) {
-            if (configItem.name === plotName) {
-                var params = {
-                    "data":     data,
-                    "svg":      svg,
-                    "plotProp": configItem,
-                    "scales":   scales,
-                    "toolTip":  tooltip,
-                    "transitionProperties": transitionProperties
-                };
-                svg.selectAll("." + configItem.plotClassName).data([]).exit().remove();
-                plotRenderer.plotInterface("render", params);
-            }
-        });
-    };
-
-    function updatePlots (data, plotProperties, svg, scales, tooltip, plotRenderer, transitionProperties) {
-
-
-        plotProperties.forEach( function (itemProperties) {
-            var params = {
-                "data": data,
-                "svg": svg,
-                "plotProp": itemProperties,
-                "scales": scales,
-                "toolTip": tooltip,
-                "transitionProperties": transitionProperties
-            };
-
-            plotRenderer.plotInterface("update",params);
-
-        });
-
-    };
-
-    function updateSelectedPlot (data, plotProperties, svg, scales, tooltip, plotRenderer, plotName, transitionProperties) {
-
-
-        plotProperties.forEach( function (itemProperties) {
-
-            if (itemProperties.name === plotName) {
-                var params = {
-                    "data":     data,
-                    "svg":      svg,
-                    "plotProp": itemProperties,
-                    "scales":   scales,
-                    "toolTip":  tooltip,
-                    "transitionProperties": transitionProperties
-                };
-
-                plotRenderer.plotInterface("update", params);
-            }
-
-        });
-
-    };
 
     /**
      *
@@ -275,11 +216,21 @@ function Chart() {
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
-        var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        svg      = _axesManager.drawAxes(svg, _axes, _width, _height, _axesProperties);
-        drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
-        drawChartLabels(svg, _labelProperties, _width, _height, _margin);
-        drawLegend(svg, _width, _height, _legendProperties);
+        var chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
+        chartComponents.svg      = _axesManager.drawAxes(chartComponents.svg, _axes, _width, _height, _axesProperties);
+
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : _plotProperties,
+            "svg": chartComponents.chartBody,
+            "scales": _axes.scales,
+            "toolTip" : _toolTip,
+            "transitionProperties" : _transitionProperties
+        };
+        _plotManager.plotManagerInterface("draw", plotParams);
+
+        drawChartLabels(chartComponents.svg, _labelProperties, _width, _height, _margin);
+        drawLegend(chartComponents.svg, _width, _height, _legendProperties);
     };
 
     /**
@@ -302,8 +253,14 @@ function Chart() {
 
         var zoomAxes = {yAxis: _axes.yAxis};
         _axesManager.updateAxes(svg, zoomAxes, _axesProperties);
-        zoomPlots(_data, _plotProperties, svg, _axes.scales,  _plotRenderer);
 
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : _plotProperties,
+            "svg": svg,
+            "scales": _axes.scales
+        };
+        _plotManager.plotManagerInterface("zoom", plotParams);
     };
 
     /**
@@ -328,7 +285,16 @@ function Chart() {
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         svg.call(_zoomListener);
-        updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
+
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : _plotProperties,
+            "svg": svg,
+            "scales": _axes.scales,
+            "toolTip" : _toolTip,
+            "transitionProperties" : _transitionProperties
+        };
+        _plotManager.plotManagerInterface("update", plotParams);
         _axesManager.updateAxes(svg, _axes, _axesProperties);
 
     };
@@ -340,7 +306,16 @@ function Chart() {
         _domains = parameters.domains;
 
         var svg = d3.select("#" + _containerID).select("g");
-        updateSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName, _transitionProperties);
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : _plotProperties,
+            "svg": svg,
+            "scales": _axes.scales,
+            "toolTip" : _toolTip,
+            "transitionProperties" : _transitionProperties,
+            "plotName" : parameters.plotName
+        };
+        _plotManager.plotManagerInterface("updateSelected", plotParams);
 
     };
 
@@ -349,14 +324,22 @@ function Chart() {
         _plotProperties = parameters.plotProperties;
         _data = parameters.data;
         _domains = parameters.domains;
-        var dataMapper = _dataMapper;
 
         // Update domain
         // Update Axis
         // Update Plots
 
         var svg = d3.select("#" + _containerID).select("g");
-        drawSelectedPlot(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, parameters.plotName, _transitionProperties);
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : _plotProperties,
+            "svg": svg,
+            "scales": _axes.scales,
+            "toolTip" : _toolTip,
+            "transitionProperties" : _transitionProperties,
+            "plotName" : parameters.plotName
+        };
+        _plotManager.plotManagerInterface("drawSelected", plotParams);
 
     };
 

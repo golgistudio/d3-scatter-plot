@@ -22,6 +22,7 @@
 
 // Understanding clipping issues
 // http://stackoverflow.com/questions/32978439/d3-clipping-issues-on-zoom
+//http://jsfiddle.net/dsummersl/EqLBJ/1/
 
 // Menu
 // http://codepen.io/nikhil/pen/sicrK
