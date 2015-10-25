@@ -328,7 +328,7 @@ function Chart() {
         svg.selectAll("g.node").data(_data, function (d) {
             return dataMapper(d);
         });
-        _axes = createAxes(_domains, _width, _height);
+        _axes = _axesManager.createAxes(_domains, _width, _height);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         svg.call(_zoomListener);
         updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
