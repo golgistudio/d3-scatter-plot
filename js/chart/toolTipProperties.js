@@ -3,7 +3,11 @@
  * @type {{containerID: null, className: string, formatter: null}}
  */
 var toolTipProperties = {
-    "containerID" : null,
+    "containerID" : "",
     "className" : "tooltip",
-    "formatter" : null
+    "formatter" : null,
+    "showTransitionTime" : 200,
+    "hideTransitionTime" :500,
+    "leftOffset" : 20,
+    "topOffset" : 28
 };

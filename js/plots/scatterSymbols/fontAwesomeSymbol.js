@@ -113,7 +113,7 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProper
             d3.select(this)  // 'this' means the current element
                 .transition()
                 .duration(transitionProperties.endDurationTime)
-                .style("stroke", plotProp.textStroke)
+                .style("stroke", plotProp.strokeColor)
                 .style("fill", plotProp.textFill)
                 .attr('font-size', plotProp.fontSize );
         });
@@ -122,7 +122,7 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProper
 
 };
 
-function zoomFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+function zoomFontAwesomeSymbol(plot, plotProp, scales) {
 
     plot.selectAll('text.' + plotProp.plotClassName).attr('y', function (d) {
         return scales.yScale(d[plotProp.yProp]);

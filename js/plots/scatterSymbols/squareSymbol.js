@@ -115,7 +115,7 @@ function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties)
 }
 
 
-function zoomSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+function zoomSquareSymbol(plot, plotProp, scales) {
 
     plot.selectAll('rect.' + plotProp.plotClassName).attr('y', function (d) {
         return scales.yScale(d[plotProp.yProp]);

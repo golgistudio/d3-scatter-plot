@@ -123,9 +123,9 @@ function main() {
     var pageProperties = {
         "chartProperties": chartProperties,
         "experiment": new experimentDataManager(),
+        "experimentAnnotations" : new experimentAnnotations(),
         "data": experimentOriginalData,
         "legend": drawLegend,
-        "toolTipFormatter": experimentToolTipContent,
         "plotStyle": "scatter",
         "plotProperties": experimentPlotProperties,
         "labelProperties": labelProperties,
@@ -136,7 +136,7 @@ function main() {
     pageManager.init(pageProperties);
 
     addEventHandlers();
-};
+}
 
 //############################
 //

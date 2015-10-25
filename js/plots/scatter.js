@@ -83,23 +83,23 @@ function scatterPlot() {
         return plot;
     };
 
-    function zoomSymbols(plot, plotProp, scales, toolTip, transitionProperties) {
+    function zoomSymbols(plot, plotProp, scales) {
 
         switch (plotProp.symbol) {
             case "triangle":
-                plot = zoomTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = zoomTriangleSymbol(plot, plotProp, scales);
                 break;
             case "dot" :
-                plot = zoomDotSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = zoomDotSymbol(plot, plotProp, scales);
                 break;
             case "square":
-                plot = zoomSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = zoomSquareSymbol(plot, plotProp, scales);
                 break;
             case "icon":
-                plot = zoomIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) ;
+                plot = zoomIconSymbol(plot, plotProp, scales) ;
                 break;
             case "font":
-                plot = zoomFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = zoomFontAwesomeSymbol(plot, plotProp, scales);
                 break;
         }
         return plot;
@@ -110,7 +110,7 @@ function scatterPlot() {
      * @param parameters
      */
     function zoomPlot(parameters) {
-        zoomSymbols(parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        zoomSymbols(parameters.svg, parameters.plotProp, parameters.scales);
     };
 
 

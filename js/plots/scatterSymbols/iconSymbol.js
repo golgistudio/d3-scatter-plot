@@ -97,14 +97,15 @@ function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
     return svg;
 }
 
-function zoomIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+function zoomIconSymbol(plot, plotProp, scales) {
 
-    //plot.selectAll('circle.' + plotProp.plotClassName).attr('cy', function (d) {
-    //    return scales.yScale(d[plotProp.yProp]);
-    //}).attr('cx', function (d) {
-    //    return scales.xScale(d[plotProp.xProp]);
-    //});
-
+    plot.selectAll('image.' + plotProp.plotClassName)
+        .attr("x", function(d) {
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+        })
+        .attr("y", function(d) {
+            return scales.yScale(d[plotProp.yProp]);
+        });
 
 };
 

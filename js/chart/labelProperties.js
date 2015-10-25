@@ -5,10 +5,10 @@
 var labelProperties = {
     yAxisClassName: "yLabel",
     xAxisClassName: "xLabel",
-    xAxisLabel: "Paticipants",
-    yAxisLabel: "Time (seconds)",
-    title: "Golgi Lab Study Results",
-    titleClassName: "title"
+    titleClassName: "title",
+    xAxisLabel: "",
+    yAxisLabel: "",
+    title: "",
 };
 
 

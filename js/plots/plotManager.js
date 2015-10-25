@@ -7,7 +7,6 @@
  */
 function getPlotRenderer(plotStyle) {
 
-
     switch(plotStyle) {
         case "scatter"  : return new scatterPlot();
             break;

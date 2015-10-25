@@ -1,6 +1,7 @@
 
 "use strict";
 
+
 /**
  *
  * @type {{_chart: null, init: Function, resize: Function}}
@@ -14,7 +15,6 @@ var pageManager = {
     _data : null,
 
     init: function (pageParameters) {
-        
 
         var plotRenderer = getPlotRenderer(pageParameters.plotStyle);
 
@@ -24,17 +24,18 @@ var pageManager = {
         this._data = pageParameters.data;
 
         toolTipProperties.containerID = "experiment";
-        toolTipProperties.formatter = pageParameters.toolTipFormatter;
+        toolTipProperties.formatter = pageParameters.experimentAnnotations.experimentToolTipContent;
         var toolTipObject = new toolTip();
         toolTipObject.create(toolTipProperties);
 
         this._experiment.init(this._data);
 
+        pageParameters.experimentAnnotations.updateLabelProperties(pageParameters.labelProperties);
+
         var chartParameters = {
             "chartProperties" : this._chartProperties,
             "data" : pageParameters.data,
             "plotRenderer" : plotRenderer,
-            "legend" : pageParameters.createLegend,
             "toolTip" : toolTipObject,
             "dataMapper": this._experiment.mapData,
             "domains": this._experiment._dataDomains,
@@ -45,7 +46,7 @@ var pageManager = {
             "transitionProperties" : pageParameters.transitionProperties
         };
 
-        this._chart = new chart();
+        this._chart = new Chart();
 
         d3.select(window).on('resize', this.resize.bind(this));
         this._chart.handleRequest("create", chartParameters);

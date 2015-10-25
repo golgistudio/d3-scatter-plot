@@ -5,6 +5,8 @@
  * @param plot
  * @param plotProp
  * @param scales
+ * @param toolTip
+ * @param transitionProperties
  * @returns {*}
  */
 function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
@@ -64,7 +66,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     
     return plot;
 
-};
+}
 
 /**
  * Points have changed values
@@ -72,7 +74,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
  * @param svg
  * @param plotProp
  * @param scales
- * @param dataset
+ * @param data
  * @param transitionTimes
  */
 function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
@@ -113,9 +115,9 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
 
     return svg;
 
-};
+}
 
-function zoomDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+function zoomDotSymbol(plot, plotProp, scales) {
 
         plot.selectAll('circle.' + plotProp.plotClassName).attr('cy', function (d) {
                 return scales.yScale(d[plotProp.yProp]);
@@ -124,5 +126,5 @@ function zoomDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
         });
 
 
-};
+}
 

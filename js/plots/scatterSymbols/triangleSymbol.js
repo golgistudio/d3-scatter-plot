@@ -123,13 +123,14 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
 };
 
 
-function zoomTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+function zoomTriangleSymbol(plot, plotProp, scales) {
 
-    //plot.selectAll('circle.' + plotProp.plotClassName).attr('cy', function (d) {
-    //    return scales.yScale(d[plotProp.yProp]);
-    //}).attr('cx', function (d) {
-    //    return scales.xScale(d[plotProp.xProp]);
-    //});
+    plot.selectAll('path.' + plotProp.plotClassName).attr("x", function (d) {
+        return (scales.xScale(d[plotProp.xProp]) - (plotProp.width / 2));
+    })
+        .attr("transform", function (d) {
+            return "translate(" + scales.xScale(d[plotProp.xProp]) + "," + scales.yScale(d[plotProp.yProp]) + ")";
+        });
 
 
 };

@@ -25,7 +25,7 @@ function drawChartLabels (svg, config, width, height, margin) {
         "labelText" : config.xAxisLabel,
         "textAnchor" : "middle",
         "xPosition" :  (width / 2),
-        "yPosition" : (height + margin.left) ,
+        "yPosition" : (height + (margin.top) + (margin.bottom/3)) ,
         "transform": ""
     };
 
