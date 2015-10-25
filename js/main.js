@@ -29,33 +29,58 @@
 
 "use strict";
 
+function closeAllMenus() {
+    document.getElementById("menuControl").classList.remove( "open" );
+    document.getElementById("symbolControl").classList.remove( "open" );
+    document.getElementById("colorControl").classList.remove( "open" );
+}
+
+function closeOtherMenus(id) {
+    if (id !== "menuControl") {
+        document.getElementById("menuControl").classList.remove( "open" );
+    }
+
+    if (id !== "symbolControl") {
+        document.getElementById("symbolControl").classList.remove( "open" );
+    }
+
+    if (id !== "colorControl") {
+        document.getElementById("colorControl").classList.remove( "open" );
+    }
+}
+
 function addEventHandlers() {
 
+    document.body.addEventListener("click", function(event){
+        closeAllMenus();
+        event.stopPropagation();
+    });
+
     document.getElementById("menuButton").addEventListener("click", function(event){
+        closeOtherMenus("menuControl");
         document.getElementById("menuControl").classList.toggle( "open" );
         event.stopPropagation();
     });
 
     document.getElementById("symbolMenu").addEventListener("click", function(event){
+        closeOtherMenus("symbolControl");
         document.getElementById("symbolControl").classList.toggle( "open" );
         event.stopPropagation();
     });
 
     document.getElementById("colorMenu").addEventListener("click", function(event){
+        closeOtherMenus("colorControl");
         document.getElementById("colorControl").classList.toggle( "open" );
         event.stopPropagation();
     });
 
     document.getElementById("addPointButton").addEventListener("click", function(event) {
-
         pageManager.updatePoints(experimentAddData, pageManager);
         event.stopPropagation();
 
     });
 
     document.getElementById("removePointButton").addEventListener("click", function(event) {
-
-
         pageManager.updatePoints(experimentRemoveData, pageManager);
         event.stopPropagation();
 
