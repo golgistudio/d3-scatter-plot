@@ -130,7 +130,8 @@ function main() {
         "plotProperties": experimentPlotProperties,
         "labelProperties": labelProperties,
         "legendProperties": legendProperties,
-        "transitionProperties" : transitionProperties
+        "transitionProperties" : transitionProperties,
+        "axesProperties" : axesProperties
     };
 
     pageManager.init(pageProperties);

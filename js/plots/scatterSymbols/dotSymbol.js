@@ -124,7 +124,5 @@ function zoomDotSymbol(plot, plotProp, scales) {
             }).attr('cx', function (d) {
                 return scales.xScale(d[plotProp.xProp]);
         });
-
-
 }
 

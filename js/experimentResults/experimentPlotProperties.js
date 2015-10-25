@@ -7,8 +7,8 @@ var experimentPlotProperties = [
         plotClassName: "incongruent",
         xProp: "Participant",
         yProp: "Incongruent",
-        width: 10,
-        height: 10,
+        width: 20,
+        height: 20,
         fillColor: "#1f77b4",
         strokeColor: "black",
         symbol: "square",
@@ -19,7 +19,7 @@ var experimentPlotProperties = [
         plotClassName: "congruent",
         xProp: "Participant",
         yProp: "Congruent",
-        radius: 5,
+        radius: 10,
         fillColor: "lightgreen",
         symbol: "dot",
         strokeColor: "black",
@@ -36,7 +36,7 @@ var experimentPlotProperties = [
         textFill: "orange",
         symbol: "font",
         name: "difference",
-        fontSize: "2em",
+        fontSize: "3em",
         unicode: "\uf0e7",
         textOffset: 5
     }];

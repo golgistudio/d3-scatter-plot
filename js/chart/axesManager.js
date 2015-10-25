@@ -13,30 +13,20 @@ function axesManager() {
      * @param height
      * @returns {{xAxis=*, yAxis=*, topBorder=*, rightBorder=*}}
      */
-    this.createAxes = function (domains, width, height) {
+    this.createAxes = function (domains, width, height, axesProperties) {
 
-        // Properties - ToDo - Extract out
-        var xScaleRangeStart       = 0;
-        var xScaleRangePointsStart = 0;
-        var yScaleRangePointEnd    = 0;
-        var xOuterTickSize         = 0;
-        var yOuterTickSize         = 0;
-        var xTickPadding           = 10;
-        var yTickPadding           = 10;
-        var yBorderInnerTickSize   = 0;
-        var yBorderOuterTickSize   = 0;
 
         // Create x scale
         // For this example it is ordinal
         var xScale = d3.scale.ordinal()
-            .range([xScaleRangeStart, width])
-            .rangePoints([xScaleRangePointsStart, width])
+            .range([axesProperties.xScaleRangeStart, width])
+            .rangePoints([axesProperties.xScaleRangePointsStart, width])
             .domain(domains.xDomain);
 
         // Create y scale
         // For this example it is linear
         var yScale = d3.scale.linear()
-            .range([height, yScaleRangePointEnd])
+            .range([height, axesProperties.yScaleRangePointEnd])
             .domain(domains.yDomain);
 
         // Create x axis
@@ -44,16 +34,16 @@ function axesManager() {
             .scale(xScale)
             .orient("bottom")
             .innerTickSize(-height)
-            .outerTickSize(xOuterTickSize)
-            .tickPadding(xTickPadding);
+            .outerTickSize(axesProperties.xOuterTickSize)
+            .tickPadding(axesProperties.xTickPadding);
 
         // Create y axis
         var yAxis = d3.svg.axis()
             .scale(yScale)
             .orient("left")
             .innerTickSize(-width)
-            .outerTickSize(yOuterTickSize)
-            .tickPadding(yTickPadding);
+            .outerTickSize(axesProperties.yOuterTickSize)
+            .tickPadding(axesProperties.yTickPadding);
 
         // Create border around the rest of the Chart
         var topBorder = d3.svg.axis()
@@ -64,9 +54,9 @@ function axesManager() {
         var rightBorder = d3.svg.axis()
             .scale(yScale)
             .orient("right")
-            .innerTickSize(yBorderInnerTickSize)
-            .outerTickSize(yBorderOuterTickSize)
-            .tickPadding(xTickPadding);
+            .innerTickSize(axesProperties.yBorderInnerTickSize)
+            .outerTickSize(axesProperties.yBorderOuterTickSize)
+            .tickPadding(axesProperties.xTickPadding);
 
         return {
             'xAxis':       xAxis,
@@ -88,55 +78,41 @@ function axesManager() {
      * @param height
      * @returns {*}
      */
-    this.drawAxes = function  (svg, axes, width, height) {
-
-
-        var yPosition = 6;
-        var xPosition = 6;
-
-        var xAxis_dx = "-.8em";
-        var xAxis_dy = ".15em";
-        var yAxis_dy = ".72em";
-
-        var xAxisClassName = "x axis";
-        var xBorderClassName = "xBorder axis";
-
-        var yAxisClassName = "y axis";
-        var yBorderClassName = "yBorder axis";
+    this.drawAxes = function  (svg, axes, width, height, axesProperties) {
 
         // Add the x axis
         svg.append("g")
-            .attr("class", xAxisClassName)
+            .attr("class", axesProperties.xAxisClassName)
             .attr("transform", "translate(0," + height + ")")
             .call(axes.xAxis)
             .selectAll("text")
             .style("text-anchor", "end")
-            .attr("dx", xAxis_dx)
-            .attr("dy", xAxis_dy)
+            .attr("dx", axesProperties.xAxis_dx)
+            .attr("dy", axesProperties.xAxis_dy)
             .attr("transform", "rotate(-50)");
 
         // Add the x border
         svg.append("g")
-            .attr("class", xAxisClassName)
+            .attr("class", axesProperties.xBorderClassName)
             .call(axes.topBorder);
 
         // Add the y axis
         svg.append("g")
-            .attr("class", "y axis")
+            .attr("class", axesProperties.yAxisClassName)
             .call(axes.yAxis)
             .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", yPosition)
-            .attr("dy", yAxis_dy)
+            .attr("y", axesProperties.yPosition)
+            .attr("dy", axesProperties.yAxis_dy)
             .style("text-anchor", "end");
 
         // Add the y border
         svg.append("g")
-            .attr("class", yBorderClassName)
+            .attr("class", axesProperties.yBorderClassName)
             .call(axes.rightBorder)
             .attr("transform", "translate(" + width + " ,0)")
-            .attr("y", xPosition)
-            .attr("dy", yAxis_dy);
+            .attr("y", axesProperties.xPosition)
+            .attr("dy", axesProperties.yAxis_dy);
 
         return svg;
     };
@@ -149,33 +125,27 @@ function axesManager() {
      * @param height
      * @returns {*}
      */
-    this.updateAxes = function  (svg, axes) {
-
-
-        var yTransitionDuration = 500;
-        var xTransitionDuration = 500;
-        var xAxis_dx = "-.8em";
-        var xAxis_dy = ".15em";
+    this.updateAxes = function  (svg, axes, axesProperties) {
 
         if (axes.hasOwnProperty("xAxis")) {
             // Update X Axis
-            svg.select(".x.axis")
+            svg.select(axesProperties.xAxisClassSelector)
                 .transition()
-                .duration(yTransitionDuration)
+                .duration(axesProperties.yTransitionDuration)
                 .call(axes.xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
-                .attr("dx", xAxis_dx)
-                .attr("dy", xAxis_dy)
+                .attr("dx", axesProperties.xAxis_dx)
+                .attr("dy", axesProperties.xAxis_dy)
                 .attr("transform", "rotate(-50)");
         }
 
         if (axes.hasOwnProperty("yAxis")) {
 
             // Update Y Axis
-            svg.select(".y.axis")
+            svg.select(axesProperties.yAxisClassSelector)
                 .transition()
-                .duration(xTransitionDuration)
+                .duration(axesProperties.yTransitionDuration)
                 .call(axes.yAxis);
         }
 

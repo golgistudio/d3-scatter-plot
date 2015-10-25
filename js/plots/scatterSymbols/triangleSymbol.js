@@ -11,7 +11,7 @@
 function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
 
     var symbolType = 'triangle-up';
-    var symbol = d3.svg.symbol().type(symbolType);
+    var symbol     = d3.svg.symbol().type(symbolType);
 
     plot = plot.enter().append("path")
         .attr("class", plotProp.plotClassName)
@@ -42,7 +42,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         var currentFillColor = d3.select(this).style("fill");
         var hoverFillColor   = d3.rgb(currentFillColor).darker();
 
-        var hoverSize      = plotProp.size * transitionTimes.sizeFactor;
+        var hoverSize = plotProp.size * transitionTimes.sizeFactor;
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
 
@@ -70,8 +70,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         });
 
     return plot;
-};
-
+}
 /**
  *
  * @param svg
@@ -88,8 +87,8 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
         .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function (d) {  // Start animation
 
-            var symbolType = 'triangle-up';
-            var symbol = d3.svg.symbol().type(symbolType);
+            var symbolType     = 'triangle-up';
+            var symbol         = d3.svg.symbol().type(symbolType);
             var transitionSize = plotProp.size * transitionProperties.sizeFactor;
 
             var currentFillColor = d3.select(this).style("fill");
@@ -120,9 +119,7 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
         });
 
     return svg;
-};
-
-
+}
 function zoomTriangleSymbol(plot, plotProp, scales) {
 
     plot.selectAll('path.' + plotProp.plotClassName).attr("x", function (d) {
@@ -131,6 +128,4 @@ function zoomTriangleSymbol(plot, plotProp, scales) {
         .attr("transform", function (d) {
             return "translate(" + scales.xScale(d[plotProp.xProp]) + "," + scales.yScale(d[plotProp.yProp]) + ")";
         });
-
-
-};
+}

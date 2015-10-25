@@ -29,11 +29,10 @@ function Chart() {
         _axes             = null,
         _transitionProperties = null,
         _zoomScaleFactors = null,
-        _that             = null;
+        _that             = null,
+        _axesProperties   = null;
 
     var _axesManager = null;
-
-
 
     this.handleRequest = function (request, parameters) {
 
@@ -64,10 +63,10 @@ function Chart() {
 
         setChartProperties(chartParameters);
         initializeChartSize(_totalWidth, _totalHeight, _margin);
-        _axes = _axesManager.createAxes(_domains, _width, _height);
+        _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        svg      = _axesManager.drawAxes(svg, _axes, _width, _height);
+        svg      = _axesManager.drawAxes(svg, _axes, _width, _height, _axesProperties);
         drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
         drawChartLabels(svg, _labelProperties, _width, _height, _margin);
         drawLegend(svg, _width, _height, _legendProperties);
@@ -118,6 +117,7 @@ function Chart() {
         _legendProperties = chartParameters.legendProperties;
         _transitionProperties = chartParameters.transitionProperties;
         _zoomScaleFactors = chartParameters.zoomScaleFactors;
+        _axesProperties = chartParameters.axesProperties;
     };
 
     /**
@@ -276,10 +276,10 @@ function Chart() {
         d3.select("svg").remove();
 
         initializeChartSize(_totalWidth, _totalHeight, _margin);
-        _axes = _axesManager.createAxes(_domains, _width, _height);
+        _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        svg      = _axesManager.drawAxes(svg, _axes, _width, _height);
+        svg      = _axesManager.drawAxes(svg, _axes, _width, _height, _axesProperties);
         drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
         drawChartLabels(svg, _labelProperties, _width, _height, _margin);
         drawLegend(svg, _width, _height, _legendProperties);
@@ -304,7 +304,7 @@ function Chart() {
         var svg = d3.select("#" + _containerID).select("svg");
 
         var zoomAxes = {yAxis: _axes.yAxis};
-        _axesManager.updateAxes(svg, zoomAxes);
+        _axesManager.updateAxes(svg, zoomAxes, _axesProperties);
         zoomPlots(_data, _plotProperties, svg, _axes.scales,  _plotRenderer);
 
     };
@@ -328,11 +328,11 @@ function Chart() {
         svg.selectAll("g.node").data(_data, function (d) {
             return dataMapper(d);
         });
-        _axes = _axesManager.createAxes(_domains, _width, _height);
+        _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         svg.call(_zoomListener);
         updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
-        _axesManager.updateAxes(svg, _axes);
+        _axesManager.updateAxes(svg, _axes, _axesProperties);
 
     };
 

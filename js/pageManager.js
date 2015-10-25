@@ -43,7 +43,8 @@ var pageManager = {
             "plotProperties": this._plotProperties,
             "labelProperties" : pageParameters.labelProperties,
             "legendProperties" : pageParameters.legendProperties,
-            "transitionProperties" : pageParameters.transitionProperties
+            "transitionProperties" : pageParameters.transitionProperties,
+            "axesProperties" : pageParameters.axesProperties
         };
 
         this._chart = new Chart();
