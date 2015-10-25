@@ -1,4 +1,4 @@
-
+"use strict";
 
 /**
  *
@@ -8,7 +8,7 @@
  * @returns {*}
  */
 function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
-    "use strict";
+
 
     var hoverSize = plotProp.radius * transitionProperties.sizeFactor;
 
@@ -112,6 +112,17 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionTimes) {
 
 
     return svg;
+
+};
+
+function zoomDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+
+        plot.selectAll('circle.' + plotProp.plotClassName).attr('cy', function (d) {
+                return scales.yScale(d[plotProp.yProp]);
+            }).attr('cx', function (d) {
+                return scales.xScale(d[plotProp.xProp]);
+        });
+
 
 };
 

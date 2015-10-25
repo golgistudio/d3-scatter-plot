@@ -22,6 +22,8 @@ function scatterPlot() {
                 break;
             case "update" : updatePlot(parameters);
                 break;
+            case "zoom" : zoomPlot(parameters);
+                break;
 
         };
 
@@ -61,8 +63,6 @@ function scatterPlot() {
      */
     function addSymbols(plot, plotProp, scales, toolTip, transitionProperties) {
 
-
-
         switch (plotProp.symbol) {
             case "triangle":
                 plot = addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties);
@@ -81,6 +81,36 @@ function scatterPlot() {
                 break;
         }
         return plot;
+    };
+
+    function zoomSymbols(plot, plotProp, scales, toolTip, transitionProperties) {
+
+        switch (plotProp.symbol) {
+            case "triangle":
+                plot = zoomTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                break;
+            case "dot" :
+                plot = zoomDotSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                break;
+            case "square":
+                plot = zoomSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                break;
+            case "icon":
+                plot = zoomIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) ;
+                break;
+            case "font":
+                plot = zoomFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                break;
+        }
+        return plot;
+    };
+
+    /**
+     *
+     * @param parameters
+     */
+    function zoomPlot(parameters) {
+        zoomSymbols(parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
     };
 
 

@@ -120,5 +120,16 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProper
 
     return svg;
 
-}
+};
+
+function zoomFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+
+    plot.selectAll('text.' + plotProp.plotClassName).attr('y', function (d) {
+        return scales.yScale(d[plotProp.yProp]);
+    }).attr('x', function (d) {
+        return scales.xScale(d[plotProp.xProp]);
+    });
+
+
+};
 

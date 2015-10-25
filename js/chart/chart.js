@@ -27,7 +27,9 @@ function chart() {
         _plotRenderer     = null,
         _zoomListener     = null,
         _axes             = null,
-        _transitionProperties = null;
+        _transitionProperties = null,
+        _zoomScaleFactors = null,
+        _that             = null;
 
 
     this.handleRequest = function (request, parameters) {
@@ -53,24 +55,38 @@ function chart() {
      */
     function create (chartParameters) {
 
-        var that = this;
+        _that = this;
 
         setChartProperties(chartParameters);
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = createAxes(_domains, _width, _height);
-        _zoomListener = d3.behavior.zoom()
-            .y(_axes.scales.yScale)
-            .scaleExtent([0.25, 10])
-            .on("zoom", function () {
-                zoomHandler(that);
-            });
-        _zoomListener.y(_axes.scales.yScale);
+        _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
         svg      = drawAxes(svg, _axes, _width, _height);
         drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
         drawChartLabels(svg, _labelProperties, _width, _height, _margin);
         drawLegend(svg, _width, _height, _legendProperties);
 
+    };
+
+    function createZoomListener(axes, that, zoomScaleFactors) {
+       var zoomListener =  d3.behavior.zoom()
+            .y(axes.scales.yScale)
+            .scaleExtent([zoomScaleFactors.yZoomFactors.yMin, zoomScaleFactors.yZoomFactors.yMax])
+            .on("zoom", function () {
+                zoomHandler(that);
+            });
+        zoomListener.y(axes.scales.yScale);
+
+        return zoomListener;
+    };
+
+    // If the drag behavior prevents the default click,
+    // also stop propagation so we don’t click-to-zoom.
+    function stopped() {
+        if (d3.event.defaultPrevented) {
+            d3.event.stopPropagation();
+        }
     };
 
     /**
@@ -97,6 +113,7 @@ function chart() {
         _labelProperties  = chartParameters.labelProperties;
         _legendProperties = chartParameters.legendProperties;
         _transitionProperties = chartParameters.transitionProperties;
+        _zoomScaleFactors = chartParameters.zoomScaleFactors;
     };
 
     /**
@@ -311,6 +328,7 @@ function chart() {
             .attr("height", height + margin.top + margin.bottom)
             .attr("style", "outline=thin solid lightgrey;")
             .call(zoomListener)
+            .on("click", stopped, true)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -319,6 +337,23 @@ function chart() {
         });
 
         return svg;
+    };
+
+    function zoomPlots  (data, plotProperties, svg, scales, tooltip, plotRenderer, transitionProperties) {
+
+
+        plotProperties.forEach( function (configItem) {
+            var params = {
+                "data": data,
+                "svg": svg,
+                "plotProp": configItem,
+                "scales": scales,
+                "toolTip": tooltip,
+                "transitionProperties": transitionProperties
+            };
+
+            plotRenderer.plotInterface("zoom",params);
+        });
     };
 
     /**
@@ -419,6 +454,7 @@ function chart() {
 
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = createAxes(_domains, _width, _height);
+        _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         var svg  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
         svg      = drawAxes(svg, _axes, _width, _height);
         drawPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
@@ -435,26 +471,18 @@ function chart() {
         var tx, ty;
         tx = d3.event.translate[0];
         ty = d3.event.translate[1];
+        //console.log("zoom tx = " + tx + ", ty = " + ty);
         //tx = Math.min(1, Math.max(tx, width - Math.round(x(maxDays) - x(1)), width - Math.round(x(maxDays) - x(1)) * d3.event.scale));
         _zoomListener.translate([
             tx,
             ty
         ]);
 
-        var svgSelected = d3.select("svg");
+        var svg = d3.select("#" + _containerID).select("svg");
 
         var zoomAxes = {yAxis: _axes.yAxis};
-        updateAxes(svgSelected, zoomAxes);
-
-        _plotProperties.forEach( function (itemProperties) {
-            if (itemProperties.name === "congruent") {
-                return svgSelected.selectAll('circle.' + itemProperties.plotClassName).attr('cy', function (d) {
-                    return _axes.scales.yScale(d[itemProperties.yProp]);
-                }).attr('cx', function (d) {
-                    return _axes.scales.xScale(d[itemProperties.xProp]);
-                });
-            }
-        });
+        updateAxes(svg, zoomAxes);
+        zoomPlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
 
     };
 
@@ -478,7 +506,7 @@ function chart() {
             return dataMapper(d);
         });
         _axes = createAxes(_domains, _width, _height);
-
+        _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
         updatePlots(_data, _plotProperties, svg, _axes.scales, _toolTip, _plotRenderer, _transitionProperties);
 
         updateAxes(svg, _axes);

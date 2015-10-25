@@ -113,3 +113,16 @@ function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties)
 
     return svg;
 }
+
+
+function zoomSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+
+    plot.selectAll('rect.' + plotProp.plotClassName).attr('y', function (d) {
+        return scales.yScale(d[plotProp.yProp]);
+    }).attr('x', function (d) {
+        return scales.xScale(d[plotProp.xProp]);
+    });
+
+
+};
+

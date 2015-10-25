@@ -7,13 +7,29 @@
 function experimentDataManager() {
 
     var _dataDomains = null;
+    var _zoomScaleFactors = null;
 
     /**
      *
+     * @param data
      */
     this.init =  function (data ) {
         this._dataDomains = calcDomains(data);
+        this._zoomScaleFactors = initializeZoomFactors();
     };
+
+    function initializeZoomFactors() {
+        return {
+            yZoomFactors : {
+                "yMin": 0.25,
+                "yMax": 10
+            },
+            xZoomFactors :  {
+                "xMin": 1,
+                "xMax": 1
+            }
+        };
+    }
 
     /**
      *
@@ -21,7 +37,6 @@ function experimentDataManager() {
      * @returns {{xDomain: Array, yDomain: *[]}}
      */
     function calcDomains (data) {
-
 
         var maxY = d3.max(data, function (d) {
             return +d.Incongruent;
@@ -34,7 +49,7 @@ function experimentDataManager() {
         });
         xDomain.push(" ");
 
-        var yDomain = [-5, maxY + 5];
+        var yDomain = [0, maxY + 5];
 
         return {"xDomain": xDomain,
                 "yDomain": yDomain};
@@ -54,4 +69,5 @@ function experimentDataManager() {
         item.Difference = +d.Difference;
         return item;
     };
+
 };

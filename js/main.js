@@ -24,48 +24,53 @@
 // Menu
 // http://codepen.io/nikhil/pen/sicrK
 
+"use strict";
+
 function addEventHandlers() {
 
-    document.getElementById("menuButton").addEventListener("click", function(){
+    document.getElementById("menuButton").addEventListener("click", function(event){
         document.getElementById("menuControl").classList.toggle( "open" );
+        event.stopPropagation();
     });
 
-    document.getElementById("symbolMenu").addEventListener("click", function(){
+    document.getElementById("symbolMenu").addEventListener("click", function(event){
         document.getElementById("symbolControl").classList.toggle( "open" );
+        event.stopPropagation();
     });
 
-    document.getElementById("colorMenu").addEventListener("click", function(){
+    document.getElementById("colorMenu").addEventListener("click", function(event){
         document.getElementById("colorControl").classList.toggle( "open" );
+        event.stopPropagation();
     });
 
-    document.getElementById("addPointButton").addEventListener("click", function() {
+    document.getElementById("addPointButton").addEventListener("click", function(event) {
         "use strict";
         pageManager.updatePoints(experimentAddData, pageManager);
         event.stopPropagation();
 
-    }.bind(null,event,experimentOriginalData));
+    });
 
-    document.getElementById("removePointButton").addEventListener("click", function() {
+    document.getElementById("removePointButton").addEventListener("click", function(event) {
         "use strict";
 
         pageManager.updatePoints(experimentRemoveData, pageManager);
         event.stopPropagation();
 
-    }.bind(null,event,experimentRemoveData));
+    });
 
-    document.getElementById("changePointButton").addEventListener("click", function() {
+    document.getElementById("changePointButton").addEventListener("click", function(event) {
         "use strict";
         console.log("changePointButton-start");
         pageManager.updatePoints(experimentDifferentTimesData, pageManager);
         event.stopPropagation();
 
-    }.bind(null,event, experimentDifferentTimesData));
+    });
 
-    document.getElementById("resetPointsButton").addEventListener("click", function() {
+    document.getElementById("resetPointsButton").addEventListener("click", function(event) {
         "use strict";
         pageManager.updatePoints(experimentOriginalData, pageManager);
         event.stopPropagation();
-    }.bind(null,event,experimentOriginalData));
+    });
 
     document.getElementById("circleSymbol").addEventListener("click", function(event) {
         "use strict";
@@ -80,7 +85,7 @@ function addEventHandlers() {
     });
 
     document.getElementById("iconSymbol").addEventListener("click", function(event) {
-        "use strict";
+
         pageManager.setSymbol("icon", pageManager, "congruent");
         event.stopPropagation();
     });

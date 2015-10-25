@@ -38,6 +38,7 @@ var pageManager = {
             "toolTip" : toolTipObject,
             "dataMapper": this._experiment.mapData,
             "domains": this._experiment._dataDomains,
+            "zoomScaleFactors" : this._experiment._zoomScaleFactors,
             "plotProperties": this._plotProperties,
             "labelProperties" : pageParameters.labelProperties,
             "legendProperties" : pageParameters.legendProperties,
