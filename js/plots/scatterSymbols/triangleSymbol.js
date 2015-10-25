@@ -46,7 +46,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
         .on("touchstart", function (d){
             handleHoverStart(d, this);
         })
-        .on("mouseout", function (d) {
+        .on("touchend", function (d) {
             handleHoverEnd(d, this);
         });
 

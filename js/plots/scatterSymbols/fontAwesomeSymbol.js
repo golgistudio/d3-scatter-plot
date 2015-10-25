@@ -47,7 +47,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
         .on("touchstart", function (d) {
             handleHoverStart(d, this);
         })
-        .on("mouseout", function (d) {
+        .on("touchend", function (d) {
             handleHoverEnd(d, this);
         });
 

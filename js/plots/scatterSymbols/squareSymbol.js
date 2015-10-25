@@ -43,7 +43,7 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
         .on("touchstart", function (d) {
             handleHoverStart(d, this);
         })
-        .on("mouseout", function (d) {
+        .on("touchend", function (d) {
             handleHoverEnd(d, this);
         });
 
