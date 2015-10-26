@@ -102,19 +102,19 @@ function addEventHandlers() {
 
     document.getElementById("circleSymbol").addEventListener("click", function(event) {
 
-        pageManager.setSymbol("dot", pageManager, "congruent");
+        pageManager.setSymbol("dot", pageManager, "Congruent");
         event.stopPropagation();
     });
 
     document.getElementById("triangleSymbol").addEventListener("click", function(event) {
 
-        pageManager.setSymbol("triangle", pageManager, "congruent");
+        pageManager.setSymbol("triangle", pageManager, "Congruent");
         event.stopPropagation();
     });
 
     document.getElementById("iconSymbol").addEventListener("click", function(event) {
 
-        pageManager.setSymbol("icon", pageManager, "congruent");
+        pageManager.setSymbol("icon", pageManager, "Congruent");
         event.stopPropagation();
     });
 
@@ -124,7 +124,7 @@ function addEventHandlers() {
      */
     document.getElementById("blueColor").addEventListener("click", function(event) {
 
-        pageManager.setSymbolColor("blue", pageManager, "incongruent");
+        pageManager.setSymbolColor("blue", pageManager, "Incongruent");
         event.stopPropagation();
     });
 
@@ -133,7 +133,7 @@ function addEventHandlers() {
      */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
 
-        pageManager.setSymbolColor("purple", pageManager, "incongruent");
+        pageManager.setSymbolColor("purple", pageManager, "Incongruent");
         event.stopPropagation();
     });
 }

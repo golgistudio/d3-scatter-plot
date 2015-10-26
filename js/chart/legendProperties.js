@@ -5,8 +5,6 @@
  * @type {{colorArray: string[], domainNames: string[], legendClassName: string, textClassName: string, x: number, y: number, width: number, height: number, boxX: number, boxY: number, boxWidth: number, boxHeight: number, boxHeight: number, boxClassName: string, itemClassName: string, textYIncrement: number, font_size: number}}
  */
 var legendProperties = {
-    colorArray: ["lightgreen", "#1f77b4", "#ff7f0e"],
-    domainNames: ["Congruent", "Incongruent", "Difference"],
     legendClassName: "legend",
     textClassName: "legendText",
     x: 10,
@@ -20,7 +18,11 @@ var legendProperties = {
     boxClassName: "legendBox",
     itemClassName: "legend-items",
     textYIncrement: 3,
-    font_size: 12
+    font_size: 12,
+    offset: 20,
+    symbolWidth: 8,
+    symbolHeight: 8,
+
 };
 
 

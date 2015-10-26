@@ -78,7 +78,20 @@ function Chart() {
         };
         _plotManager.plotManagerInterface("draw", plotParams);
         drawChartLabels(chartComponents.svg, _labelProperties, _width, _height, _margin);
-        drawLegend(chartComponents.svg, _width, _height, _legendProperties);
+
+        var legendData = [];
+
+        _plotProperties.forEach(function(item) {
+
+            var legendDataItem = {
+                "name" : item.name,
+                "plotClassName" : item.plotClassName,
+                "color" : item.display.fillColor
+            };
+
+            legendData.push(legendDataItem);
+        });
+        drawLegend(chartComponents.svg, _width, _height, _legendProperties, legendData);
 
     };
 
@@ -230,7 +243,21 @@ function Chart() {
         _plotManager.plotManagerInterface("draw", plotParams);
 
         drawChartLabels(chartComponents.svg, _labelProperties, _width, _height, _margin);
-        drawLegend(chartComponents.svg, _width, _height, _legendProperties);
+
+        var legendData = [];
+
+        _plotProperties.forEach(function(item) {
+
+            var legendDataItem = {
+                "name" : item.name,
+                "plotClassName" : item.plotClassName,
+                "color" : item.display.fillColor
+            };
+
+            legendData.push(legendDataItem);
+        });
+
+        drawLegend(chartComponents.svg, _width, _height, _legendProperties, legendData);
     };
 
     /**
@@ -316,6 +343,20 @@ function Chart() {
             "plotName" : parameters.plotName
         };
         _plotManager.plotManagerInterface("updateSelected", plotParams);
+        var legendData = [];
+
+        _plotProperties.forEach(function(item) {
+
+            var legendDataItem = {
+                "name" : item.name,
+                "plotClassName" : item.plotClassName,
+                "color" : item.display.fillColor
+            };
+
+            legendData.push(legendDataItem);
+        });
+        svg.selectAll("." + _legendProperties.legendClassName).data([]).exit().remove();
+        drawLegend(svg, _width, _height, _legendProperties, legendData);
 
     };
 

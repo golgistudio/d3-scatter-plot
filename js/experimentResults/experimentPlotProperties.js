@@ -9,7 +9,7 @@ var experimentPlotProperties = [
         plotClassName: "incongruent",
         xProp: "Participant",
         yProp: "Incongruent",
-        name: "incongruent",
+        name: "Incongruent",
         display: {
             width:        20,
             height:       20,
@@ -25,7 +25,7 @@ var experimentPlotProperties = [
         plotClassName: "congruent",
         xProp: "Participant",
         yProp: "Congruent",
-        name: "congruent",
+        name: "Congruent",
         display: {
             radius:      10,
             fillColor:   "lightgreen",
@@ -40,7 +40,7 @@ var experimentPlotProperties = [
         plotClassName: "difference",
         xProp: "Participant",
         yProp: "Difference",
-        name: "difference",
+        name: "Difference",
         display : {
             radius:     10,
             fillColor:  "#ff7f0e",
