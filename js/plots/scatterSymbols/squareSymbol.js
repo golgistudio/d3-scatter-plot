@@ -51,7 +51,7 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
 
     function handleHoverStart(d, that) {
 
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
         var currentFillColor = d3.select(that).style("fill");
         var hoverFillColor   = d3.rgb(currentFillColor).darker();

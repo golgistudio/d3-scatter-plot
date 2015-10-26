@@ -58,7 +58,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
 
         var hoverSize = plotProp.display.size * transitionTimes.sizeFactor;
 
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
         d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)

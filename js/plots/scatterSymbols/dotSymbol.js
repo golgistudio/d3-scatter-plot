@@ -57,7 +57,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
         var currentFillColor = d3.select(that).style("fill");
         var hoverFillColor = d3.rgb(currentFillColor).darker();
 
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
         d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)

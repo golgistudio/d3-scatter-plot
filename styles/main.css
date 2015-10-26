@@ -52,20 +52,41 @@ body {
     opacity: 0.2;
 }
 
+/*
+*
+* Tool tip
+*
+*/
+
 .tooltip {
     position: absolute;
     width: auto ;
     height: auto;
     pointer-events: none;
     background-color: #b2d3cd;
-    font-size: 16px;
+    font-size: 12px;
+    border-radius: 10px;
+
 }
+
+.toolTipContent {
+    margin: 5px;
+}
+
+/*
+*
+* Legend
+*
+*/
 
 .legendBox {
     fill:white;
-    stroke:black;
     opacity:0.8;
     box-shadow: 10px 10px 5px #888888;
+    stroke-radius: 10px;
+    stroke: grey;
+    rx: 5px;
+    ry: 5px;
 }
 
 .legend circle {
@@ -76,6 +97,7 @@ body {
 .legend path {
     stroke:black;
     opacity:0.8;
+    border-radius: 10px;
 }
 
 

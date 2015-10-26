@@ -4,7 +4,7 @@ var transitionProperties = {
     startDurationTime : 1000,
     delayAdjustment : 500,
     endDurationTime : 500,
-    sizeFactor: 2,
+    sizeFactor: 1,
     easeType: "bounce",
     exitColor: "red",
     enterColor: "green",

@@ -28,14 +28,14 @@ function toolTip() {
      * @param pageY
      * @param plotPropIndex
      */
-    this.show = function(d, pageX, pageY, plotPropIndex) {
+    this.show = function(d, pageX, pageY, plotPropIndex, yProp) {
 
         _toolTip.transition()
             .duration(_toolTipProperties.showTransitionTime)
             .style("opacity", 0.9)
             .style("left", (pageX + _toolTipProperties.leftOffset) + "px")
             .style("top",  (pageY - _toolTipProperties.topOffset) + "px");
-        _toolTip.html(_toolTipProperties.formatter(d, plotPropIndex));
+        _toolTip.html("<div class=\"toolTipContent\" >" + _toolTipProperties.formatter(d, plotPropIndex, yProp) + "</div>");
 
     }
 

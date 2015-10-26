@@ -49,7 +49,7 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
         var hoverWidth  = plotProp.display.width * transitionProperties.sizeFactor;
         var hoverHeight = plotProp.display.height * transitionProperties.sizeFactor;
 
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
         d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)

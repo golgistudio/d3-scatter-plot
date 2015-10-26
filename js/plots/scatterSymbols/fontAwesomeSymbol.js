@@ -61,7 +61,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
         var fontSize         = d3.select(id).attr("font-size");
         var fontVal          = +fontSize.replace(/em/g, '') * transitionProperties.sizeFactor + "em";
 
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp);
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
         d3.select(id).transition()
             .delay(transitionProperties.hoverDelayTime)
