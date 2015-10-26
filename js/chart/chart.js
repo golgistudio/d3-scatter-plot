@@ -29,7 +29,8 @@ function Chart() {
         _transitionProperties = null,
         _zoomScaleFactors = null,
         _that             = null,
-        _axesProperties   = null;
+        _axesProperties   = null,
+        _chartComponents  = null;
 
     var _axesManager = null;
     var _plotManager = null;
@@ -66,18 +67,18 @@ function Chart() {
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
-        var chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        chartComponents.svg      = _axesManager.drawAxes(chartComponents.svg, _axes, _width, _height, _axesProperties);
+        _chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
+        _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg, _axes, _width, _height, _axesProperties);
         var plotParams = {
             "data" : _data,
             "plotProperties" : _plotProperties,
-            "svg": chartComponents.chartBody,
+            "svg": _chartComponents.chartBody,
             "scales": _axes.scales,
             "toolTip" : _toolTip,
             "transitionProperties" : _transitionProperties
         };
         _plotManager.plotManagerInterface("draw", plotParams);
-        drawChartLabels(chartComponents.svg, _labelProperties, _width, _height, _margin);
+        drawChartLabels(_chartComponents.svg, _labelProperties, _width, _height, _margin);
 
         var legendData = [];
 
@@ -91,7 +92,7 @@ function Chart() {
 
             legendData.push(legendDataItem);
         });
-        drawLegend(chartComponents.svg, _width, _height, _legendProperties, legendData);
+        drawLegend(_chartComponents.svg, _width, _height, _legendProperties, legendData);
 
     };
 
@@ -229,20 +230,20 @@ function Chart() {
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
         _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
-        var chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        chartComponents.svg      = _axesManager.drawAxes(chartComponents.svg, _axes, _width, _height, _axesProperties);
+        _chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
+        _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg, _axes, _width, _height, _axesProperties);
 
         var plotParams = {
             "data" : _data,
             "plotProperties" : _plotProperties,
-            "svg": chartComponents.chartBody,
+            "svg": _chartComponents.chartBody,
             "scales": _axes.scales,
             "toolTip" : _toolTip,
             "transitionProperties" : _transitionProperties
         };
         _plotManager.plotManagerInterface("draw", plotParams);
 
-        drawChartLabels(chartComponents.svg, _labelProperties, _width, _height, _margin);
+        drawChartLabels(_chartComponents.svg, _labelProperties, _width, _height, _margin);
 
         var legendData = [];
 
@@ -257,7 +258,7 @@ function Chart() {
             legendData.push(legendDataItem);
         });
 
-        drawLegend(chartComponents.svg, _width, _height, _legendProperties, legendData);
+        drawLegend(_chartComponents.svg, _width, _height, _legendProperties, legendData);
     };
 
     /**
@@ -316,7 +317,7 @@ function Chart() {
         var plotParams = {
             "data" : _data,
             "plotProperties" : _plotProperties,
-            "svg": svg,
+            "svg": _chartComponents.chartBody,
             "scales": _axes.scales,
             "toolTip" : _toolTip,
             "transitionProperties" : _transitionProperties
