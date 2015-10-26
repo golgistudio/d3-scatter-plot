@@ -16,7 +16,7 @@ var legendProperties = {
     boxX: 20,
     boxY: 5,
     boxWidth: 100,
-    boxHeight: 50,
+    boxHeight: 60,
     boxClassName: "legendBox",
     itemClassName: "legend-items",
     textYIncrement: 3,

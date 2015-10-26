@@ -1,5 +1,3 @@
-"use strict";
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Legend
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -13,7 +11,7 @@
  * @param properties
  */
 function drawLegend(svg, width, height, properties) {
-
+    "use strict";
 
     // Legend
     var color = d3.scale.ordinal()
@@ -44,47 +42,96 @@ function drawLegend(svg, width, height, properties) {
         .enter().append("g")
         .attr("class", properties.itemClassName);
 
+    var legendData = [
+        {
+            "name" : "Congruent",
+            "plotClassName" : "congruent",
+            "color" : "blue"
+        },
+        {
+            "name" : "Incongruent",
+            "plotClassName" : "incongruent",
+            "color" : "orange"
+        },
+        {
+            "name" : "Difference",
+            "plotClassName" : "difference",
+            "color" : "green"
+        }
+    ];
+
+
+    //legendCollection.selectAll("text")
+    //    .data(legendData, function(d, i) {
+    //        var item = [];
+    //        item.name = d.name;
+    //        item.plotClassName = d.plotClassName;
+    //        item.color = d.color;
+    //        return item;
+    //    })
+    //    .call(function(d) {
+    //        d.enter().append("text");
+    //    })
+    //    .call(function(d) {
+    //        d.exit().remove();
+    //    })
+    //    .attr("y", function(d, i) {
+    //        return "" + (1.75 + i + (i * 0.75)) + "em";
+    //    })
+    //    .attr("x", "4em")
+    //    .attr("class", properties.textClassName)
+    //    .text(function(d, i) {
+    //        return d.name;
+    //    });
+
+
     legendCollection.selectAll("text")
-        .data(properties.domainNames, function(d, i) {
-            return d ;
-        })
-        .call(function(d) {
-            d.enter().append("text");
-        })
-        .call(function(d) {
-            d.exit().remove();
-        })
+        .data(legendData)
+        .enter()
+        .append("text")
         .attr("y", function(d, i) {
-            return "" + (2 + i + (i * 0.5)) + "em";
+            return "" + (2 + i + (i * 0.75)) + "em";
         })
         .attr("x", "4em")
         .attr("class", properties.textClassName)
         .text(function(d, i) {
-            return properties.domainNames[i];
-        });
+            return d.name;
+        })
+        .on("click", function(d) {
+            // Determine if current line is visible
+            var active = d.active ? false : true;
+            var opacity = "0";
+            if (active) {
+                opacity = "1";
+            }
 
-    legendCollection.selectAll("triangle")
-        .data([ {"experiment": "Incongruent", "active": true}], function(d) {
-            return d;
-        })
-        .call(function(d) {
-            d.enter().append("path");
-        })
-        .call(function(d) {
-            d.exit().remove();
-        })
-        .attr("d", d3.svg.symbol().type("triangle-up"))
+            // Hide or show the elements based on the ID
+            d3.selectAll("." + d.plotClassName)
+                .transition().duration(100)
+                .style("opacity", opacity);
+            // Update whether or not the elements are active
+            d.active = active;
+        });;
+
+
+    legendCollection.selectAll("path")
+        .data(legendData)
+        .enter()
+        .append("path")
+        .attr("d", d3.svg.symbol().type("diamond"))
+        .attr("class", ".legend_symbol")
         .attr("width", 8)
         .attr("height", 8)
         .attr("x", "50em")
         .attr("y", function(d, i) {
             return "" + (3) + "em";
         })
-        .attr("transform", function(d) {
-            return "translate(" + 30 + "," + 15 + ")";
+        .attr("transform", function(d, i) {
+            var yVal = 18 * i + 15;
+            return "translate(" + 30 + "," + yVal + ")";
         })
         .style("fill", function(d, i) {
-            return properties.colorArray[1];
+            return d.color;
         })
         .on("click", function(d) {
             // Determine if current line is visible
@@ -95,86 +142,10 @@ function drawLegend(svg, width, height, properties) {
             }
 
             // Hide or show the elements based on the ID
-            d3.selectAll(".congruent")
+            d3.selectAll("." + d.plotClassName)
                 .transition().duration(100)
                 .style("opacity", opacity);
             // Update whether or not the elements are active
             d.active = active;
         });
-
-    legendCollection.selectAll("circle")
-        .data([ {"experiment": "Congruent", "active": true}], function(d) {
-            return d;
-        })
-        .call(function(d) {
-            d.enter().append("circle");
-        })
-        .call(function(d) {
-            d.exit().remove();
-        })
-        .attr("cy", function(d, i) {
-            return (3.0) + "em";
-        })
-        .attr("cx", "3em")
-        .attr("r", 5)
-        .style("fill", function(d, i) {
-            return properties.colorArray[0];
-        }) .on("click", function(d) {
-            // Determine if current line is visible
-            var active = d.active ? false : true;
-
-            var opacity = "0";
-            if (active) {
-                opacity = "1";
-            }
-
-            // Hide or show the elements based on the ID
-            d3.selectAll(".incongruent")
-                .transition().duration(100)
-                .style("opacity", opacity);
-
-            // Update whether or not the elements are active
-            d.active = active;
-        });
-
-    legendCollection.selectAll("rect")
-        .data([{"experiment": "Difference", "active": true}], function(d) {
-            return d;
-        })
-        .call(function(d) {
-            d.enter().append("rect");
-        })
-        .call(function(d) {
-            d.exit().remove();
-        })
-        .attr("y", function(d, i) {
-            return 4.25 + "em";
-        })
-        .attr("x", "2.6em")
-        .attr("width", 8)
-        .attr("height", 8)
-        .style("fill", function(d, i) {
-            return properties.colorArray[2]
-        })
-        .on("click", function(d) {
-            // Determine if current line is visible
-            var active = d.active ? false : true;
-
-            var opacity = "0";
-            if (active) {
-                opacity = "1";
-            }
-
-            // Update whether or not the elements are active
-            d.active = active;
-
-            // Hide or show the elements based on the ID
-            d3.selectAll(".difference")
-                .transition().duration(100)
-                .style("opacity", opacity);
-
-            // Update whether or not the elements are active
-            d.active = active;
-        });
-
 };
