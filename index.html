@@ -6,17 +6,18 @@
     <link href="styles/font-awesome.min.css" rel="stylesheet"/>
     <link href="styles/main.css" rel="stylesheet"/>
 </head>
-<body>
 <div>
     <ul class="menu">
 
-        <li title="home"><a href="#" class="menu-button home" id="menuButton">menu</a></li>
+        <li title="home"><a href="#" class="menu-button data" id="dataMenu">menu</a></li>
 
         <li title="search"><a href="#" class="search" id="symbolMenu">search</a></li>
         <li title="pencil"><a href="#" class="pencil" id="colorMenu">pencil</a></li>
+        <li title="pencil"><a href="#" class="industry" id="plotStyleMenu">pencil</a></li>
+        <li title="pencil"><a href="#" class="heartBeat" id="experimentMenu">pencil</a></li>
     </ul>
 
-    <ul class="menu-bar" id="menuControl">
+    <ul class="menu-bar" id="dataControl">
         <li><a href="#">Data</a>
         </li>
         <li><a href="#" id="resetPointsButton">Reset</a>
@@ -47,6 +48,24 @@
         </li>
     </ul>
 
+    <ul class="menu-bar" id="plotStyleControl">
+        <li><a href="#">Plot Style</a>
+        </li>
+        <li><a href="#" id="scatter">Scatter</a>
+        </li>
+        <li><a href="#" id="barChart">Bar Chart</a>
+        </li>
+    </ul>
+
+    <ul class="menu-bar" id="experimentControl">
+        <li><a href="#">Experiment</a>
+        </li>
+        <li><a href="#" id="expA">Experiment A</a>
+        </li>
+        <li><a href="#" id="expB">Experiment B</a>
+        </li>
+    </ul>
+
 </div>
 
 <div id="experiment"></div>
@@ -60,11 +79,13 @@
 <script src="js/plots/scatterSymbols/triangleSymbol.js"></script>
 <script src="js/chart/labels.js"></script>
 <script src="js/chart/legend.js"></script>
+<script src="js/dataStore/dataStoreManager.js"></script>
 <script src="js/chart/axesManager.js"></script>
 <script src="js/chart/chartProperties.js"></script>
 <script src="js/chart/axesProperties.js"></script>
 <script src="js/chart/labelProperties.js"></script>
 <script src="js/chart/legendProperties.js"></script>
+<script src="js/plots/barChart.js"></script>
 <script src="js/plots/scatter.js"></script>
 <script src="js/plots/plotManager.js"></script>
 <script src="js/chart/transitionProperties.js"></script>
@@ -77,6 +98,7 @@
 <script src="js/experimentResults/experimentAnnotations.js"></script>
 <script src="js/experimentResults/experimentDataManager.js"></script>
 <script src="js/pageManager.js"></script>
+<script src="js/menuManager.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

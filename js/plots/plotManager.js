@@ -37,6 +37,9 @@ function plotManager() {
             case "scatter"  :
                 return new scatterPlot();
                 break;
+            case "bar" :
+                return new barChart();
+            break;
         }
     };
 

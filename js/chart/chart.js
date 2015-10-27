@@ -34,6 +34,8 @@ function Chart() {
 
     var _axesManager = null;
     var _plotManager = null;
+    var _uuid = null;
+    var _dataStoreManager = null;
 
     this.handleRequest = function (request, parameters) {
 
@@ -49,7 +51,6 @@ function Chart() {
             case "symbolUpdate" : symbolUpdate(parameters);
                 break;
         };
-
     };
 
     /**
@@ -63,10 +64,19 @@ function Chart() {
         _axesManager = new axesManager();
         _plotManager = new plotManager();
 
+        _dataStoreManager = new dataStoreManager();
+
+        _uuid = _dataStoreManager.generateUUID();
+
         setChartProperties(chartParameters);
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
-        _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
+
+        _dataStoreManager.setData(_uuid, "axes", _axes);
+
+        var axesTemp = _dataStoreManager.getData(_uuid, "axes");
+
+        _zoomListener = _axesManager.createZoomListener(_axes, _that, _zoomScaleFactors, zoomHandler );
         _chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
         _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg, _axes, _width, _height, _axesProperties);
         var plotParams = {
@@ -96,17 +106,7 @@ function Chart() {
 
     };
 
-    function createZoomListener(axes, that, zoomScaleFactors) {
-       var zoomListener =  d3.behavior.zoom()
-            .y(axes.scales.yScale)
-            .scaleExtent([zoomScaleFactors.yZoomFactors.yMin, zoomScaleFactors.yZoomFactors.yMax])
-            .on("zoom", function () {
-                zoomHandler(that);
-            });
-        zoomListener.y(axes.scales.yScale);
 
-        return zoomListener;
-    };
 
     // If the drag behavior prevents the default click,
     // also stop propagation so we don’t click-to-zoom.
@@ -229,7 +229,7 @@ function Chart() {
 
         initializeChartSize(_totalWidth, _totalHeight, _margin);
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
-        _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
+        _zoomListener = _axesManager.createZoomListener(_axes, _that, _zoomScaleFactors , zoomHandler);
         _chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
         _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg, _axes, _width, _height, _axesProperties);
 
@@ -311,7 +311,12 @@ function Chart() {
             return dataMapper(d);
         });
         _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
-        _zoomListener = createZoomListener(_axes, _that, _zoomScaleFactors );
+
+        _dataStoreManager.setData(_uuid, "axes", _axes);
+
+        var axesTemp = _dataStoreManager.getData(_uuid, "axes");
+
+        _zoomListener = _axesManager.createZoomListener(_axes, _that, _zoomScaleFactors, zoomHandler );
         svg.call(_zoomListener);
 
         var plotParams = {
@@ -323,7 +328,7 @@ function Chart() {
             "transitionProperties" : _transitionProperties
         };
         _plotManager.plotManagerInterface("update", plotParams);
-        _axesManager.updateAxes(svg, _axes, _axesProperties);
+        _axesManager.updateAxes(svg, axesTemp, _axesProperties);
 
     };
 

@@ -132,9 +132,8 @@ function zoomSquareSymbol(plot, plotProp, scales) {
     plot.selectAll('rect.' + plotProp.plotClassName).attr('y', function (d) {
         return scales.yScale(d[plotProp.yProp]);
     }).attr('x', function (d) {
-        return scales.xScale(d[plotProp.xProp]);
+        return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
     });
-
 
 };
 

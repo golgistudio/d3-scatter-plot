@@ -125,5 +125,51 @@ var pageManager = {
             "plotName": plotName
         };
         pageControl._chart.handleRequest("styleUpdate", params);
-    }
+    },
+
+    /**
+     *
+     * @param color
+     * @param pageControl
+     * @param plotName
+     */
+    setPlotStyle: function(plotStyle, pageControl, plotName) {
+
+        //pageControl._plotProperties.forEach( function (configItem) {
+        //    if (configItem.name === plotName) {
+        //        configItem.display.fillColor = color;
+        //    }
+        //});
+        //
+        //var params = {
+        //    "data" : pageControl._data,
+        //    "domains": pageControl._experiment._dataDomains,
+        //    "plotProperties": pageControl._plotProperties,
+        //    "plotName": plotName
+        //};
+        //pageControl._chart.handleRequest("styleUpdate", params);
+    },
+
+    /**
+     *
+     * @param color
+     * @param pageControl
+     * @param plotName
+     */
+    switchExperiment: function(experimentName, pageControl) {
+
+        //pageControl._plotProperties.forEach( function (configItem) {
+        //    if (configItem.name === plotName) {
+        //        configItem.display.fillColor = color;
+        //    }
+        //});
+        //
+        //var params = {
+        //    "data" : pageControl._data,
+        //    "domains": pageControl._experiment._dataDomains,
+        //    "plotProperties": pageControl._plotProperties,
+        //    "plotName": plotName
+        //};
+        //pageControl._chart.handleRequest("styleUpdate", params);
+    },
 };

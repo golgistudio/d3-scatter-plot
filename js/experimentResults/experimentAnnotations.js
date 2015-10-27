@@ -12,19 +12,19 @@ function experimentAnnotations() {
 
         var content = d[plotPropIndex] + "<br/>" + "<br/>";
 
-        if (yProp === "Congruent") {
+        if (yProp === "Incongruent") {
             content = content + "* ";
         } else {
             content = content + "&nbsp;&nbsp;";
         }
-        content = content + "Congruent: " + d.Congruent + " secs";
+        content = content + "Incongruent: " + d.Incongruent + " secs";
 
-        if (yProp === "Incongruent" ) {
+        if (yProp === "Congruent" ) {
             content = content + "<br/>* ";
         } else {
             content = content + "<br/>&nbsp;&nbsp;";
         }
-        content = content + "Incongruent: " + d.Incongruent + " secs";
+        content = content + "Congruent: " + d.Congruent + " secs";
 
         if (yProp === "Difference" ) {
             content = content + "<br/>* ";

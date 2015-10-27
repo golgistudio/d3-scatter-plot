@@ -51,7 +51,9 @@ var experimentPlotProperties = [
             unicode:      "\uf0e7",
             textOffset:   5,
             plotRenderer: null,
-            plotStyle:    "scatter"
+            plotStyle:    "bar",
+            width:        20,
+            height:       20
         }
     }];
 

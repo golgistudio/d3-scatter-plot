@@ -71,6 +71,18 @@ function axesManager() {
         };
     };
 
+    this.createZoomListener = function(axes, that, zoomScaleFactors, zoomHandler) {
+        var zoomListener =  d3.behavior.zoom()
+            .y(axes.scales.yScale)
+            .scaleExtent([zoomScaleFactors.yZoomFactors.yMin, zoomScaleFactors.yZoomFactors.yMax])
+            .on("zoom", function () {
+                zoomHandler(that);
+            });
+        zoomListener.y(axes.scales.yScale);
+
+        return zoomListener;
+    };
+
     /**
      *
      * @param svg

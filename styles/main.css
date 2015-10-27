@@ -209,8 +209,14 @@ h1 {
 .menu li a.about:before {
     content: "\f007";
 }
-.menu li a.home:before {
-    content: "\f039";
+.menu li a.data:before {
+    content: "\f0db";
+}
+.menu li a.industry:before {
+    content: "\f275";
+}
+.menu li a.heartBeat:before {
+    content: "\f21e";
 }
 .menu-bar li a:hover,
 .menu li a:hover,
