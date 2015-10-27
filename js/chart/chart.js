@@ -50,6 +50,8 @@ function Chart() {
                 break;
             case "symbolUpdate" : symbolUpdate(parameters);
                 break;
+            case "plotStyleUpdate" : plotStyleUpdate(parameters);
+                break;
         };
     };
 
@@ -338,11 +340,10 @@ function Chart() {
         _data = parameters.data;
         _domains = parameters.domains;
 
-        var svg = d3.select("#" + _containerID).select("g");
         var plotParams = {
             "data" : _data,
             "plotProperties" : _plotProperties,
-            "svg": svg,
+            "svg": _chartComponents.chartBody,
             "scales": _axes.scales,
             "toolTip" : _toolTip,
             "transitionProperties" : _transitionProperties,
@@ -361,7 +362,7 @@ function Chart() {
 
             legendData.push(legendDataItem);
         });
-        svg.selectAll("." + _legendProperties.legendClassName).data([]).exit().remove();
+        _chartComponents.chartBody.selectAll("." + _legendProperties.legendClassName).data([]).exit().remove();
         drawLegend(svg, _width, _height, _legendProperties, legendData);
 
     };
@@ -376,11 +377,10 @@ function Chart() {
         // Update Axis
         // Update Plots
 
-        var svg = d3.select("#" + _containerID).select("g");
         var plotParams = {
             "data" : _data,
             "plotProperties" : _plotProperties,
-            "svg": svg,
+            "svg": _chartComponents.chartBody,
             "scales": _axes.scales,
             "toolTip" : _toolTip,
             "transitionProperties" : _transitionProperties,
@@ -390,4 +390,33 @@ function Chart() {
 
     };
 
+    function plotStyleUpdate(parameters) {
+
+        _plotProperties = parameters.plotProperties;
+
+        _data = parameters.data;
+        _domains = parameters.domains;
+
+        _plotProperties.forEach( function (configItem) {
+            if (configItem.name === parameters.plotName) {
+                configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",parameters);
+            }
+        });
+
+        // Update domain
+        // Update Axis
+        // Update Plots
+
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : _plotProperties,
+            "svg": _chartComponents.chartBody,
+            "scales": _axes.scales,
+            "toolTip" : _toolTip,
+            "transitionProperties" : _transitionProperties,
+            "plotName" : parameters.plotName
+        };
+        _plotManager.plotManagerInterface("drawSelected", plotParams);
+
+    };
 };

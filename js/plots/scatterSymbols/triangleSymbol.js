@@ -115,7 +115,7 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
         .delay(function (d, i) {
             return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
         })
-        .ease(transitionTimes.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
+        .ease(transitionProperties.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
 
         .attr("x", function (d) {
             return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
@@ -124,6 +124,10 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
             return "translate(" + scales.xScale(d[plotProp.xProp]) + "," + scales.yScale(d[plotProp.yProp]) + ")";
         })
         .each("end", function () {  // End animation
+
+            var symbolType = 'triangle-up';
+            var symbol     = d3.svg.symbol().type(symbolType);
+
             d3.select(this)  // 'this' means the current element
                 .transition()
                 .duration(transitionProperties.endDurationTime)

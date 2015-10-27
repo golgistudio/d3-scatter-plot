@@ -135,19 +135,30 @@ var pageManager = {
      */
     setPlotStyle: function(plotStyle, pageControl, plotName) {
 
-        //pageControl._plotProperties.forEach( function (configItem) {
-        //    if (configItem.name === plotName) {
-        //        configItem.display.fillColor = color;
-        //    }
-        //});
-        //
-        //var params = {
-        //    "data" : pageControl._data,
-        //    "domains": pageControl._experiment._dataDomains,
-        //    "plotProperties": pageControl._plotProperties,
-        //    "plotName": plotName
-        //};
-        //pageControl._chart.handleRequest("styleUpdate", params);
+        pageControl._plotProperties.forEach( function (configItem) {
+            if (configItem.name === plotName) {
+                configItem.display.plotStyle = "bar";
+
+                switch (plotStyle) {
+                    case "scatter":
+                        configItem.display.plotStyle = "scatter";
+                        break;
+                    case "bar" :
+                        configItem.display.plotStyle = "bar";
+                        break;
+                }
+
+            }
+        });
+
+        var params = {
+            "data" : pageControl._data,
+            "domains": pageControl._experiment._dataDomains,
+            "plotProperties": pageControl._plotProperties,
+            "plotName": plotName,
+            "plotStyle": plotStyle
+        };
+        pageControl._chart.handleRequest("plotStyleUpdate", params);
     },
 
     /**

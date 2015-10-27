@@ -93,7 +93,7 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("barChart").addEventListener("click", function(event) {
 
-        pageManager.setPlotStyle("barChart", pageManager, "Difference");
+        pageManager.setPlotStyle("bar", pageManager, "Difference");
         event.stopPropagation();
     });
 
@@ -114,9 +114,7 @@ function addMenuEventHandlers(pageManager) {
         pageManager.switchExperiment("expB", pageManager);
         event.stopPropagation();
     });
-
 }
-
 
 function addTopMenuEventHandlers() {
 
