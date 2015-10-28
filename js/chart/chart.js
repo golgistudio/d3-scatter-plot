@@ -4,7 +4,7 @@
  *
  * @constructor
  */
-function Chart() {
+function Chart(dataManager, uuid) {
     var _data             = null,
         _width            = 700,
         _height           = 600,
@@ -34,8 +34,9 @@ function Chart() {
 
     var _axesManager = null;
     var _plotManager = null;
-    var _uuid = null;
-    var _dataStoreManager = null;
+
+    var _dataStoreManager =  dataManager;
+    var _uuid = uuid;
 
     this.handleRequest = function (request, parameters) {
 
@@ -66,9 +67,7 @@ function Chart() {
         _axesManager = new axesManager();
         _plotManager = new plotManager();
 
-        _dataStoreManager = new dataStoreManager();
 
-        _uuid = _dataStoreManager.generateUUID();
 
         setChartProperties(chartParameters);
         initializeChartSize(_totalWidth, _totalHeight, _margin);
@@ -362,8 +361,9 @@ function Chart() {
 
             legendData.push(legendDataItem);
         });
-        _chartComponents.chartBody.selectAll("." + _legendProperties.legendClassName).data([]).exit().remove();
-        drawLegend(svg, _width, _height, _legendProperties, legendData);
+
+        removeLegendItems(_chartComponents.svg, _legendProperties);
+        updateLegend(_chartComponents.svg, _legendProperties, legendData);
 
     };
 

@@ -13,6 +13,8 @@ var pageManager = {
     _experiment : null,
     _plotProperties: null,
     _data : null,
+    _dataStoreManager : null,
+
 
     init: function (pageParameters) {
 
@@ -28,6 +30,10 @@ var pageManager = {
 
         this._experiment.init(this._data);
 
+        this._dataStoreManager = new dataStoreManager();
+
+        var uuid = this._dataStoreManager.generateUUID();
+
         pageParameters.experimentAnnotations.updateLabelProperties(pageParameters.labelProperties);
 
         var chartParameters = {
@@ -41,10 +47,12 @@ var pageManager = {
             "labelProperties" : pageParameters.labelProperties,
             "legendProperties" : pageParameters.legendProperties,
             "transitionProperties" : pageParameters.transitionProperties,
-            "axesProperties" : pageParameters.axesProperties
+            "axesProperties" : pageParameters.axesProperties,
+            "dataStoreManager": this._dataStoreManager,
+
         };
 
-        this._chart = new Chart();
+        this._chart = new Chart(this._dataStoreManager, uuid);
 
         d3.select(window).on('resize', this.resize.bind(this));
         this._chart.handleRequest("create", chartParameters);

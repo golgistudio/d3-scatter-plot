@@ -39,7 +39,28 @@ function drawLegend(svg, width, height, properties, legendData) {
         .enter().append("g")
         .attr("class", properties.itemClassName);
 
+    addLegendItems(legendCollection, legendData, properties);
 
+};
+
+function removeLegendItems(svg, properties) {
+
+   svg.selectAll("." + properties.itemClassName).data([]).exit().remove();
+}
+
+function updateLegend(svg, properties, legendData) {
+
+    var legend = svg.selectAll("." + properties.legendClassName);
+    var legendCollection = legend.selectAll("." + properties.itemClassName)
+        .data([true])
+        .enter().append("g")
+        .attr("class", properties.itemClassName);
+
+    addLegendItems(legendCollection, legendData, properties);
+
+};
+
+function addLegendItems(legendCollection, legendData, properties) {
     legendCollection.selectAll("text")
         .data(legendData)
         .enter()
@@ -62,7 +83,7 @@ function drawLegend(svg, width, height, properties, legendData) {
         .enter()
         .append("path")
         .attr("d", d3.svg.symbol().type("diamond"))
-        .attr("class", ".legend_symbol")
+        .attr("class", properties.symbolClassName)
         .attr("width", properties.symbolWidth)
         .attr("height", properties.symbolHeight)
         .attr("transform", function(d, i) {
@@ -75,7 +96,7 @@ function drawLegend(svg, width, height, properties, legendData) {
         .on("click", function(d) {
             legendItemClickedHandler(d);
         });
-};
+}
 
 function legendItemClickedHandler(d) {
 
