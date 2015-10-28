@@ -64,10 +64,8 @@ function Chart(dataManager, uuid) {
 
         _that = this;
 
-        _axesManager = new axesManager();
-        _plotManager = new plotManager();
-
-
+        _axesManager = new axesManager(_uuid, _dataStoreManager);
+        _plotManager = new plotManager(_uuid, _dataStoreManager);
 
         setChartProperties(chartParameters);
         initializeChartSize(_totalWidth, _totalHeight, _margin);
@@ -362,7 +360,6 @@ function Chart(dataManager, uuid) {
             legendData.push(legendDataItem);
         });
 
-        removeLegendItems(_chartComponents.svg, _legendProperties);
         updateLegend(_chartComponents.svg, _legendProperties, legendData);
 
     };

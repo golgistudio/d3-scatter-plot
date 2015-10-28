@@ -50,6 +50,8 @@ function removeLegendItems(svg, properties) {
 
 function updateLegend(svg, properties, legendData) {
 
+    removeLegendItems(svg, properties);
+
     var legend = svg.selectAll("." + properties.legendClassName);
     var legendCollection = legend.selectAll("." + properties.itemClassName)
         .data([true])

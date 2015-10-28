@@ -3,7 +3,10 @@
  */
 "use strict";
 
-function axesManager() {
+function axesManager(uuid, dataStoreManager) {
+
+    var _uuid = uuid;
+    var _dataStoreManager = dataStoreManager;
 
     /**
      * ToDo - Use Factory to create axes
