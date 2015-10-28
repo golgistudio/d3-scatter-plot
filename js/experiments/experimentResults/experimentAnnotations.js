@@ -43,6 +43,6 @@ function experimentAnnotations() {
     this.updateLabelProperties  = function(labelProperties) {
         labelProperties.xAxisLabel = "Participants";
         labelProperties.yAxisLabel = "Time (seconds)";
-        labelProperties.title      = "Golgi Lab Study Results";
+        labelProperties.title      = "Golgi Lab Study Results - Experiment A";
     }
 };

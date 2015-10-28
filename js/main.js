@@ -35,28 +35,8 @@
  */
 function main() {
 
-
-    chartProperties.height = window.innerHeight - chartProperties.heightMargin;
-    chartProperties.width = window.innerWidth - chartProperties.widthMargin;
-    chartProperties.containerID = "experiment";
-
-    var pageProperties = {
-        "chartProperties": chartProperties,
-        "experiment": new experimentDataManager(),
-        "experimentAnnotations" : new experimentAnnotations(),
-        "data": experimentOriginalData,
-        "legend": drawLegend,
-        "plotStyle": "scatter",
-        "plotProperties": experimentPlotProperties,
-        "labelProperties": labelProperties,
-        "legendProperties": legendProperties,
-        "transitionProperties" : transitionProperties,
-        "axesProperties" : axesProperties
-    };
-
     addMenuEventHandlers(pageManager);
-
-    pageManager.init(pageProperties);
+    pageManager.init();
 }
 
 //############################

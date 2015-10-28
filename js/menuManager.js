@@ -9,28 +9,66 @@ function addMenuEventHandlers(pageManager) {
     addTopMenuEventHandlers();
 
     document.getElementById("addPointButton").addEventListener("click", function(event) {
-        pageManager.updatePoints(experimentAddData, pageManager);
+        var experiment = pageManager.getActiveExperiment();
+        var data = null;
+
+        switch(experiment) {
+            case "expA" : data = experimentAddData;
+                break;
+            case "expB" : data = experimentBAddData;
+                break;
+
+        };
+        pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
 
     });
 
     document.getElementById("removePointButton").addEventListener("click", function(event) {
-        pageManager.updatePoints(experimentRemoveData, pageManager);
+        var experiment = pageManager.getActiveExperiment();
+        var data = null;
+
+        switch(experiment) {
+            case "expA" : data = experimentRemoveData;
+                break;
+            case "expB" : data = experimentBRemoveData;
+                break;
+
+        };
+        pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
 
     });
 
     document.getElementById("changePointButton").addEventListener("click", function(event) {
+        var experiment = pageManager.getActiveExperiment();
+        var data = null;
 
-        console.log("changePointButton-start");
-        pageManager.updatePoints(experimentDifferentTimesData, pageManager);
+        switch(experiment) {
+            case "expA" : data = experimentDifferentTimesData;
+                break;
+            case "expB" : data = experimentBDifferentTimesData;
+                break;
+
+        };
+        pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
 
     });
 
     document.getElementById("resetPointsButton").addEventListener("click", function(event) {
+        var experiment = pageManager.getActiveExperiment();
+        var data = null;
 
-        pageManager.updatePoints(experimentOriginalData, pageManager);
+        switch(experiment) {
+            case "expA" : data = experimentOriginalData;
+                break;
+            case "expB" : data = experimentBOriginalData;
+                break;
+
+        };
+
+        pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
     });
 

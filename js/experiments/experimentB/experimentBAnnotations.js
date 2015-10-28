@@ -41,8 +41,8 @@ function experimentBAnnotations() {
      * @param labelProperties
      */
     this.updateLabelProperties  = function(labelProperties) {
-        labelProperties.xAxisLabel = "Participants";
-        labelProperties.yAxisLabel = "Time (seconds)";
-        labelProperties.title      = "Golgi Lab Study Results";
+        labelProperties.xAxisLabel = "Subjects";
+        labelProperties.yAxisLabel = "Count";
+        labelProperties.title      = "Golgi Lab Study Results - Experiment B";
     }
 };

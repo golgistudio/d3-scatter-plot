@@ -43,7 +43,7 @@ var experimentPlotProperties = [
         name: "Difference",
         display : {
             radius:     10,
-            fillColor:  "#ff7f0e",
+            fillColor:  "orange",
             textStroke: "black",
             textFill:   "orange",
             symbol:     "font",

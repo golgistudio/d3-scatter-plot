@@ -13,7 +13,7 @@ var experimentBPlotProperties = [
         display: {
             width:        20,
             height:       20,
-            fillColor:    "#1f77b4",
+            fillColor:    "#c49c94",
             strokeColor:  "black",
             symbol:       "square",
             plotRenderer: null,
@@ -28,7 +28,7 @@ var experimentBPlotProperties = [
         name: "Congruent",
         display: {
             radius:      10,
-            fillColor:   "lightgreen",
+            fillColor:   "#dbdb8d",
             symbol:      "dot",
             strokeColor: "black",
             plotRenderer: null,
@@ -43,9 +43,9 @@ var experimentBPlotProperties = [
         name: "Difference",
         display : {
             radius:     10,
-            fillColor:  "#ff7f0e",
+            fillColor:  "#ffbb78",
             textStroke: "black",
-            textFill:   "orange",
+            textFill:   "#ffbb78",
             symbol:     "font",
             fontSize:     "3em",
             unicode:      "\uf0e7",

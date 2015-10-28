@@ -50,26 +50,6 @@ var experimentBRemoveData = [{
     "Incongruent": 22.158,
     "Difference": 10.028
 }, {
-    "Participant": "P-113",
-    "Congruent": 18.495,
-    "Incongruent": 25.139,
-    "Difference": 6.644
-},  {
-    "Participant": "P-116",
-    "Congruent": 12.369,
-    "Incongruent": 34.288,
-    "Difference": 21.919
-}, {
-    "Participant": "P-117",
-    "Congruent": 14.233,
-    "Incongruent": 17.96,
-    "Difference": 3.727
-}, {
-    "Participant": "P-118",
-    "Congruent": 19.71,
-    "Incongruent": 22.058,
-    "Difference": 2.348
-}, {
     "Participant": "P-119",
     "Congruent": 16.004,
     "Incongruent": 21.157,
