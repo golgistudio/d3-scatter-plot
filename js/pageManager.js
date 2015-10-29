@@ -246,85 +246,58 @@ var pageManager = {
         this._currentExperiment = experimentName;
         var data = null;
         var properties = null;
+        var properties2 = null;
         var annotations = null;
         var dataManager = null;
 
-        var olddiv = document.getElementById("chart1");
+        var length = this._chartCollection.length;
 
-        while (olddiv.firstChild) {
-            olddiv.removeChild(olddiv.firstChild);
-        };
+        for (var i = 0; i < length; i++) {
+            var chartItem = pageControl._chartCollection[i];
+            var olddiv = document.getElementById(chartItem.divId);
 
-        var uuid = this._dataStoreManager.generateUUID();
+            while (olddiv.firstChild) {
+                olddiv.removeChild(olddiv.firstChild);
+            }
+        }
 
         switch (this._currentExperiment) {
             case "expA" :
                 data = experimentOriginalData;
-                annotations = new experimentAnnotations();
                 properties = experimentPlotProperties;
-                dataManager = new experimentManager();
+                properties2 = experimentPlotProperties2;
                 break;
             case "expB" :
                 data = experimentBOriginalData;
-                annotations = new experimentBAnnotations();
                 properties = experimentBPlotProperties;
-                dataManager = new experimentManager();
+                properties2 = experimentPlotProperties2;
                 break;
 
+        }
+
+        var uuid = this._dataStoreManager.generateUUID();
+        var experiment = new experimentManager(this._currentExperiment);
+        var chart = this.createChart("chart1", experiment, uuid, data, properties, this._chartWidthFactor);
+        var chartItem = {
+            uuid: uuid,
+            chart: chart,
+            experiment: experiment,
+            divId : "chart1"
         };
+        this._chartCollection.push(chartItem);
 
-        chartProperties.height = window.innerHeight - chartProperties.heightMargin;
-        chartProperties.width = window.innerWidth - chartProperties.widthMargin;
-        chartProperties.containerId = "experiment";
-
-        var pageParameters = {
-            "chartProperties": chartProperties,
-            "experiment": dataManager,
-            "experimentAnnotations" : annotations,
-            "data": data,
-            "legend": drawLegend,
-            "plotStyle": "scatter",
-            "plotProperties": properties,
-            "labelProperties": labelProperties,
-            "legendProperties": legendProperties,
-            "transitionProperties" : transitionProperties,
-            "axesProperties" : axesProperties
+        var experimentB = new experimentManager(this._currentExperiment);
+        var uuid2 = this._dataStoreManager.generateUUID();
+        var chart2 = this.createChart("chart2", experimentB, uuid2, data, properties2, this._chartWidthFactor);
+        var chartItem2 = {
+            uuid: uuid2,
+            chart: chart2,
+            experiment: experimentB,
+            divId : "chart2"
         };
-
-
-        this._experiment = pageParameters.experiment;
-        this._chartProperties = pageParameters.chartProperties;
-        this._plotProperties = pageParameters.plotProperties;
-        this._data = pageParameters.data;
-
-        toolTipProperties.containerId = "chart1";
-        toolTipProperties.formatter = pageParameters.experimentAnnotations.experimentToolTipContent;
-        var toolTipObject = new toolTip();
-        toolTipObject.create(toolTipProperties);
-
-        this._experiment.init(this._data);
-
-        pageParameters.experimentAnnotations.updateLabelProperties(pageParameters.labelProperties);
-
-        var chartParameters = {
-            "chartProperties" : this._chartProperties,
-            "data" : pageParameters.data,
-            "toolTip" : toolTipObject,
-            "dataMapper": this._experiment.mapData,
-            "domains": this._experiment._dataDomains,
-            "zoomScaleFactors" : this._experiment._zoomScaleFactors,
-            "plotProperties": this._plotProperties,
-            "labelProperties" : pageParameters.labelProperties,
-            "legendProperties" : pageParameters.legendProperties,
-            "transitionProperties" : pageParameters.transitionProperties,
-            "axesProperties" : pageParameters.axesProperties,
-            "dataStoreManager": this._dataStoreManager,
-
-        };
-
-        this._chart = new Chart(this._dataStoreManager, uuid);
+        this._chartCollection.push(chartItem2);
 
         d3.select(window).on('resize', this.resize.bind(this));
-        this._chart.handleRequest("create", chartParameters);
+
     }
 };
