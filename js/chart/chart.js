@@ -4,39 +4,21 @@
  *
  * @constructor
  */
-function Chart(dataManager, uuid) {
-    var _data             = null,
-        _width            = 700,
-        _height           = 600,
-        _margin           = {
-            top:    50,
-            right:  10,
-            bottom: 100,
-            left:   80
-        }
-        ,
-        _totalWidth       = null,
-        _totalHeight      = null,
-        _toolTip          = null,
-        _legendProperties = null,
-        _labelProperties  = null,
-        _domains          = null,
-        _dataMapper       = null,
-        _containerID      = null,
-        _plotProperties   = null,
-        _zoomListener     = null,
-        _axes             = null,
-        _transitionProperties = null,
-        _zoomScaleFactors = null,
-        _that             = null,
-        _axesProperties   = null,
-        _chartComponents  = null;
-
-    var _axesManager = null;
-    var _plotManager = null;
+function Chart(dataManager, uuid, containerId) {
 
     var _dataStoreManager =  dataManager;
     var _uuid = uuid;
+    var _that = this;
+
+    var _axesManager = null;
+    var _plotManager = null;
+    var _toolTipManager = null;
+    var _experiment =  null;
+    var _data = null;
+
+    var _axes = null;
+
+    var _chartComponents = null;
 
     this.handleRequest = function (request, parameters) {
 
@@ -62,36 +44,53 @@ function Chart(dataManager, uuid) {
      */
     function create (chartParameters) {
 
-        _that = this;
+        _data = chartParameters.data;
+        _experiment = chartParameters.experiment;
 
         _axesManager = new axesManager(_uuid, _dataStoreManager);
-        _plotManager = new plotManager(_uuid, _dataStoreManager);
+        _plotManager = new plotManager();
+        _toolTipManager = new toolTipManager();
+        _toolTipManager.create(_dataStoreManager.getData(_uuid, dataStoreNames.toolTip));
 
-        setChartProperties(chartParameters);
-        initializeChartSize(_totalWidth, _totalHeight, _margin);
-        _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
+        var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
+        var chartProps = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
+        var axesProps = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
+        var transitionProps = _dataStoreManager.getData(_uuid, dataStoreNames.transition);
+        var labelProps = _dataStoreManager.getData(_uuid, dataStoreNames.labels);
+        var legendProps = _dataStoreManager.getData(_uuid, dataStoreNames.legend);
 
-        _dataStoreManager.setData(_uuid, "axes", _axes);
+        plotProps.forEach(function (configItem) {
+            var params = {
+                "plotStyle" : configItem.display.plotStyle
+            }
+            configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",params);
+        });
 
-        var axesTemp = _dataStoreManager.getData(_uuid, "axes");
+        _dataStoreManager.setData(_uuid, dataStoreNames.experiment, plotProps);
 
-        _zoomListener = _axesManager.createZoomListener(_axes, _that, _zoomScaleFactors, zoomHandler );
-        _chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg, _axes, _width, _height, _axesProperties);
+        initializeChartSize(chartProps);
+        _dataStoreManager.setData(_uuid, dataStoreNames.chart, chartProps);
+
+        _axes = _axesManager.createAxes(_experiment._dataDomains, chartProps.width, chartProps.height, axesProps);
+
+        var zoomListener = _axesManager.createZoomListener(_that, _experiment._zoomScaleFactors, zoomHandler );
+        _chartComponents  = initializeChart(_data, _experiment.mapData, chartProps.width, chartProps.height, chartProps.margin, chartProps.containerID, zoomListener);
+        _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg);
+
         var plotParams = {
             "data" : _data,
-            "plotProperties" : _plotProperties,
+            "plotProperties" : plotProps,
             "svg": _chartComponents.chartBody,
             "scales": _axes.scales,
-            "toolTip" : _toolTip,
-            "transitionProperties" : _transitionProperties
+            "toolTip" : _toolTipManager,
+            "transitionProperties" : transitionProps
         };
         _plotManager.plotManagerInterface("draw", plotParams);
-        drawChartLabels(_chartComponents.svg, _labelProperties, _width, _height, _margin);
+        drawChartLabels(_chartComponents.svg, labelProps, chartProps.width, chartProps.height, chartProps.margin);
 
         var legendData = [];
 
-        _plotProperties.forEach(function(item) {
+        plotProps.forEach(function(item) {
 
             var legendDataItem = {
                 "name" : item.name,
@@ -101,7 +100,7 @@ function Chart(dataManager, uuid) {
 
             legendData.push(legendDataItem);
         });
-        drawLegend(_chartComponents.svg, _width, _height, _legendProperties, legendData);
+        drawLegend(_chartComponents.svg, chartProps.width, chartProps.height, legendProps, legendData);
 
     };
 
@@ -117,47 +116,14 @@ function Chart(dataManager, uuid) {
 
     /**
      *
-     * @param chartParameters
-     */
-    function setChartProperties (chartParameters) {
-
-        _margin.top    = chartParameters.chartProperties.margin.top;
-        _margin.right  = chartParameters.chartProperties.margin.right;
-        _margin.bottom = chartParameters.chartProperties.margin.bottom;
-        _margin.left   = chartParameters.chartProperties.margin.left;
-
-        _totalWidth       = chartParameters.chartProperties.width;
-        _totalHeight      = chartParameters.chartProperties.height;
-        _toolTip          = chartParameters.toolTip;
-        _domains          = chartParameters.domains;
-        _dataMapper       = chartParameters.dataMapper;
-        _plotProperties   = chartParameters.plotProperties;
-        _data             = chartParameters.data;
-        _containerID      = chartParameters.chartProperties.containerID;
-        _labelProperties  = chartParameters.labelProperties;
-        _legendProperties = chartParameters.legendProperties;
-        _transitionProperties = chartParameters.transitionProperties;
-        _zoomScaleFactors = chartParameters.zoomScaleFactors;
-        _axesProperties = chartParameters.axesProperties;
-
-        _plotProperties.forEach(function (configItem) {
-            var params = {
-                "plotStyle" : configItem.display.plotStyle
-            }
-            configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",params);
-        });
-    };
-
-    /**
-     *
      * @param totalWidth
      * @param totalHeight
      * @param margin
      */
-    function initializeChartSize (totalWidth, totalHeight, margin) {
+    function initializeChartSize (chartProps) {
 
-        _width  = totalWidth - margin.left - margin.right;
-        _height = totalHeight - margin.top - margin.bottom;
+        chartProps.width  = chartProps.width - chartProps.margin.left - chartProps.margin.right;
+        chartProps.height = chartProps.height - chartProps.margin.top - chartProps.margin.bottom;
     };
 
 
@@ -222,31 +188,39 @@ function Chart(dataManager, uuid) {
      */
      function resize (params) {
 
-        _totalWidth  = params.width;
-        _totalHeight = params.height;
+        var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
+        var chartProps = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
+        var axesProps = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
+        var transitionProps = _dataStoreManager.getData(_uuid, dataStoreNames.transition);
+        var labelProps = _dataStoreManager.getData(_uuid, dataStoreNames.labels);
+        var legendProps = _dataStoreManager.getData(_uuid, dataStoreNames.legend);
+
+        chartProps.width  = params.width;
+        chartProps.height = params.height;
         d3.select("svg").remove();
 
-        initializeChartSize(_totalWidth, _totalHeight, _margin);
-        _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
-        _zoomListener = _axesManager.createZoomListener(_axes, _that, _zoomScaleFactors , zoomHandler);
-        _chartComponents  = initializeChart(_data, _dataMapper, _width, _height, _margin, _containerID, _zoomListener);
-        _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg, _axes, _width, _height, _axesProperties);
+        initializeChartSize( chartProps.width , chartProps.height , chartProps.margin);
+        _dataStoreManager.setData(_uuid, dataStoreNames.chart, chartProps);
+        _axes = _axesManager.createAxes(experiment._domains, chartProps.width , chartProps.height, axesProps);
+        var zoomListener = _axesManager.createZoomListener(_axes, _that, _experiment._zoomScaleFactors , zoomHandler);
+        _chartComponents  = initializeChart(_data, _experiment.mapData,  chartProps.width , chartProps.height , chartProps.margin, chartProps.containerID, zoomListener);
+        _chartComponents.svg      = _axesManager.drawAxes(_chartComponents.svg);
 
         var plotParams = {
             "data" : _data,
-            "plotProperties" : _plotProperties,
+            "plotProperties" : plotProps,
             "svg": _chartComponents.chartBody,
             "scales": _axes.scales,
-            "toolTip" : _toolTip,
-            "transitionProperties" : _transitionProperties
+            "toolTip" : _toolTipManager,
+            "transitionProperties" : transitionProps
         };
         _plotManager.plotManagerInterface("draw", plotParams);
 
-        drawChartLabels(_chartComponents.svg, _labelProperties, _width, _height, _margin);
+        drawChartLabels(_chartComponents.svg, labelProps, chartProps.width , chartProps.height , chartProps.margin);
 
         var legendData = [];
 
-        _plotProperties.forEach(function(item) {
+        plotProps.forEach(function(item) {
 
             var legendDataItem = {
                 "name" : item.name,
@@ -257,7 +231,7 @@ function Chart(dataManager, uuid) {
             legendData.push(legendDataItem);
         });
 
-        drawLegend(_chartComponents.svg, _width, _height, _legendProperties, legendData);
+        drawLegend(_chartComponents.svg, chartProps.width , chartProps.height, legendProps, legendData);
     };
 
     /**
@@ -266,28 +240,28 @@ function Chart(dataManager, uuid) {
      */
     function zoomHandler() {
 
-        var tx, ty;
-        tx = d3.event.translate[0];
-        ty = d3.event.translate[1];
-        //console.log("zoom tx = " + tx + ", ty = " + ty);
-        //tx = Math.min(1, Math.max(tx, width - Math.round(x(maxDays) - x(1)), width - Math.round(x(maxDays) - x(1)) * d3.event.scale));
-        _zoomListener.translate([
-            tx,
-            ty
-        ]);
-
-        var svg = d3.select("#" + _containerID).select("svg");
-
-        var zoomAxes = {yAxis: _axes.yAxis};
-        _axesManager.updateAxes(svg, zoomAxes, _axesProperties);
-
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : _plotProperties,
-            "svg": svg,
-            "scales": _axes.scales
-        };
-        _plotManager.plotManagerInterface("zoom", plotParams);
+        //var tx, ty;
+        //tx = d3.event.translate[0];
+        //ty = d3.event.translate[1];
+        ////console.log("zoom tx = " + tx + ", ty = " + ty);
+        ////tx = Math.min(1, Math.max(tx, width - Math.round(x(maxDays) - x(1)), width - Math.round(x(maxDays) - x(1)) * d3.event.scale));
+        //_zoomListener.translate([
+        //    tx,
+        //    ty
+        //]);
+        //
+        //var svg = d3.select("#" + _containerID).select("svg");
+        //
+        //var zoomAxes = {yAxis: _axes.yAxis};
+        //_axesManager.updateAxes(svg, zoomAxes, _axesProperties);
+        //
+        //var plotParams = {
+        //    "data" : _data,
+        //    "plotProperties" : _plotProperties,
+        //    "svg": svg,
+        //    "scales": _axes.scales
+        //};
+        //_plotManager.plotManagerInterface("zoom", plotParams);
     };
 
     /**
@@ -297,123 +271,123 @@ function Chart(dataManager, uuid) {
      */
     function updateData(parameters) {
 
-        _data = parameters.data;
-        _domains = parameters.domains;
-        var dataMapper = _dataMapper;
-
-            // Update domain
-            // Update Axis
-            // Update Plots
-
-        var svg = d3.select("#" + _containerID).select("g");
-        svg.selectAll("g.node").data(_data, function (d) {
-            return dataMapper(d);
-        });
-        _axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
-
-        _dataStoreManager.setData(_uuid, "axes", _axes);
-
-        var axesTemp = _dataStoreManager.getData(_uuid, "axes");
-
-        _zoomListener = _axesManager.createZoomListener(_axes, _that, _zoomScaleFactors, zoomHandler );
-        svg.call(_zoomListener);
-
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : _plotProperties,
-            "svg": _chartComponents.chartBody,
-            "scales": _axes.scales,
-            "toolTip" : _toolTip,
-            "transitionProperties" : _transitionProperties
-        };
-        _plotManager.plotManagerInterface("update", plotParams);
-        _axesManager.updateAxes(svg, axesTemp, _axesProperties);
+        //_data = parameters.data;
+        //_domains = parameters.domains;
+        //var dataMapper = _dataMapper;
+        //
+        //    // Update domain
+        //    // Update Axis
+        //    // Update Plots
+        //
+        //var svg = d3.select("#" + _containerID).select("g");
+        //svg.selectAll("g.node").data(_data, function (d) {
+        //    return dataMapper(d);
+        //});
+        //_axes = _axesManager.createAxes(_domains, _width, _height, _axesProperties);
+        //
+        //_dataStoreManager.setData(_uuid, "axes", _axes);
+        //
+        //var axesTemp = _dataStoreManager.getData(_uuid, "axes");
+        //
+        //_zoomListener = _axesManager.createZoomListener(_axes, _that, _zoomScaleFactors, zoomHandler );
+        //svg.call(_zoomListener);
+        //
+        //var plotParams = {
+        //    "data" : _data,
+        //    "plotProperties" : _plotProperties,
+        //    "svg": _chartComponents.chartBody,
+        //    "scales": _axes.scales,
+        //    "toolTip" : _toolTip,
+        //    "transitionProperties" : _transitionProperties
+        //};
+        //_plotManager.plotManagerInterface("update", plotParams);
+        //_axesManager.updateAxes(svg, axesTemp, _axesProperties);
 
     };
 
     function styleUpdate(parameters) {
 
-        _plotProperties = parameters.plotProperties;
-        _data = parameters.data;
-        _domains = parameters.domains;
-
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : _plotProperties,
-            "svg": _chartComponents.chartBody,
-            "scales": _axes.scales,
-            "toolTip" : _toolTip,
-            "transitionProperties" : _transitionProperties,
-            "plotName" : parameters.plotName
-        };
-        _plotManager.plotManagerInterface("updateSelected", plotParams);
-        var legendData = [];
-
-        _plotProperties.forEach(function(item) {
-
-            var legendDataItem = {
-                "name" : item.name,
-                "plotClassName" : item.plotClassName,
-                "color" : item.display.fillColor
-            };
-
-            legendData.push(legendDataItem);
-        });
-
-        updateLegend(_chartComponents.svg, _legendProperties, legendData);
+        //_plotProperties = parameters.plotProperties;
+        //_data = parameters.data;
+        //_domains = parameters.domains;
+        //
+        //var plotParams = {
+        //    "data" : _data,
+        //    "plotProperties" : _plotProperties,
+        //    "svg": _chartComponents.chartBody,
+        //    "scales": _axes.scales,
+        //    "toolTip" : _toolTip,
+        //    "transitionProperties" : _transitionProperties,
+        //    "plotName" : parameters.plotName
+        //};
+        //_plotManager.plotManagerInterface("updateSelected", plotParams);
+        //var legendData = [];
+        //
+        //_plotProperties.forEach(function(item) {
+        //
+        //    var legendDataItem = {
+        //        "name" : item.name,
+        //        "plotClassName" : item.plotClassName,
+        //        "color" : item.display.fillColor
+        //    };
+        //
+        //    legendData.push(legendDataItem);
+        //});
+        //
+        //updateLegend(_chartComponents.svg, _legendProperties, legendData);
 
     };
 
     function symbolUpdate(parameters) {
 
-        _plotProperties = parameters.plotProperties;
-        _data = parameters.data;
-        _domains = parameters.domains;
-
-        // Update domain
-        // Update Axis
-        // Update Plots
-
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : _plotProperties,
-            "svg": _chartComponents.chartBody,
-            "scales": _axes.scales,
-            "toolTip" : _toolTip,
-            "transitionProperties" : _transitionProperties,
-            "plotName" : parameters.plotName
-        };
-        _plotManager.plotManagerInterface("drawSelected", plotParams);
+        //_plotProperties = parameters.plotProperties;
+        //_data = parameters.data;
+        //_domains = parameters.domains;
+        //
+        //// Update domain
+        //// Update Axis
+        //// Update Plots
+        //
+        //var plotParams = {
+        //    "data" : _data,
+        //    "plotProperties" : _plotProperties,
+        //    "svg": _chartComponents.chartBody,
+        //    "scales": _axes.scales,
+        //    "toolTip" : _toolTip,
+        //    "transitionProperties" : _transitionProperties,
+        //    "plotName" : parameters.plotName
+        //};
+        //_plotManager.plotManagerInterface("drawSelected", plotParams);
 
     };
 
     function plotStyleUpdate(parameters) {
 
-        _plotProperties = parameters.plotProperties;
-
-        _data = parameters.data;
-        _domains = parameters.domains;
-
-        _plotProperties.forEach( function (configItem) {
-            if (configItem.name === parameters.plotName) {
-                configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",parameters);
-            }
-        });
-
-        // Update domain
-        // Update Axis
-        // Update Plots
-
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : _plotProperties,
-            "svg": _chartComponents.chartBody,
-            "scales": _axes.scales,
-            "toolTip" : _toolTip,
-            "transitionProperties" : _transitionProperties,
-            "plotName" : parameters.plotName
-        };
-        _plotManager.plotManagerInterface("drawSelected", plotParams);
+        //_plotProperties = parameters.plotProperties;
+        //
+        //_data = parameters.data;
+        //_domains = parameters.domains;
+        //
+        //_plotProperties.forEach( function (configItem) {
+        //    if (configItem.name === parameters.plotName) {
+        //        configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",parameters);
+        //    }
+        //});
+        //
+        //// Update domain
+        //// Update Axis
+        //// Update Plots
+        //
+        //var plotParams = {
+        //    "data" : _data,
+        //    "plotProperties" : _plotProperties,
+        //    "svg": _chartComponents.chartBody,
+        //    "scales": _axes.scales,
+        //    "toolTip" : _toolTip,
+        //    "transitionProperties" : _transitionProperties,
+        //    "plotName" : parameters.plotName
+        //};
+        //_plotManager.plotManagerInterface("drawSelected", plotParams);
 
     };
 };

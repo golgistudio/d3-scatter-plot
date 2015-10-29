@@ -4,7 +4,7 @@
  *
  * @type {{_dataDomains: null, init: Function, calcDomains: Function, mapData: Function}}
  */
-function experimentDataManager() {
+function experimentManager() {
 
     var _dataDomains = null;
     var _zoomScaleFactors = null;
@@ -70,4 +70,48 @@ function experimentDataManager() {
         return item;
     };
 
-};
+    /**
+     *
+     * @param d
+     * @param plotPropIndex
+     * @returns {string}
+     */
+    this.experimentToolTipContent = function(d, plotPropIndex, yProp) {
+
+        var content = d[plotPropIndex] + "<br/>" + "<br/>";
+
+        if (yProp === "Incongruent") {
+            content = content + "* ";
+        } else {
+            content = content + "&nbsp;&nbsp;";
+        }
+        content = content + "Incongruent: " + d.Incongruent + " secs";
+
+        if (yProp === "Congruent" ) {
+            content = content + "<br/>* ";
+        } else {
+            content = content + "<br/>&nbsp;&nbsp;";
+        }
+        content = content + "Congruent: " + d.Congruent + " secs";
+
+        if (yProp === "Difference" ) {
+            content = content + "<br/>* ";
+        } else {
+            content = content + "<br/>&nbsp;&nbsp;";
+        }
+        content = content + "Difference: " + d.Difference + " secs";
+
+        return content;
+    };
+
+    /**
+     *
+     * @param labelProperties
+     */
+    this.updateLabelProperties  = function(labelProperties) {
+        labelProperties.xAxisLabelProperties.labelText = "Participants";
+        labelProperties.yAxisLabelProperties.labelText = "Time (seconds)";
+        labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment A";
+    };
+
+}

@@ -18,7 +18,7 @@ function addMenuEventHandlers(pageManager) {
             case "expB" : data = experimentBAddData;
                 break;
 
-        };
+        }
         pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
 
@@ -34,7 +34,7 @@ function addMenuEventHandlers(pageManager) {
             case "expB" : data = experimentBRemoveData;
                 break;
 
-        };
+        }
         pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
 
@@ -50,7 +50,7 @@ function addMenuEventHandlers(pageManager) {
             case "expB" : data = experimentBDifferentTimesData;
                 break;
 
-        };
+        }
         pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
 
@@ -66,7 +66,7 @@ function addMenuEventHandlers(pageManager) {
             case "expB" : data = experimentBOriginalData;
                 break;
 
-        };
+        }
 
         pageManager.updatePoints(data, pageManager);
         event.stopPropagation();
@@ -173,7 +173,7 @@ function addTopMenuEventHandlers() {
         handleMenuEvent(event);
     });
     document.getElementById("plotStyleMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);;
+        handleMenuEvent(event);
     });
 
     document.getElementById("experimentMenu").addEventListener("click", function(event){
@@ -186,15 +186,15 @@ function addTopMenuEventHandlers() {
         document.getElementById("colorControl").classList.remove( "open" );
         document.getElementById("plotStyleControl").classList.remove( "open" );
         document.getElementById("experimentControl").classList.remove( "open" );
-    };
+    }
 
     function handleMenuEvent(event) {
-        var topMenuId = event.srcElement.id;
+        var topMenuId =  event.target.id;
         var menuId = topMenuId.replace(/Menu/g, "Control");
         closeOtherMenus(menuId);
         document.getElementById(menuId).classList.toggle( "open" );
         event.stopPropagation();
-    };
+    }
 
     function closeOtherMenus(id) {
         if (id !== "dataControl") {

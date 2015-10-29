@@ -8,77 +8,65 @@
  */
 var pageManager = {
 
-    _chart: null,
-    _chartProperties: null,
-    _experiment : null,
-    _plotProperties: null,
-    _data : null,
-
     _dataStoreManager : null,
-    _currentExperiment: null,
 
 
     init: function () {
 
-        this._dataStoreManager = new dataStoreManager();
+        this._dataStoreManager = dataStoreManager.getInstance();
 
         var uuid = this._dataStoreManager.generateUUID();
 
-        this._currentExperiment = "expA";
+        var experiment = new experimentManager();
+        experiment._name = "expA";
+        this.createChart("chart1", experiment, uuid, experimentOriginalData);
 
-        chartProperties.height = window.innerHeight - chartProperties.heightMargin;
-        chartProperties.width = window.innerWidth - chartProperties.widthMargin;
-        chartProperties.containerID = "experiment";
-
-        var pageParameters = {
-            "chartProperties": chartProperties,
-            "experiment": new experimentDataManager(),
-            "experimentAnnotations" : new experimentAnnotations(),
-            "data": experimentOriginalData,
-            "legend": drawLegend,
-            "plotStyle": "scatter",
-            "plotProperties": experimentPlotProperties,
-            "labelProperties": labelProperties,
-            "legendProperties": legendProperties,
-            "transitionProperties" : transitionProperties,
-            "axesProperties" : axesProperties
-        };
-
-
-        this._experiment = pageParameters.experiment;
-        this._chartProperties = pageParameters.chartProperties;
-        this._plotProperties = pageParameters.plotProperties;
-        this._data = pageParameters.data;
-
-        toolTipProperties.containerID = "experiment";
-        toolTipProperties.formatter = pageParameters.experimentAnnotations.experimentToolTipContent;
-        var toolTipObject = new toolTip();
-        toolTipObject.create(toolTipProperties);
-
-        this._experiment.init(this._data);
-
-        pageParameters.experimentAnnotations.updateLabelProperties(pageParameters.labelProperties);
-
-        var chartParameters = {
-            "chartProperties" : this._chartProperties,
-            "data" : pageParameters.data,
-            "toolTip" : toolTipObject,
-            "dataMapper": this._experiment.mapData,
-            "domains": this._experiment._dataDomains,
-            "zoomScaleFactors" : this._experiment._zoomScaleFactors,
-            "plotProperties": this._plotProperties,
-            "labelProperties" : pageParameters.labelProperties,
-            "legendProperties" : pageParameters.legendProperties,
-            "transitionProperties" : pageParameters.transitionProperties,
-            "axesProperties" : pageParameters.axesProperties,
-            "dataStoreManager": this._dataStoreManager,
-
-        };
-
-        this._chart = new Chart(this._dataStoreManager, uuid);
+        var experimentB = new experimentManager();
+        experimentB._name = "expB";
+        var uuid2 = this._dataStoreManager.generateUUID();
+        this.createChart("chart2", experimentB, uuid2, experimentBOriginalData);
 
         d3.select(window).on('resize', this.resize.bind(this));
-        this._chart.handleRequest("create", chartParameters);
+
+    },
+
+    createChart: function(divID, experiment, uuid, data) {
+
+        var axesProps = new axesProperties();
+        var chartProps = new chartProperties();
+        var labelProps = new labelProperties();
+        var legendProps = new legendProperties();
+        var toolTipProps = new toolTipProperties();
+        var transitionProps = new transitionProperties();
+
+        chartProps.height      = window.innerHeight - chartProps.heightMargin;
+        chartProps.width       = window.innerWidth - chartProps.widthMargin;
+        chartProps.containerID = divID;
+
+        toolTipProps.containerID = divID;
+        toolTipProps.formatter   = experiment.experimentToolTipContent;
+
+        experiment.init(data);
+
+        experiment.updateLabelProperties(labelProps);
+
+        this._dataStoreManager.setData(uuid, dataStoreNames.axes, axesProps);
+        this._dataStoreManager.setData(uuid, dataStoreNames.chart, chartProps);
+        this._dataStoreManager.setData(uuid, dataStoreNames.labels, labelProps);
+        this._dataStoreManager.setData(uuid, dataStoreNames.legend, legendProps);
+        this._dataStoreManager.setData(uuid, dataStoreNames.toolTip, toolTipProps);
+        this._dataStoreManager.setData(uuid, dataStoreNames.transition, transitionProps);
+        this._dataStoreManager.setData(uuid, dataStoreNames.experiment, experimentPlotProperties);
+
+        var chart = new Chart(this._dataStoreManager, uuid);
+
+        var params = {
+            experiment: experiment,
+            data: data
+        };
+        chart.handleRequest("create", params);
+
+        return chart;
     },
 
     getActiveExperiment : function() {
@@ -210,7 +198,7 @@ var pageManager = {
         var annotations = null;
         var dataManager = null;
 
-        var olddiv = document.getElementById("experiment");
+        var olddiv = document.getElementById("chart1");
 
         while (olddiv.firstChild) {
             olddiv.removeChild(olddiv.firstChild);
@@ -223,13 +211,13 @@ var pageManager = {
                 data = experimentOriginalData;
                 annotations = new experimentAnnotations();
                 properties = experimentPlotProperties;
-                dataManager = new experimentDataManager();
+                dataManager = new experimentManager();
                 break;
             case "expB" :
                 data = experimentBOriginalData;
                 annotations = new experimentBAnnotations();
                 properties = experimentBPlotProperties;
-                dataManager = new experimentBDataManager();
+                dataManager = new experimentManager();
                 break;
 
         };
@@ -258,7 +246,7 @@ var pageManager = {
         this._plotProperties = pageParameters.plotProperties;
         this._data = pageParameters.data;
 
-        toolTipProperties.containerID = "experiment";
+        toolTipProperties.containerID = "chart1";
         toolTipProperties.formatter = pageParameters.experimentAnnotations.experimentToolTipContent;
         var toolTipObject = new toolTip();
         toolTipObject.create(toolTipProperties);

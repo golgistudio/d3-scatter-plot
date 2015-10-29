@@ -4,7 +4,7 @@
  *
  * @type {{_toolTip: null, _toolTipFormatter: null, _showTransitionTime: number, _hideTransitionTime: number, _leftOffset: number, _topOffset: number, create: Function, show: Function, hide: Function}}
  */
-function toolTip() {
+function toolTipManager() {
 
     var _toolTip= null,
     _toolTipProperties  = null;

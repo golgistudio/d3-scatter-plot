@@ -7,6 +7,7 @@ function axesManager(uuid, dataStoreManager) {
 
     var _uuid = uuid;
     var _dataStoreManager = dataStoreManager;
+    var _axes = null;
 
     /**
      * ToDo - Use Factory to create axes
@@ -62,26 +63,29 @@ function axesManager(uuid, dataStoreManager) {
             .outerTickSize(axesProperties.yBorderOuterTickSize)
             .tickPadding(axesProperties.xTickPadding);
 
-        return {
+        _axes = {
             'xAxis':       xAxis,
             'yAxis':       yAxis,
             'topBorder':   topBorder,
             'rightBorder': rightBorder,
-            'scales' : {
+            'scales':      {
                 'yScale': yScale,
                 'xScale': xScale
             }
+
         };
+
+        return _axes;
     };
 
-    this.createZoomListener = function(axes, that, zoomScaleFactors, zoomHandler) {
+    this.createZoomListener = function(that, zoomScaleFactors, zoomHandler) {
         var zoomListener =  d3.behavior.zoom()
-            .y(axes.scales.yScale)
+            .y(_axes.scales.yScale)
             .scaleExtent([zoomScaleFactors.yZoomFactors.yMin, zoomScaleFactors.yZoomFactors.yMax])
             .on("zoom", function () {
                 zoomHandler(that);
             });
-        zoomListener.y(axes.scales.yScale);
+        zoomListener.y(_axes.scales.yScale);
 
         return zoomListener;
     };
@@ -94,13 +98,16 @@ function axesManager(uuid, dataStoreManager) {
      * @param height
      * @returns {*}
      */
-    this.drawAxes = function  (svg, axes, width, height, axesProperties) {
+    this.drawAxes = function  (svg) {
+
+        var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
+        var chartProperties = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
 
         // Add the x axis
         svg.append("g")
             .attr("class", axesProperties.xAxisClassName)
-            .attr("transform", "translate(0," + height + ")")
-            .call(axes.xAxis)
+            .attr("transform", "translate(0," + chartProperties.height + ")")
+            .call(_axes.xAxis)
             .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", axesProperties.xAxis_dx)
@@ -110,12 +117,12 @@ function axesManager(uuid, dataStoreManager) {
         // Add the x border
         svg.append("g")
             .attr("class", axesProperties.xBorderClassName)
-            .call(axes.topBorder);
+            .call(_axes.topBorder);
 
         // Add the y axis
         svg.append("g")
             .attr("class", axesProperties.yAxisClassName)
-            .call(axes.yAxis)
+            .call(_axes.yAxis)
             .append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", axesProperties.yPosition)
@@ -125,8 +132,8 @@ function axesManager(uuid, dataStoreManager) {
         // Add the y border
         svg.append("g")
             .attr("class", axesProperties.yBorderClassName)
-            .call(axes.rightBorder)
-            .attr("transform", "translate(" + width + " ,0)")
+            .call(_axes.rightBorder)
+            .attr("transform", "translate(" + chartProperties.width + " ,0)")
             .attr("y", axesProperties.xPosition)
             .attr("dy", axesProperties.yAxis_dy);
 
@@ -141,14 +148,16 @@ function axesManager(uuid, dataStoreManager) {
      * @param height
      * @returns {*}
      */
-    this.updateAxes = function  (svg, axes, axesProperties) {
+    this.updateAxes = function  (svg) {
 
-        if (axes.hasOwnProperty("xAxis")) {
+        var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
+
+        if (_axes.hasOwnProperty("xAxis")) {
             // Update X Axis
             svg.select(axesProperties.xAxisClassSelector)
                 .transition()
                 .duration(axesProperties.yTransitionDuration)
-                .call(axes.xAxis)
+                .call(_axes.xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
                 .attr("dx", axesProperties.xAxis_dx)
@@ -162,7 +171,7 @@ function axesManager(uuid, dataStoreManager) {
             svg.select(axesProperties.yAxisClassSelector)
                 .transition()
                 .duration(axesProperties.yTransitionDuration)
-                .call(axes.yAxis);
+                .call(_axes.yAxis);
         }
 
         return svg;

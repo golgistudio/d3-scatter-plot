@@ -28,7 +28,7 @@ function barChart() {
                 zoomPlot(parameters);
                 break;
 
-        };
+        }
     };
 
     /**
@@ -41,7 +41,7 @@ function barChart() {
     function setData(svg, data, plotClassName) {
         return svg.selectAll("." + plotClassName)
             .data(data);
-    };
+    }
 
     /**
      *
@@ -53,11 +53,16 @@ function barChart() {
 
         addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
 
-    };
+    }
 
     /**
      *
-     * @param parameters
+     * @param plot
+     * @param plotProp
+     * @param scales
+     * @param toolTip
+     * @param transitionProperties
+     * @returns {*}
      */
     function addElements(plot, plotProp, scales, toolTip, transitionProperties) {
 
@@ -71,8 +76,7 @@ function barChart() {
                 return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
             })
             .attr("y", function (d) {
-                var yVal = scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-                return yVal;
+                return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
             });
 
         plot.style("opacity", "0")
@@ -83,7 +87,7 @@ function barChart() {
             .transition()
             .style('stroke', plotProp.display.strokeColor)
             .duration(transitionProperties.startDurationTime)
-            .style("fill", function (d) {
+            .style("fill", function () {
                 return plotProp.display.fillColor;
             });
 
@@ -116,12 +120,12 @@ function barChart() {
                 .style("stroke", hoverFillColor)
                 .style("fill", hoverFillColor)
                 .attr("width", hoverWidth)
-                .attr("height", function (d) {
+                .attr("height", function () {
                     return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
                 })
                 .ease(transitionProperties.hoverEaseType);
 
-        };
+        }
         function handleHoverEnd(d, that) {
             toolTip.hide();
             d3.select(that).transition()
@@ -135,18 +139,19 @@ function barChart() {
                 })
                 .ease(transitionProperties.hoverEaseType);
 
-        };
+        }
 
-    };
+    }
 
 
     /**
      *
      * @param svg
-     * @param plotProp
+     * @param data
      * @param scales
-     * @param dataset
-     * @param transitionTimes
+     * @param plotProp
+     * @param transitionProperties
+     * @returns {*}
      */
     function updateElements( svg, data, scales, plotProp, transitionProperties) {
 
@@ -171,8 +176,7 @@ function barChart() {
                 return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
             })
             .attr("y", function (d) {
-                var yVal = scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-                return yVal;
+                return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
             })
             .each("end", function() {  // End animation
                 d3.select(this)  // 'this' means the current element
@@ -187,8 +191,7 @@ function barChart() {
                         return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
                     })
                     .attr("y", function (d) {
-                        var yVal = scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-                        return yVal;
+                        return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
                     });
             });
 
@@ -202,7 +205,7 @@ function barChart() {
      */
     function zoomPlot(parameters) {
         zoomElements(parameters.svg, parameters.plotProp, parameters.scales);
-    };
+    }
 
     function zoomElements(plot, plotProp, scales) {
 
@@ -213,10 +216,9 @@ function barChart() {
                 return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
         })
         .attr("y", function (d) {
-                var yVal = scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-                return yVal;
+                return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
         });
-    };
+    }
 
     /**
      *
@@ -230,20 +232,17 @@ function barChart() {
         addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
         removeElements(plot,  parameters.transitionProperties);
 
-    };
+    }
 
     /**
      *
      * @param svg
-     * @param plotProp
-     * @param scales
-     * @param dataset
-     * @param transitionTimes
+     * @param transitionProperties
      */
     function removeElements( svg,  transitionProperties) {
         svg = svg.exit();
         svg.style('fill', transitionProperties.exitColor);
         svg.transition().delay(transitionProperties.endDurationTime).remove();
 
-    };
-};
+    }
+}

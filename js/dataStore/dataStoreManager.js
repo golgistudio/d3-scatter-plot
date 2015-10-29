@@ -4,27 +4,11 @@
  * Created by laurie on 10/26/15.
  */
 
-function dataStoreManager() {
-
+var dataStoreManager = (function () {
+    // Instance stores a reference to the Singleton
+    var instance;
     var storeCollection = [];
-
-    // instance of the singleton
-    var instance = null;
-
-    // Get the instance of the SingletonClass
-    // If there is no instance in this.instance, create one
-    var getInstance = function() {
-        if (!instance) {
-            // create a instance
-            instance = createInstance();
-        }
-        // return the instance of the singletonClass
-        return instance;
-    }
-
-    // Create the instance
-    var createInstance = function() {
-        // public methods
+    function init() {
         return {
             setData : function(keyId, dataName, data) {
                 var keyCollection = storeCollection[keyId];
@@ -55,10 +39,16 @@ function dataStoreManager() {
                 });
                 return uuid;
             }
+        };
+    };
+    return {
+        // Get the Singleton instance if one exists
+        // or create one if it doesn't
+        getInstance: function () {
+            if ( !instance ) {
+                instance = init();
+            }
+            return instance;
         }
-    }
-
-
-
-    return getInstance();
-}
+    };
+})();

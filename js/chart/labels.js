@@ -8,42 +8,20 @@
  * @param height
  * @param margin
  */
-function drawChartLabels (svg, config, width, height, margin) {
+function drawChartLabels (svg, labelProps, width, height, margin) {
+
+    labelProps.titleProperties.xPosition =  (width / 2);
+    labelProps.titleProperties.yPosition =  -(margin.top / 2);
+
+    labelProps.xAxisLabelProperties.xPosition =  (width / 2);
+    labelProps.xAxisLabelProperties.yPosition =  (height + (margin.top) + (margin.bottom / 3));
 
 
-    var titleProperties = {
-        "className": config.titleClassName,
-        "fontSize" : "16px",
-        "labelText" : config.title,
-        "textAnchor" : "middle",
-        "xPosition" :  (width / 2),
-        "yPosition" : -(margin.top / 2) ,
-        "transform": ""
-    };
-
-    var xAxisLabelProperties = {
-        "className": config.xAxisClassName,
-        "font-size" : "16px",
-        "labelText" : config.xAxisLabel,
-        "textAnchor" : "middle",
-        "xPosition" :  (width / 2),
-        "yPosition" : (height + (margin.top) + (margin.bottom/3)) ,
-        "transform": ""
-    };
-
-    var yAxisLabelProperties = {
-        "className": config.yAxisClassName,
-        "font-size" : "16px",
-        "labelText" : config.yAxisLabel,
-        "textAnchor" : "middle",
-        "yPosition" :  (margin.left / 2) - margin.left,
-        "xPosition" : -(height / 2),
-        "transform": "rotate(-90)"
-    };
-
-    drawLabel(svg, titleProperties);
-    drawLabel(svg, xAxisLabelProperties);
-    drawLabel(svg, yAxisLabelProperties);
+    labelProps.yAxisLabelProperties.yPosition =  (margin.left / 2) - margin.left;
+    labelProps.yAxisLabelProperties.xPosition =   -(height / 2);
+    drawLabel(svg, labelProps.titleProperties);
+    drawLabel(svg, labelProps.xAxisLabelProperties);
+    drawLabel(svg, labelProps.yAxisLabelProperties);
 };
 
 /**

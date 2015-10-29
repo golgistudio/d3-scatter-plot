@@ -25,7 +25,7 @@ function scatterPlot() {
             case "zoom" : zoomPlot(parameters);
                 break;
 
-        };
+        }
     };
 
     /**
@@ -38,7 +38,7 @@ function scatterPlot() {
 
         addSymbols(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
 
-    };
+    }
 
     /**
      *
@@ -50,14 +50,15 @@ function scatterPlot() {
     function setData(svg, data, plotClassName) {
         return svg.selectAll("." + plotClassName)
             .data(data);
-    };
+    }
 
-    /**
+    /***
      *
      * @param plot
      * @param plotProp
      * @param scales
      * @param toolTip
+     * @param transitionProperties
      * @returns {*}
      */
     function addSymbols(plot, plotProp, scales, toolTip, transitionProperties) {
@@ -80,7 +81,7 @@ function scatterPlot() {
                 break;
         }
         return plot;
-    };
+    }
 
     function zoomSymbols(plot, plotProp, scales) {
 
@@ -102,7 +103,7 @@ function scatterPlot() {
                 break;
         }
         return plot;
-    };
+    }
 
     /**
      *
@@ -110,7 +111,7 @@ function scatterPlot() {
      */
     function zoomPlot(parameters) {
         zoomSymbols(parameters.svg, parameters.plotProp, parameters.scales);
-    };
+    }
 
 
     /**
@@ -125,30 +126,27 @@ function scatterPlot() {
         addSymbols(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
         removeSymbols(plot,  parameters.transitionProperties);
 
-    };
+    }
 
     /**
      *
      * @param svg
-     * @param plotProp
-     * @param scales
-     * @param dataset
-     * @param transitionTimes
+     * @param transitionProperties
      */
     function removeSymbols( svg,  transitionProperties) {
         svg = svg.exit();
         svg.style('fill', transitionProperties.exitColor);
         svg.transition().delay(transitionProperties.endDurationTime).remove();
 
-    };
+    }
 
     /**
      *
+     * @param svg
      * @param data
      * @param scales
-     * @param svg
      * @param plotProp
-     * @param transitionTimes
+     * @param transitionProperties
      * @returns {*}
      */
 
@@ -173,9 +171,9 @@ function scatterPlot() {
         }
 
         return svg;
-    };
+    }
 
-};
+}
 
 
 
