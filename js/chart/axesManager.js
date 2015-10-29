@@ -7,38 +7,38 @@ function axesManager(uuid, dataStoreManager) {
 
     var _uuid = uuid;
     var _dataStoreManager = dataStoreManager;
-    var _axes = null;
+    var _zoomListener = null;
 
     /**
-     * ToDo - Use Factory to create axes
-     * ToDo - Extract out properties.
      *
      * @param domains
      * @param width
      * @param height
-     * @returns {{xAxis=*, yAxis=*, topBorder=*, rightBorder=*}}
      */
-    this.createAxes = function (domains, width, height, axesProperties) {
+    this.createAxes = function () {
 
+        var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
+        var domains = _dataStoreManager.getData(_uuid, dataStoreNames.domains);
+        var chartProps = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
 
         // Create x scale
         // For this example it is ordinal
         var xScale = d3.scale.ordinal()
-            .range([axesProperties.xScaleRangeStart, width])
-            .rangePoints([axesProperties.xScaleRangePointsStart, width])
+            .range([axesProperties.xScaleRangeStart, chartProps.width])
+            .rangePoints([axesProperties.xScaleRangePointsStart, chartProps.width])
             .domain(domains.xDomain);
 
         // Create y scale
         // For this example it is linear
         var yScale = d3.scale.linear()
-            .range([height, axesProperties.yScaleRangePointEnd])
+            .range([chartProps.height, axesProperties.yScaleRangePointEnd])
             .domain(domains.yDomain);
 
         // Create x axis
         var xAxis = d3.svg.axis()
             .scale(xScale)
             .orient("bottom")
-            .innerTickSize(-height)
+            .innerTickSize(-chartProps.height)
             .outerTickSize(axesProperties.xOuterTickSize)
             .tickPadding(axesProperties.xTickPadding);
 
@@ -46,7 +46,7 @@ function axesManager(uuid, dataStoreManager) {
         var yAxis = d3.svg.axis()
             .scale(yScale)
             .orient("left")
-            .innerTickSize(-width)
+            .innerTickSize(-chartProps.width)
             .outerTickSize(axesProperties.yOuterTickSize)
             .tickPadding(axesProperties.yTickPadding);
 
@@ -63,7 +63,7 @@ function axesManager(uuid, dataStoreManager) {
             .outerTickSize(axesProperties.yBorderOuterTickSize)
             .tickPadding(axesProperties.xTickPadding);
 
-        _axes = {
+        var axes = {
             'xAxis':       xAxis,
             'yAxis':       yAxis,
             'topBorder':   topBorder,
@@ -72,22 +72,31 @@ function axesManager(uuid, dataStoreManager) {
                 'yScale': yScale,
                 'xScale': xScale
             }
-
         };
 
-        return _axes;
+        _dataStoreManager.setData(_uuid, dataStoreNames.axesValues, axes);
     };
 
-    this.createZoomListener = function(that, zoomScaleFactors, zoomHandler) {
+    this.translate = function(x,y) {
+        _zoomListener.translate(x,y);
+    };
+
+    this.createZoomListener = function(that, zoomHandler) {
+
+        var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
+        var zoomScaleFactors = _dataStoreManager.getData(_uuid, dataStoreNames.zoomScaleFactors);
+
         var zoomListener =  d3.behavior.zoom()
-            .y(_axes.scales.yScale)
+            .y(axes.scales.yScale)
             .scaleExtent([zoomScaleFactors.yZoomFactors.yMin, zoomScaleFactors.yZoomFactors.yMax])
             .on("zoom", function () {
                 zoomHandler(that);
             });
-        zoomListener.y(_axes.scales.yScale);
+        zoomListener.y(axes.scales.yScale);
 
-        return zoomListener;
+        _zoomListener = zoomListener;
+
+        return _zoomListener;
     };
 
     /**
@@ -102,12 +111,13 @@ function axesManager(uuid, dataStoreManager) {
 
         var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
         var chartProperties = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
+        var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
 
         // Add the x axis
         svg.append("g")
             .attr("class", axesProperties.xAxisClassName)
             .attr("transform", "translate(0," + chartProperties.height + ")")
-            .call(_axes.xAxis)
+            .call(axes.xAxis)
             .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", axesProperties.xAxis_dx)
@@ -117,12 +127,12 @@ function axesManager(uuid, dataStoreManager) {
         // Add the x border
         svg.append("g")
             .attr("class", axesProperties.xBorderClassName)
-            .call(_axes.topBorder);
+            .call(axes.topBorder);
 
         // Add the y axis
         svg.append("g")
             .attr("class", axesProperties.yAxisClassName)
-            .call(_axes.yAxis)
+            .call(axes.yAxis)
             .append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", axesProperties.yPosition)
@@ -132,32 +142,28 @@ function axesManager(uuid, dataStoreManager) {
         // Add the y border
         svg.append("g")
             .attr("class", axesProperties.yBorderClassName)
-            .call(_axes.rightBorder)
+            .call(axes.rightBorder)
             .attr("transform", "translate(" + chartProperties.width + " ,0)")
             .attr("y", axesProperties.xPosition)
             .attr("dy", axesProperties.yAxis_dy);
 
-        return svg;
     };
 
     /**
-     *
-     * @param svg
-     * @param axes
-     * @param width
-     * @param height
-     * @returns {*}
+    *
+    * @param svg
      */
     this.updateAxes = function  (svg) {
 
         var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
+        var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
 
-        if (_axes.hasOwnProperty("xAxis")) {
+        if (axes.hasOwnProperty("xAxis")) {
             // Update X Axis
             svg.select(axesProperties.xAxisClassSelector)
                 .transition()
                 .duration(axesProperties.yTransitionDuration)
-                .call(_axes.xAxis)
+                .call(axes.xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
                 .attr("dx", axesProperties.xAxis_dx)
@@ -166,16 +172,12 @@ function axesManager(uuid, dataStoreManager) {
         }
 
         if (axes.hasOwnProperty("yAxis")) {
-
             // Update Y Axis
             svg.select(axesProperties.yAxisClassSelector)
                 .transition()
                 .duration(axesProperties.yTransitionDuration)
-                .call(_axes.yAxis);
+                .call(axes.yAxis);
         }
-
-        return svg;
-
     };
 
 };

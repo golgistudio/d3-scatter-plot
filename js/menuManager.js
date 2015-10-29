@@ -65,7 +65,6 @@ function addMenuEventHandlers(pageManager) {
                 break;
             case "expB" : data = experimentBOriginalData;
                 break;
-
         }
 
         pageManager.updatePoints(data, pageManager);
@@ -74,19 +73,19 @@ function addMenuEventHandlers(pageManager) {
 
     document.getElementById("circleSymbol").addEventListener("click", function(event) {
 
-        pageManager.setSymbol("dot", pageManager, "Congruent");
+        pageManager.setSymbol("dot", pageManager, "Congruent", "chart1");
         event.stopPropagation();
     });
 
     document.getElementById("triangleSymbol").addEventListener("click", function(event) {
 
-        pageManager.setSymbol("triangle", pageManager, "Congruent");
+        pageManager.setSymbol("triangle", pageManager, "Congruent", "chart1");
         event.stopPropagation();
     });
 
     document.getElementById("iconSymbol").addEventListener("click", function(event) {
 
-        pageManager.setSymbol("icon", pageManager, "Congruent");
+        pageManager.setSymbol("icon", pageManager, "Congruent", "chart1");
         event.stopPropagation();
     });
 
@@ -95,7 +94,7 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("blueColor").addEventListener("click", function(event) {
 
-        pageManager.setSymbolColor("blue", pageManager, "Incongruent");
+        pageManager.setSymbolColor("blue", pageManager, "Incongruent", "chart1");
         event.stopPropagation();
     });
 
@@ -104,7 +103,7 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
 
-        pageManager.setSymbolColor("purple", pageManager, "Incongruent");
+        pageManager.setSymbolColor("purple", pageManager, "Incongruent", "chart1");
         event.stopPropagation();
     });
 
@@ -113,7 +112,7 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
 
-        pageManager.setSymbolColor("purple", pageManager, "Incongruent");
+        pageManager.setSymbolColor("purple", pageManager, "Incongruent", "chart1");
         event.stopPropagation();
     });
 
@@ -122,7 +121,17 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("scatter").addEventListener("click", function(event) {
 
-        pageManager.setPlotStyle("scatter", pageManager, "Difference");
+        var experiment = pageManager.getActiveExperiment();
+        var chartDiv = null;
+
+        switch(experiment) {
+            case "expA" : chartDiv = "chart2";
+                break;
+            case "expB" : chartDiv = "chart1";
+                break;
+        }
+
+        pageManager.setPlotStyle("scatter", pageManager, "Difference", chartDiv);
         event.stopPropagation();
     });
 
@@ -131,8 +140,20 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("barChart").addEventListener("click", function(event) {
 
-        pageManager.setPlotStyle("bar", pageManager, "Difference");
+        var experiment = pageManager.getActiveExperiment();
+        var chartDiv = null;
+
+        switch(experiment) {
+            case "expA" : chartDiv = "chart2";
+                break;
+            case "expB" : chartDiv = "chart1";
+                break;
+        }
+
+        pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv);
         event.stopPropagation();
+
+
     });
 
     /**

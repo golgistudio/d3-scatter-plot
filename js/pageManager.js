@@ -9,28 +9,43 @@
 var pageManager = {
 
     _dataStoreManager : null,
-
+    _chartCollection: [],
+    _currentExperiment: null,
+    _chartWidthFactor: 2,
 
     init: function () {
 
         this._dataStoreManager = dataStoreManager.getInstance();
 
+        this._currentExperiment = "expA";
+
         var uuid = this._dataStoreManager.generateUUID();
+        var experiment = new experimentManager(this._currentExperiment);
+        var chart = this.createChart("chart1", experiment, uuid, experimentOriginalData, experimentPlotProperties, this._chartWidthFactor);
+        var chartItem = {
+            uuid: uuid,
+            chart: chart,
+            experiment: experiment,
+            divId : "chart1"
+        };
+        this._chartCollection.push(chartItem);
 
-        var experiment = new experimentManager();
-        experiment._name = "expA";
-        this.createChart("chart1", experiment, uuid, experimentOriginalData);
-
-        var experimentB = new experimentManager();
-        experimentB._name = "expB";
+        var experimentB = new experimentManager(this._currentExperiment);
         var uuid2 = this._dataStoreManager.generateUUID();
-        this.createChart("chart2", experimentB, uuid2, experimentBOriginalData);
+        var chart2 = this.createChart("chart2", experimentB, uuid2, experimentOriginalData, experimentPlotProperties2, this._chartWidthFactor);
+        var chartItem2 = {
+            uuid: uuid2,
+            chart: chart2,
+            experiment: experimentB,
+            divId : "chart2"
+        };
+        this._chartCollection.push(chartItem2);
 
         d3.select(window).on('resize', this.resize.bind(this));
 
     },
 
-    createChart: function(divID, experiment, uuid, data) {
+    createChart: function(divID, experiment, uuid, data, plotProps, chartWidthFactor) {
 
         var axesProps = new axesProperties();
         var chartProps = new chartProperties();
@@ -40,25 +55,27 @@ var pageManager = {
         var transitionProps = new transitionProperties();
 
         chartProps.height      = window.innerHeight - chartProps.heightMargin;
-        chartProps.width       = window.innerWidth - chartProps.widthMargin;
-        chartProps.containerID = divID;
+        chartProps.width       = (window.innerWidth /chartWidthFactor) - chartProps.widthMargin;
+        chartProps.containerId = divID;
 
-        toolTipProps.containerID = divID;
+        toolTipProps.containerId = divID;
         toolTipProps.formatter   = experiment.experimentToolTipContent;
 
-        experiment.init(data);
+        var experimentParams = experiment.init(data);
 
         experiment.updateLabelProperties(labelProps);
 
+        this._dataStoreManager.setData(uuid, dataStoreNames.zoomScaleFactors, experimentParams.zoomScaleFactors);
+        this._dataStoreManager.setData(uuid, dataStoreNames.domains, experimentParams.domains);
         this._dataStoreManager.setData(uuid, dataStoreNames.axes, axesProps);
         this._dataStoreManager.setData(uuid, dataStoreNames.chart, chartProps);
         this._dataStoreManager.setData(uuid, dataStoreNames.labels, labelProps);
         this._dataStoreManager.setData(uuid, dataStoreNames.legend, legendProps);
         this._dataStoreManager.setData(uuid, dataStoreNames.toolTip, toolTipProps);
         this._dataStoreManager.setData(uuid, dataStoreNames.transition, transitionProps);
-        this._dataStoreManager.setData(uuid, dataStoreNames.experiment, experimentPlotProperties);
+        this._dataStoreManager.setData(uuid, dataStoreNames.experiment, plotProps);
 
-        var chart = new Chart(this._dataStoreManager, uuid);
+        var chart = new Chart(this._dataStoreManager, uuid, divID);
 
         var params = {
             experiment: experiment,
@@ -73,81 +90,80 @@ var pageManager = {
         return this._currentExperiment;
     },
 
-    resize: function(){
+    resize: function() {
 
-        var height = window.innerHeight - pageManager._chartProperties.heightMargin;
-        var width  = window.innerWidth - pageManager._chartProperties.widthMargin;
         var params = {
-            "height" : height,
-            "width" : width
+            "height" : window.innerHeight,
+            "width" : window.innerWidth/this._chartWidthFactor
         };
-        this._chart.handleRequest("resize", params);
-    },
 
+        var length = this._chartCollection.length;
+
+        for (var i = 0; i < length; i++) {
+            this._chartCollection[i].chart.handleRequest("resize", params);
+        }
+    },
 
     updatePoints: function(data, pageControl) {
 
-        pageControl._data = data;
-        pageControl._experiment.init( pageControl._data);
-        var params = {
-            "data" : data,
-            "domains": pageControl._experiment._dataDomains
-        };
-        pageControl._chart.handleRequest("update", params);
+        var length = this._chartCollection.length;
+
+        for (var i = 0; i < length; i++) {
+
+            var chartItem = pageControl._chartCollection[i];
+
+            var experimentParams = chartItem.experiment.init(data);
+
+            pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.zoomScaleFactors, experimentParams.zoomScaleFactors);
+            pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.domains, experimentParams.domains);
+
+            var params = {
+                data : data,
+                experiment: chartItem.experiment
+            };
+
+            chartItem.chart.handleRequest("update", params);
+        }
     },
 
-    setSymbol: function(symbol, pageControl, plotName) {
-        pageControl._plotProperties.forEach( function (configItem) {
-            if (configItem.name === plotName) {
-                configItem.display.symbol = symbol;
+    setSymbol: function(symbol, pageControl, plotName, chartDiv) {
 
-                switch (symbol) {
-                    case "icon":
-                        configItem.display.icon = "images/stopwatch-1-64x64.png";
-                        configItem.display.width = 20;
-                        configItem.display.height = 20;
-                        break;
-                    case "triangle" :
-                        configItem.display.size = 150;
-                        break;
-                    case "circle" :
-                        configItem.display.radius = 5;
-                        break;
-                }
+        var length = this._chartCollection.length;
 
+        for (var i = 0; i < length; i++) {
+
+            var chartItem = pageControl._chartCollection[i];
+
+            if (chartItem.divId === chartDiv) {
+
+                var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
+                plotProps.forEach( function (configItem) {
+                    if (configItem.name === plotName) {
+                        configItem.display.symbol = symbol;
+                        switch (symbol) {
+                            case "icon":
+                                configItem.display.icon = "images/stopwatch-1-64x64.png";
+                                configItem.display.width = 20;
+                                configItem.display.height = 20;
+                                break;
+                            case "triangle" :
+                                configItem.display.size = 150;
+                                break;
+                            case "circle" :
+                                configItem.display.radius = 5;
+                                break;
+                        }
+
+                    }
+                });
+                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
+
+                var params = {
+                    "plotName": plotName
+                };
+                chartItem.chart.handleRequest("symbolUpdate", params);
             }
-        });
-
-        var params = {
-            "data" : pageControl._data,
-            "domains": pageControl._experiment._dataDomains,
-            "plotProperties": pageControl._plotProperties,
-            "plotName": plotName
-        };
-        pageControl._chart.handleRequest("symbolUpdate", params);
-    },
-
-    /**
-     *
-     * @param color
-     * @param pageControl
-     * @param plotName
-     */
-    setSymbolColor: function(color, pageControl, plotName) {
-
-        pageControl._plotProperties.forEach( function (configItem) {
-            if (configItem.name === plotName) {
-                configItem.display.fillColor = color;
-            }
-        });
-
-        var params = {
-            "data" : pageControl._data,
-            "domains": pageControl._experiment._dataDomains,
-            "plotProperties": pageControl._plotProperties,
-            "plotName": plotName
-        };
-        pageControl._chart.handleRequest("styleUpdate", params);
+        }
     },
 
     /**
@@ -156,32 +172,67 @@ var pageManager = {
      * @param pageControl
      * @param plotName
      */
-    setPlotStyle: function(plotStyle, pageControl, plotName) {
+    setSymbolColor: function(color, pageControl, plotName, chartDiv) {
 
-        pageControl._plotProperties.forEach( function (configItem) {
-            if (configItem.name === plotName) {
-                configItem.display.plotStyle = "bar";
+        var length = this._chartCollection.length;
 
-                switch (plotStyle) {
-                    case "scatter":
-                        configItem.display.plotStyle = "scatter";
-                        break;
-                    case "bar" :
-                        configItem.display.plotStyle = "bar";
-                        break;
-                }
+        for (var i = 0; i < length; i++) {
 
+            var chartItem = pageControl._chartCollection[i];
+
+            if (chartItem.divId === chartDiv) {
+
+                var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
+
+                plotProps.forEach( function (configItem) {
+                    if (configItem.name === plotName) {
+
+                        configItem.display.fillColor = color;
+                    }
+                });
+                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
+
+
+                var params = {
+                    "plotName": plotName
+                };
+                chartItem.chart.handleRequest("styleUpdate", params);
             }
-        });
+        }
+    },
 
-        var params = {
-            "data" : pageControl._data,
-            "domains": pageControl._experiment._dataDomains,
-            "plotProperties": pageControl._plotProperties,
-            "plotName": plotName,
-            "plotStyle": plotStyle
-        };
-        pageControl._chart.handleRequest("plotStyleUpdate", params);
+    /**
+     *
+     * @param color
+     * @param pageControl
+     * @param plotName
+     */
+    setPlotStyle: function(plotStyle, pageControl, plotName, chartDiv) {
+
+        var length = this._chartCollection.length;
+
+        for (var i = 0; i < length; i++) {
+
+            var chartItem = pageControl._chartCollection[i];
+
+            if (chartItem.divId === chartDiv) {
+
+                var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
+                plotProps.forEach( function (configItem) {
+                    if (configItem.name === plotName) {
+
+                        configItem.display.plotStyle = plotStyle;
+                    }
+                });
+                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
+
+                var params = {
+                    "plotName": plotName
+                };
+                chartItem.chart.handleRequest("plotStyleUpdate", params);
+            }
+        }
+
     },
 
     /**
@@ -224,7 +275,7 @@ var pageManager = {
 
         chartProperties.height = window.innerHeight - chartProperties.heightMargin;
         chartProperties.width = window.innerWidth - chartProperties.widthMargin;
-        chartProperties.containerID = "experiment";
+        chartProperties.containerId = "experiment";
 
         var pageParameters = {
             "chartProperties": chartProperties,
@@ -246,7 +297,7 @@ var pageManager = {
         this._plotProperties = pageParameters.plotProperties;
         this._data = pageParameters.data;
 
-        toolTipProperties.containerID = "chart1";
+        toolTipProperties.containerId = "chart1";
         toolTipProperties.formatter = pageParameters.experimentAnnotations.experimentToolTipContent;
         var toolTipObject = new toolTip();
         toolTipObject.create(toolTipProperties);

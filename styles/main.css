@@ -2,46 +2,32 @@ body {
     font: 10px sans-serif;
 }
 
+h1 {
+    text-align: center;
+}
+
+#title {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#chart1 {
+    float: left;
+}
+#chart2 {
+   float: left;
+}
+
+/*
+*
+* Axis
+*
+*/
 .axis path,
 .axis line {
     fill: none;
     stroke: #CCC;
     shape-rendering: crispEdges;
-}
-
-.line {
-    fill: none;
-    stroke: steelblue;
-    stroke-width: 1.5px;
-}
-
-.reg {
-    fill: none;
-    stroke: orange;
-    stroke-width: 1.5px;
-}
-
-.xLabel, .yLabel, .title {
-    font-size: 16px;
-}
-
-.dot, .cdot, .ddot {
-    stroke: #000;
-}
-
-.legendBox {
-
-    stroke: lightgrey;
-}
-
-.legendCircle {
-    stroke: #808080;
-}
-
-.legendText {
-    color: black;
-    stoke: #000;
-    fill: black;
 }
 
 .tick text{
@@ -50,6 +36,38 @@ body {
 
 .tick line{
     opacity: 0.2;
+}
+
+/*
+*
+* Labels
+*
+*/
+
+.xLabel, .yLabel, .title {
+    font-size: 16px;
+}
+
+/*
+*
+* Legend
+*
+*/
+
+.legendText {
+    color: black;
+    stoke: #000;
+    fill: black;
+}
+
+.legendBox {
+    fill:white;
+    opacity:0.8;
+    box-shadow: 10px 10px 5px #888888;
+    stroke-radius: 10px;
+    stroke: lightgrey;
+    rx: 5px;
+    ry: 5px;
 }
 
 /*
@@ -73,85 +91,8 @@ body {
     margin: 5px;
 }
 
-/*
-*
-* Legend
-*
-*/
-
-.legendBox {
-    fill:white;
-    opacity:0.8;
-    box-shadow: 10px 10px 5px #888888;
-    stroke-radius: 10px;
-    stroke: grey;
-    rx: 5px;
-    ry: 5px;
-}
-
-.legend circle {
-    stroke:black;
-    opacity:0.8;
-}
-
-.legend path {
-    stroke:black;
-    opacity:0.8;
-    border-radius: 10px;
-}
 
 
-/*
-*
-*
-*
-*/
-
-h1 {
-    text-align: center;
-}
-
-#title {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#experiment {
-    margin-left: 10px;
-}
-#controlPanel {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-    overflow: hidden;
-    border: 1px solid lightgrey;
-    width: 100%;
-
-}
-
-.buttons {
-    margin: 5px;
-}
-
-#managePointsPanel {
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
-    width: 435px;
-}
-
-#stylePanel {
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
-    width: 250px;
-}
-
-.radioPanel {
-    float:left;
-    margin: 20px;
-
-}
 
 /*************************
 * Slide Out Menu

@@ -22,6 +22,8 @@ var dataStoreNames = {
     legend: "legend",
     toolTip: "toolTip",
     transition: "transition",
-    experiment: "experiment"
-
+    experiment: "experiment",
+    axesValues: "axesValues",
+    zoomScaleFactors: "zoomScaleFactors",
+    domains: "domains"
 };

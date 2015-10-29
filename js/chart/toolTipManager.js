@@ -17,7 +17,7 @@ function toolTipManager() {
 
         _toolTipProperties = properties;
 
-        _toolTip =  d3.select("#" + _toolTipProperties.containerID).append("div")
+        _toolTip =  d3.select("#" + _toolTipProperties.containerId).append("div")
             .attr("class", _toolTipProperties.className);
     }
 

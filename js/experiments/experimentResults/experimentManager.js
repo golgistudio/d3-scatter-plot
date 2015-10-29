@@ -4,24 +4,28 @@
  *
  * @type {{_dataDomains: null, init: Function, calcDomains: Function, mapData: Function}}
  */
-function experimentManager() {
+function experimentManager(name) {
 
-    var _dataDomains = null;
-    var _zoomScaleFactors = null;
+    _name: name;
 
     /**
      *
      * @param data
      */
-    this.init =  function (data ) {
-        this._dataDomains = calcDomains(data);
-        this._zoomScaleFactors = initializeZoomFactors();
+    this.init =  function (data) {
+        var dataDomains = calcDomains(data);
+        var zoomScaleFactors = initializeZoomFactors();
+
+        return {
+            domains: dataDomains,
+            zoomScaleFactors: zoomScaleFactors
+        }
     };
 
     function initializeZoomFactors() {
         return {
             yZoomFactors : {
-                "yMin": 0.25,
+                "yMin": 1,
                 "yMax": 10
             },
             xZoomFactors :  {

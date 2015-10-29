@@ -4,20 +4,22 @@
  *
  * @type {{ _domains: null, init: Function, calcDomains: Function, mapData: Function}}
  */
-function experimentManager() {
+function experimentManager(name) {
 
-    this._domains = null;
-    this._zoomScaleFactors = null;
-
-    this._name = "";
+    _name: name;
 
     /**
      *
      * @param data
      */
     this.init =  function (data ) {
-        this._domains = calcDomains(data);
-        this._zoomScaleFactors = initializeZoomFactors();
+        var dataDomains = calcDomains(data);
+        var zoomScaleFactors = initializeZoomFactors();
+
+        return {
+            domains: dataDomains,
+            zoomScaleFactors: zoomScaleFactors
+        }
     };
 
     function initializeZoomFactors() {

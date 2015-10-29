@@ -5,7 +5,7 @@
  */
 function toolTipProperties() {
 
-    this.containerID  = "";
+    this.containerId  = "";
     this.className  = "tooltip";
     this.formatter  = null;
     this.showTransitionTime  =  200;
