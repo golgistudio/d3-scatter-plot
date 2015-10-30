@@ -4,7 +4,7 @@
  *
  * @type {{ _domains: null, init: Function, calcDomains: Function, mapData: Function}}
  */
-function experimentBManager(name) {
+function experimentBManager2(name) {
 
     _name: name;
 

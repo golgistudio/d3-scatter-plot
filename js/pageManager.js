@@ -19,27 +19,22 @@ var pageManager = {
 
         this._currentExperiment = "expA";
 
-        var uuid = this._dataStoreManager.generateUUID();
-        var experiment = new experimentManager(this._currentExperiment);
-        var chart = this.createChart("chart1", experiment, uuid, experimentOriginalData, experimentPlotProperties, this._chartWidthFactor);
-        var chartItem = {
-            uuid: uuid,
-            chart: chart,
-            experiment: experiment,
-            divId : "chart1"
-        };
-        this._chartCollection.push(chartItem);
+        var expInfoCollection = this.getExperimentInfo();
 
-        var experimentB = new experimentManager(this._currentExperiment);
-        var uuid2 = this._dataStoreManager.generateUUID();
-        var chart2 = this.createChart("chart2", experimentB, uuid2, experimentOriginalData, experimentPlotProperties2, this._chartWidthFactor);
-        var chartItem2 = {
-            uuid: uuid2,
-            chart: chart2,
-            experiment: experimentB,
-            divId : "chart2"
-        };
-        this._chartCollection.push(chartItem2);
+        for (var i=0; i < expInfoCollection.length; i++) {
+
+            var expInfo = expInfoCollection[i];
+
+            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties, this._chartWidthFactor);
+            var chartItem = {
+                uuid: expInfo.uuid,
+                chart: chart,
+                experiment: expInfo.experiment,
+                divId : expInfo.divId
+            };
+            this._chartCollection.push(chartItem);
+
+        }
 
         d3.select(window).on('resize', this.resize.bind(this));
 
@@ -161,7 +156,7 @@ var pageManager = {
                 var params = {
                     "plotName": plotName
                 };
-                chartItem.chart.handleRequest("symbolUpdate", params);
+                chartItem.chart.handleRequest("updatePlotStyle", params);
             }
         }
     },
@@ -196,7 +191,7 @@ var pageManager = {
                 var params = {
                     "plotName": plotName
                 };
-                chartItem.chart.handleRequest("styleUpdate", params);
+                chartItem.chart.handleRequest("updatePlotStyle", params);
             }
         }
     },
@@ -229,7 +224,7 @@ var pageManager = {
                 var params = {
                     "plotName": plotName
                 };
-                chartItem.chart.handleRequest("plotStyleUpdate", params);
+                chartItem.chart.handleRequest("updatePlotStyle", params);
             }
         }
 
@@ -245,10 +240,10 @@ var pageManager = {
 
         this._currentExperiment = experimentName;
         var data = null;
-        var properties = null;
+        var properties1 = null;
         var properties2 = null;
-        var annotations = null;
-        var dataManager = null;
+        var expManager1 = null;
+        var expManager2 = null;
 
         var length = this._chartCollection.length;
 
@@ -261,43 +256,75 @@ var pageManager = {
             }
         }
 
-        switch (this._currentExperiment) {
-            case "expA" :
-                data = experimentOriginalData;
-                properties = experimentPlotProperties;
-                properties2 = experimentPlotProperties2;
-                break;
-            case "expB" :
-                data = experimentBOriginalData;
-                properties = experimentBPlotProperties;
-                properties2 = experimentPlotProperties2;
-                break;
+        var expInfoCollection = this.getExperimentInfo();
+
+        for (var i=0; i < expInfoCollection.length; i++) {
+
+            var expInfo = expInfoCollection[i];
+
+            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties, this._chartWidthFactor);
+            var chartItem = {
+                uuid: expInfo.uuid,
+                chart: chart,
+                experiment: expInfo.experiment,
+                divId : expInfo.divId
+            };
+            this._chartCollection.push(chartItem);
 
         }
 
-        var uuid = this._dataStoreManager.generateUUID();
-        var experiment = new experimentManager(this._currentExperiment);
-        var chart = this.createChart("chart1", experiment, uuid, data, properties, this._chartWidthFactor);
-        var chartItem = {
-            uuid: uuid,
-            chart: chart,
-            experiment: experiment,
-            divId : "chart1"
-        };
-        this._chartCollection.push(chartItem);
-
-        var experimentB = new experimentManager(this._currentExperiment);
-        var uuid2 = this._dataStoreManager.generateUUID();
-        var chart2 = this.createChart("chart2", experimentB, uuid2, data, properties2, this._chartWidthFactor);
-        var chartItem2 = {
-            uuid: uuid2,
-            chart: chart2,
-            experiment: experimentB,
-            divId : "chart2"
-        };
-        this._chartCollection.push(chartItem2);
-
         d3.select(window).on('resize', this.resize.bind(this));
 
+    },
+
+    getExperimentInfo: function() {
+        var expInfoCollection = [];
+
+        var expInfoItem1 = null;
+        var expInfoItem2 = null;
+
+        switch (this._currentExperiment) {
+            case "expA" :
+                expInfoItem1 = {
+                    divId:      "chart1",
+                    properties: experimentPlotProperties,
+                    experiment: new experimentManager(),
+                    uuid:       this._dataStoreManager.generateUUID(),
+                    data:       experimentOriginalData
+
+                };
+
+                expInfoItem2 = {
+                    divId:      "chart2",
+                    properties: experimentPlotProperties2,
+                    experiment: new experimentManager2(),
+                    uuid:       this._dataStoreManager.generateUUID(),
+                    data:       experimentOriginalData
+                };
+                break;
+            case "expB" :
+                expInfoItem1 = {
+                    divId:      "chart1",
+                    properties: experimentBPlotProperties,
+                    experiment: new experimentBManager(),
+                    uuid:       this._dataStoreManager.generateUUID(),
+                    data:       experimentBOriginalData
+
+                };
+
+                expInfoItem2 = {
+                    divId:      "chart2",
+                    properties: experimentBPlotProperties2,
+                    experiment: new experimentBManager2(),
+                    uuid:       this._dataStoreManager.generateUUID(),
+                    data:       experimentBOriginalData
+                };
+                break;
+        }
+
+        expInfoCollection.push(expInfoItem1);
+        expInfoCollection.push(expInfoItem2);
+
+        return expInfoCollection;
     }
 };

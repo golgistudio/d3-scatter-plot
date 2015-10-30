@@ -8,7 +8,7 @@
  * @param scales
  * @returns {*}
  */
-function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
+function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 
     var symbolType = 'triangle-up';
     var symbol     = d3.svg.symbol().type(symbolType);
@@ -89,8 +89,9 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionTimes) {
  * @param svg
  * @param plotProp
  * @param scales
- * @param dataset
- * @param transitionTimes
+ * @param data
+ * @param transitionProperties
+ * @returns {*}
  */
 function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties) {
 

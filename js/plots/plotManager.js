@@ -12,8 +12,6 @@ function plotManager() {
         switch(request) {
             case "update" : updatePlots(parameters);
                 break;
-            case "updateSelected" : updateSelectedPlot(parameters);
-                break;
             case "draw" : drawPlots(parameters);
                 break;
             case "drawSelected" : drawSelectedPlot(parameters);
@@ -113,23 +111,4 @@ function plotManager() {
 
     };
 
-    function updateSelectedPlot(updateParams) {
-
-        updateParams.plotProperties.forEach(function (itemProperties) {
-
-            if (itemProperties.name === updateParams.plotName) {
-                var params = {
-                    "data":                 updateParams.data,
-                    "svg":                  updateParams.svg,
-                    "plotProp":             itemProperties,
-                    "scales":               updateParams.scales,
-                    "toolTip":              updateParams.toolTip,
-                    "transitionProperties": updateParams.transitionProperties
-                };
-
-                itemProperties.display.plotRenderer.plotInterface("update", params);
-            }
-        });
-
-    };
 };

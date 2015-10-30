@@ -2,9 +2,9 @@
 
 /**
  *
- * @type {{ _domains: null, init: Function, calcDomains: Function, mapData: Function}}
+ * @type {{_dataDomains: null, init: Function, calcDomains: Function, mapData: Function}}
  */
-function experimentBManager(name) {
+function experimentManager2(name) {
 
     _name: name;
 
@@ -12,7 +12,7 @@ function experimentBManager(name) {
      *
      * @param data
      */
-    this.init =  function (data ) {
+    this.init =  function (data) {
         var dataDomains = calcDomains(data);
         var zoomScaleFactors = initializeZoomFactors();
 
@@ -25,7 +25,7 @@ function experimentBManager(name) {
     function initializeZoomFactors() {
         return {
             yZoomFactors : {
-                "yMin": 0.25,
+                "yMin": 1,
                 "yMax": 10
             },
             xZoomFactors :  {
@@ -57,7 +57,7 @@ function experimentBManager(name) {
 
         return {"xDomain": xDomain,
                 "yDomain": yDomain};
-    }
+    };
 
     /**
      *
@@ -113,9 +113,9 @@ function experimentBManager(name) {
      * @param labelProperties
      */
     this.updateLabelProperties  = function(labelProperties) {
-        labelProperties.xAxisLabelProperties.labelText = "Subjects";
-        labelProperties.yAxisLabelProperties.labelText = "Count";
-        labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment B";
+        labelProperties.xAxisLabelProperties.labelText = "Participants";
+        labelProperties.yAxisLabelProperties.labelText = "Time (seconds)";
+        labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment A";
     };
 
 }

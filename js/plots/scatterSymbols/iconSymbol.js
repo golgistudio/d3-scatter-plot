@@ -82,8 +82,8 @@ function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
         .duration(transitionProperties.startDurationTime)  // Length of animation
         .each("start", function() {  // Start animation
             d3.select(this)  // 'this' means the current element
-                .attr("width", plotProp.display.width * transitionTimes.sizeFactor)
-                .attr("height", plotProp.display.height * transitionTimes.sizeFactor);
+                .attr("width", plotProp.display.width * transitionProperties.sizeFactor)
+                .attr("height", plotProp.display.height * transitionProperties.sizeFactor);
         })
         .delay(function(d, i) {
             return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)

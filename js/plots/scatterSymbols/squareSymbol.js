@@ -88,8 +88,9 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
  * @param svg
  * @param plotProp
  * @param scales
- * @param dataset
- * @param transitionTimes
+ * @param data
+ * @param transitionProperties
+ * @returns {*}
  */
 function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties) {
 

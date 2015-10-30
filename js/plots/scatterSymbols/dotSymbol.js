@@ -86,15 +86,14 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 }
 
 
-
 /**
- * Points have changed values
  *
  * @param svg
  * @param plotProp
  * @param scales
  * @param data
- * @param transitionTimes
+ * @param transitionProperties
+ * @returns {*}
  */
 function updateDotSymbols( svg, plotProp, scales, data, transitionProperties) {
 

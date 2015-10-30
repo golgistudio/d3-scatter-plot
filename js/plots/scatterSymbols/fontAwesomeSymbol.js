@@ -88,14 +88,14 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
 }
 
 
-
 /**
- * ToDo: Implement update for FontAwesomeSymbol
+ *
  * @param svg
  * @param plotProp
  * @param scales
  * @param data
- * @param transitionTimes
+ * @param transitionProperties
+ * @returns {*}
  */
 function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProperties) {
 

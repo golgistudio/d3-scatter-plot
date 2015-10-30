@@ -28,11 +28,7 @@ function Chart(dataManager, uuid, containerId) {
                 break;
             case "resize" : resize(parameters);
                 break;
-            case "styleUpdate" : styleUpdate(parameters);
-                break;
-            case "symbolUpdate" : symbolUpdate(parameters);
-                break;
-            case "plotStyleUpdate" : plotStyleUpdate(parameters);
+            case "updatePlotStyle" : updatePlotStyle(parameters);
                 break;
         };
     };
@@ -298,12 +294,18 @@ function Chart(dataManager, uuid, containerId) {
 
     };
 
-    function styleUpdate(parameters) {
+    function updatePlotStyle(parameters) {
 
         var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
         var transitionProps = _dataStoreManager.getData(_uuid, dataStoreNames.transition);
         var axesValues = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
         var legendProps = _dataStoreManager.getData(_uuid, dataStoreNames.legend);
+
+        plotProps.forEach( function (configItem) {
+            if (configItem.name === parameters.plotName) {
+                configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",{plotStyle: configItem.display.plotStyle});
+            }
+        });
 
         var plotParams = {
             "data" : _data,
@@ -314,7 +316,7 @@ function Chart(dataManager, uuid, containerId) {
             "transitionProperties" : transitionProps,
             "plotName" : parameters.plotName
         };
-        _plotManager.plotManagerInterface("updateSelected", plotParams);
+        _plotManager.plotManagerInterface("drawSelected", plotParams);
 
         var legendData = [];
 
@@ -329,49 +331,5 @@ function Chart(dataManager, uuid, containerId) {
         });
 
         updateLegend(_chartComponents.svg, legendProps, legendData);
-    };
-
-    function symbolUpdate(parameters) {
-
-        var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
-        var transitionProps = _dataStoreManager.getData(_uuid, dataStoreNames.transition);
-        var axesValues = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
-
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : plotProps,
-            "svg": _chartComponents.chartBody,
-            "scales": axesValues.scales,
-            "toolTip" : _toolTipManager,
-            "transitionProperties" : transitionProps,
-            "plotName" : parameters.plotName
-        };
-        _plotManager.plotManagerInterface("drawSelected", plotParams);
-
-    };
-
-    function plotStyleUpdate(parameters) {
-
-        var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
-        var transitionProps = _dataStoreManager.getData(_uuid, dataStoreNames.transition);
-        var axesValues = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
-
-
-        plotProps.forEach( function (configItem) {
-            if (configItem.name === parameters.plotName) {
-                configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",{plotStyle: configItem.display.plotStyle});
-            }
-        });
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : plotProps,
-            "svg": _chartComponents.chartBody,
-            "scales": axesValues.scales,
-            "toolTip" : _toolTipManager,
-            "transitionProperties" : transitionProps,
-            "plotName" : parameters.plotName
-        };
-        _plotManager.plotManagerInterface("drawSelected", plotParams);
-
     };
 };

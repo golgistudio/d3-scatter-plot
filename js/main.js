@@ -27,6 +27,9 @@
 // Menu
 // http://codepen.io/nikhil/pen/sicrK
 
+// Connected data
+// http://jsfiddle.net/JVAdams/bTHk2/2/
+
 "use strict";
 
 
