@@ -1,0 +1,21 @@
+# Logs
+demoApp/logs
+demoApp/*.log
+demoApp/npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Webstore files
+.idea/
+*.iml
+
+# public build
+demoApp/public/
+
+# Dependency directory
+# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
+demoApp/node_modules/
+
