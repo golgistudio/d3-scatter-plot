@@ -22,6 +22,17 @@
       "extensions": ["js"]
     },
 
+    "testJS": {
+      "src": "js",
+      "dest": "js",
+      "extractSharedJs": true,
+      "entries": {
+        "app": ["./app.js"],
+        "page": ["./page.js"]
+      },
+      "extensions": ["js"]
+    },
+
     "sass": {
       "src": "stylesheets",
       "dest": "stylesheets",
@@ -57,13 +68,13 @@
     "images": {
       "src": "images",
       "dest": "images",
-      "extensions": ["jpg", "png", "svg", "gif"]
+      "extensions": ["jpg", "png", "svg", "gif", "ico"]
     },
 
     "fonts": {
       "src": "fonts",
       "dest": "fonts",
-      "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
+      "extensions": ["woff2", "woff", "eot", "ttf", "svg", "otf"]
     },
 
     "iconFont": {

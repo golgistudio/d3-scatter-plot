@@ -49,5 +49,8 @@ var dataStoreManager = (function () {
             }
             return instance;
         }
-    };
+    }
+
 })();
+
+module.exports = dataStoreManager;

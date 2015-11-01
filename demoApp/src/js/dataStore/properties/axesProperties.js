@@ -31,4 +31,5 @@ function AxesProperties() {
     this.yBorderOuterTickSize   = 0;
 
 }
+module.exports = AxesProperties;
 
