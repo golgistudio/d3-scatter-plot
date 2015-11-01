@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../styles/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div>
+    <ul class="menu">
+
+        <li title="home"><a href="#" class="menu-button data" id="dataMenu">menu</a></li>
+
+        <li title="search"><a href="#" class="search" id="symbolMenu">search</a></li>
+        <li title="pencil"><a href="#" class="pencil" id="colorMenu">pencil</a></li>
+        <li title="pencil"><a href="#" class="industry" id="plotStyleMenu">pencil</a></li>
+        <li title="pencil"><a href="#" class="heartBeat" id="experimentMenu">pencil</a></li>
+    </ul>
+
+    <ul class="menu-bar" id="dataControl">
+        <li><a href="#">Data</a>
+        </li>
+        <li><a href="#" id="resetPointsButton">Reset</a>
+        </li>
+        <li><a href="#" id="addPointButton">Add</a>
+        </li>
+        <li><a href="#" id="removePointButton">Remove</a>
+        </li>
+        <li><a href="#" id="changePointButton">Change</a>
+        </li>
+    </ul>
+    <ul class="menu-bar" id="symbolControl">
+        <li><a href="#">Symbol</a>
+        </li>
+        <li><a href="#" id="circleSymbol">Circle</a>
+        </li>
+        <li><a href="#" id="triangleSymbol">Triangle</a>
+        </li>
+        <li><a href="#" id="iconSymbol">Icon</a>
+
+    </ul>
+    <ul class="menu-bar" id="colorControl">
+        <li><a href="#">Color</a>
+        </li>
+        <li><a href="#" id="blueColor">Blue</a>
+        </li>
+        <li><a href="#" id="pinkColor">Purple</a>
+        </li>
+    </ul>
+
+    <ul class="menu-bar" id="plotStyleControl">
+        <li><a href="#">Plot Style</a>
+        </li>
+        <li><a href="#" id="scatter">Scatter</a>
+        </li>
+        <li><a href="#" id="barChart">Bar Chart</a>
+        </li>
+    </ul>
+
+    <ul class="menu-bar" id="experimentControl">
+        <li><a href="#">Experiment</a>
+        </li>
+        <li><a href="#" id="expA">Experiment A</a>
+        </li>
+        <li><a href="#" id="expB">Experiment B</a>
+        </li>
+    </ul>
+
+</div>
+<div id="chartContainer">
+    <div id="chart1"></div>
+
+    <div id="chart2"></div>
+
+</div>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="../js/dataStore/dataStoreNames.js"></script>
+<script src="../js/dataStore/dataStoreManager.js"></script>
+<script src="../js/dataStore/properties/toolTipProperties.js"></script>
+<script src="../js/chart/toolTipManager.js"></script>
+<script src="../js/plots/scatterSymbols/dotSymbol.js"></script>
+<script src="../js/plots/scatterSymbols/fontAwesomeSymbol.js"></script>
+<script src="../js/plots/scatterSymbols/iconSymbol.js"></script>
+<script src="../js/plots/scatterSymbols/squareSymbol.js"></script>
+<script src="../js/plots/scatterSymbols/triangleSymbol.js"></script>
+<script src="../js/chart/labels.js"></script>
+<script src="../js/chart/legendManager.js"></script>
+<script src="../js/chart/axesManager.js"></script>
+<script src="../js/dataStore/properties/chartProperties.js"></script>
+<script src="../js/dataStore/properties/axesProperties.js"></script>
+<script src="../js/dataStore/properties/labelProperties.js"></script>
+<script src="../js/dataStore/properties/legendProperties.js"></script>
+<script src="../js/plots/barChart.js"></script>
+<script src="../js/plots/scatter.js"></script>
+<script src="../js/plots/plotManager.js"></script>
+<script src="../js/dataStore/properties/transitionProperties.js"></script>
+<script src="../js/chart/chart.js"></script>
+<script src="../js/experiments/experimentB/data/experimentBAddData.js"></script>
+<script src="../js/experiments/experimentB/data/experimentBDifferentTimesData.js"></script>
+<script src="../js/experiments/experimentB/data/experimentBRemoveData.js"></script>
+<script src="../js/experiments/experimentB/data/experimentBOriginalData.js"></script>
+<script src="../js/experiments/experimentB/experimentBPlotProperties.js"></script>
+<script src="../js/experiments/experimentB/experimentBPlotProperties2.js"></script>
+<script src="../js/experiments/experimentB/experimentBManager.js"></script>
+<script src="../js/experiments/experimentB/experimentBManager2.js"></script>
+<script src="../js/experiments/experimentResults/data/experimentAddData.js"></script>
+<script src="../js/experiments/experimentResults/data/experimentDifferentTimesData.js"></script>
+<script src="../js/experiments/experimentResults/data/experimentRemoveData.js"></script>
+<script src="../js/experiments/experimentResults/data/experimentOriginalData.js"></script>
+<script src="../js/experiments/experimentResults/experimentPlotProperties.js"></script>
+<script src="../js/experiments/experimentResults/experimentPlotProperties2.js"></script>
+<script src="../js/experiments/experimentResults/experimentManager.js"></script>
+<script src="../js/experiments/experimentResults/experimentManager2.js"></script>
+<script src="../js/pageManager.js"></script>
+<script src="../js/menuManager.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

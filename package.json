@@ -1,5 +1,5 @@
 {
-  "name": "D3 Scatter Plot Demo",
+  "name": "d3-scatter-plot",
   "version": "0.0.1",
   "description": "A small demo of D2 using a Scatter Plot",
   "engines": {

@@ -12,6 +12,9 @@ pids
 .idea/
 *.iml
 
+# swap file
+*.swp
+
 # public build
 demoApp/public/
 

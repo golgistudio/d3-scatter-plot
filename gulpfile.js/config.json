@@ -1,7 +1,7 @@
 {
   "root": {
-    "src": "./src",
-    "dest": "./public"
+    "src": "./demoApp/src",
+    "dest": "./demoApp/public"
   },
 
   "tasks": {
@@ -22,7 +22,7 @@
       "extensions": ["js"]
     },
 
-    "css": {
+    "sass": {
       "src": "stylesheets",
       "dest": "stylesheets",
       "autoprefixer": {
@@ -31,7 +31,16 @@
       "sass": {
         "indentedSyntax": true
       },
-      "extensions": ["sass", "scss", "css"]
+      "extensions": ["sass", "scss"]
+    },
+
+    "css": {
+      "src": "styles",
+      "dest": "styles",
+      "autoprefixer": {
+        "browsers": ["last 3 version"]
+      },
+      "extensions": ["css", "dummy"]
     },
 
     "html": {
