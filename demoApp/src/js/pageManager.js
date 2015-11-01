@@ -137,7 +137,7 @@ var pageManager = {
                         configItem.display.symbol = symbol;
                         switch (symbol) {
                             case "icon":
-                                configItem.display.icon = "images/stopwatch-1-64x64.png";
+                                configItem.display.icon = "../images/stopwatch-1-64x64.png";
                                 configItem.display.width = 20;
                                 configItem.display.height = 20;
                                 break;
