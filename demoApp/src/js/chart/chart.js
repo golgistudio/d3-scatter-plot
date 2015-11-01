@@ -1,5 +1,7 @@
 "use strict";
 
+/*global d3:false */
+
 /**
  *
  * @constructor
@@ -30,7 +32,7 @@ function Chart(dataManager, uuid, containerId) {
                 break;
             case "updatePlotStyle" : updatePlotStyle(parameters);
                 break;
-        };
+        }
     };
 
     /**
@@ -42,9 +44,9 @@ function Chart(dataManager, uuid, containerId) {
         _data = chartParameters.data;
         _experiment = chartParameters.experiment;
 
-        _axesManager = new axesManager(_uuid, _dataStoreManager);
-        _plotManager = new plotManager();
-        _toolTipManager = new toolTipManager();
+        _axesManager = new AxesManager(_uuid, _dataStoreManager);
+        _plotManager = new PlotManager();
+        _toolTipManager = new ToolTipManager();
         _toolTipManager.create(_dataStoreManager.getData(_uuid, dataStoreNames.toolTip));
 
         var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
@@ -59,7 +61,7 @@ function Chart(dataManager, uuid, containerId) {
         plotProps.forEach(function (configItem) {
             var params = {
                 "plotStyle" : configItem.display.plotStyle
-            }
+            };
             configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",params);
 
             var legendDataItem = {
@@ -95,40 +97,37 @@ function Chart(dataManager, uuid, containerId) {
 
         drawLegend(_chartComponents.svg, chartProps.width, chartProps.height, legendProps, legendData);
 
-    };
+    }
 
 
-
-    // If the drag behavior prevents the default click,
-    // also stop propagation so we don’t click-to-zoom.
+    /**
+     *
+     */
     function stopped() {
         if (d3.event.defaultPrevented) {
             d3.event.stopPropagation();
         }
-    };
+    }
 
     /**
      *
-     * @param totalWidth
-     * @param totalHeight
-     * @param margin
+     * @param chartProps
      */
     function initializeChartSize (chartProps) {
 
         chartProps.width  = chartProps.width - chartProps.margin.left - chartProps.margin.right;
         chartProps.height = chartProps.height - chartProps.margin.top - chartProps.margin.bottom;
-    };
+    }
 
 
     /**
      *
      * @param data
-     * @param mapDataCallback
-     * @param width
-     * @param height
-     * @param margin
-     * @param containerId
-     * @returns {*}
+     * @param experiment
+     * @param chartProps
+     * @param that
+     * @param axesManager
+     * @returns {{svg: *, chartBody: *}}
      */
     function initializeChart (data, experiment, chartProps, that, axesManager) {
 
@@ -168,14 +167,12 @@ function Chart(dataManager, uuid, containerId) {
             "svg" : svg,
             "chartBody" : chartBody
         };
-    };
-
+    }
 
 
     /**
      *
-     * @param width
-     * @param height
+     * @param params
      */
      function resize (params) {
 
@@ -225,11 +222,10 @@ function Chart(dataManager, uuid, containerId) {
         });
 
         drawLegend(_chartComponents.svg, chartProps.width , chartProps.height, legendProps, legendData);
-    };
+    }
 
     /**
      *
-     * @param chart
      */
     function zoomHandler() {
 
@@ -254,12 +250,11 @@ function Chart(dataManager, uuid, containerId) {
             "scales": axes.scales
         };
         _plotManager.plotManagerInterface("zoom", plotParams);
-    };
+    }
 
     /**
      *
-     * @param data
-     * @param domains
+     * @param parameters
      */
     function updateData(parameters) {
 
@@ -292,7 +287,7 @@ function Chart(dataManager, uuid, containerId) {
         _plotManager.plotManagerInterface("update", plotParams);
         _axesManager.updateAxes(svg);
 
-    };
+    }
 
     function updatePlotStyle(parameters) {
 
@@ -331,5 +326,5 @@ function Chart(dataManager, uuid, containerId) {
         });
 
         updateLegend(_chartComponents.svg, legendProps, legendData);
-    };
-};
+    }
+}

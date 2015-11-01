@@ -3,7 +3,7 @@
 /**
  *
  */
-function toolTipProperties() {
+function ToolTipProperties() {
 
     this.containerId  = "";
     this.className  = "tooltip";

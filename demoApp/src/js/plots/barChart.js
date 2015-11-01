@@ -1,14 +1,14 @@
-/**
- * Created by laurie on 10/26/15.
- */
-"use strict"
-;
+
+"use strict";
+
+/*global d3:false */
+/*jshint unused:true */
 
 
 /**
  *
  */
-function barChart() {
+function BarChart() {
 
     /**
      *

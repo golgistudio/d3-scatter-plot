@@ -1,5 +1,8 @@
 "use strict";
 
+/*global d3:false */
+/*jshint unused:true */
+
 /**
  *
  * @param plot
@@ -12,9 +15,6 @@
 function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 
 
-    var hoverSize = plotProp.display.radius * transitionProperties.sizeFactor;
-
-
     plot = plot.enter().append("circle")
         .attr("class", plotProp.plotClassName)
         .attr("r", plotProp.display.radius)
@@ -23,7 +23,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
         })
         .attr("cy", function(d) {
             return scales.yScale(d[plotProp.yProp]);
-        })
+        });
 
         plot.style("opacity", "0")
         .style('opacity', 1e-6)
@@ -33,7 +33,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
         .transition()
         .duration(transitionProperties.startDurationTime)
         .style("stroke", plotProp.display.strokeColor)
-        .style("fill", function (d) {
+        .style("fill", function () {
             return plotProp.display.fillColor;
         });
 
@@ -52,10 +52,17 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     
     return plot;
 
+
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverStart (d, that) {
 
         var currentFillColor = d3.select(that).style("fill");
         var hoverFillColor = d3.rgb(currentFillColor).darker();
+        var hoverSize = plotProp.display.radius * transitionProperties.sizeFactor;
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
@@ -67,8 +74,13 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             .attr("r", hoverSize)
             .ease("elastic");
 
-    };
+    }
 
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverEnd(d, that) {
 
         toolTip.hide();
@@ -81,7 +93,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             .attr("r", plotProp.display.radius)
             .ease(transitionProperties.hoverEaseType);
 
-    };
+    }
 
 }
 
@@ -135,6 +147,12 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionProperties) {
 
 }
 
+/**
+ *
+ * @param plot
+ * @param plotProp
+ * @param scales
+ */
 function zoomDotSymbol(plot, plotProp, scales) {
 
         plot.selectAll('circle.' + plotProp.plotClassName).attr('cy', function (d) {

@@ -1,9 +1,13 @@
-/**
- * Created by laurie on 10/24/15.
- */
 "use strict";
 
-function axesManager(uuid, dataStoreManager) {
+/*global d3:false */
+
+/**
+ *
+ * @param uuid
+ * @param dataStoreManager
+ */
+function AxesManager(uuid, dataStoreManager) {
 
     var _uuid = uuid;
     var _dataStoreManager = dataStoreManager;
@@ -11,9 +15,6 @@ function axesManager(uuid, dataStoreManager) {
 
     /**
      *
-     * @param domains
-     * @param width
-     * @param height
      */
     this.createAxes = function () {
 
@@ -77,10 +78,21 @@ function axesManager(uuid, dataStoreManager) {
         _dataStoreManager.setData(_uuid, dataStoreNames.axesValues, axes);
     };
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     this.translate = function(x,y) {
         _zoomListener.translate(x,y);
     };
 
+    /**
+     *
+     * @param that
+     * @param zoomHandler
+     * @returns {*}
+     */
     this.createZoomListener = function(that, zoomHandler) {
 
         var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
@@ -102,10 +114,6 @@ function axesManager(uuid, dataStoreManager) {
     /**
      *
      * @param svg
-     * @param axes
-     * @param width
-     * @param height
-     * @returns {*}
      */
     this.drawAxes = function  (svg) {
 
@@ -180,4 +188,4 @@ function axesManager(uuid, dataStoreManager) {
         }
     };
 
-};
+}

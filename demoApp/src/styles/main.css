@@ -98,7 +98,7 @@ h1 {
 * Slide Out Menu
 *
 *************************/
-@import url("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css");
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
 .menu, .menu-bar {
     position: fixed;
     top: 0;

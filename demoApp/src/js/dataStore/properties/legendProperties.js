@@ -3,7 +3,7 @@
 /**
  *
  */
-function legendProperties () {
+function LegendProperties () {
     this.legendClassName= "legend";
     this.textClassName= "legendText";
     this.x= 10;
@@ -16,9 +16,9 @@ function legendProperties () {
     this.boxHeight= 60;
     this.boxClassName= "legendBox";
     this.itemClassName= "legendItems";
-    this.legendSymbolClassName= "legendSymbol";
-    this.textYIncrement= 3;
-    this.font_size= 12;
+    //this.legendSymbolClassName= "legendSymbol";
+    //this.textYIncrement= 3;
+    //this.font_size= 12;
     this.offset= 20;
     this.symbolWidth= 8;
     this.symbolHeight= 8

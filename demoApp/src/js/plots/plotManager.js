@@ -1,6 +1,6 @@
 "use strict";
 
-function plotManager() {
+function PlotManager() {
 
     /**
      *
@@ -21,26 +21,27 @@ function plotManager() {
             case "getPlotRenderer" :
                 return getPlotRenderer(parameters);
                 break;
-        };
+        }
     };
 
     /**
      *
-     * @param plotStyle
-     * @returns {{renderPlot: Function, addSymbols: Function}}
+     * @param parameters
+     * @returns {*}
      */
     function getPlotRenderer(parameters) {
 
-        switch (parameters.plotStyle) {
-            case "scatter"  :
-                return new scatterPlot();
-                break;
-            case "bar" :
-                return new barChart();
-            break;
+        if (parameters.plotStyle === "scatter") {
+            return new ScatterPlot();
+        } else if (parameters.plotStyle === "bar") {
+            return new BarChart();
         }
-    };
+    }
 
+    /**
+     *
+     * @param zoomParams
+     */
     function zoomPlots(zoomParams) {
 
         zoomParams.plotProperties.forEach(function (configItem) {
@@ -53,7 +54,7 @@ function plotManager() {
 
             configItem.display.plotRenderer.plotInterface("zoom", params);
         });
-    };
+    }
 
     /***
      *
@@ -73,8 +74,13 @@ function plotManager() {
 
             configItem.display.plotRenderer.plotInterface("render", params);
         });
-    };
+    }
 
+
+    /**
+     *
+     * @param drawParams
+     */
     function drawSelectedPlot(drawParams) {
 
         drawParams.plotProperties.forEach(function (configItem) {
@@ -91,8 +97,12 @@ function plotManager() {
                 configItem.display.plotRenderer.plotInterface("render", params);
             }
         });
-    };
+    }
 
+    /**
+     *
+     * @param updateParams
+     */
     function updatePlots(updateParams) {
 
         updateParams.plotProperties.forEach(function (itemProperties) {
@@ -109,6 +119,6 @@ function plotManager() {
 
         });
 
-    };
+    }
 
-};
+}

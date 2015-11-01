@@ -8,7 +8,7 @@
 /**
  *
  */
-function scatterPlot() {
+function ScatterPlot() {
 
     /**
      *

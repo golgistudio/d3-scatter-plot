@@ -1,11 +1,16 @@
 "use strict";
 
+/*global d3:false */
+/*jshint unused:true */
+
 
 /**
  *
  * @param plot
  * @param plotProp
  * @param scales
+ * @param toolTip
+ * @param transitionProperties
  * @returns {*}
  */
 function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
@@ -30,7 +35,7 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
         .transition()
         .style('stroke', plotProp.display.strokeColor)
         .duration(transitionProperties.startDurationTime)
-        .style("fill", function (d) {
+        .style("fill", function () {
             return plotProp.display.fillColor;
         });
 
@@ -49,6 +54,11 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
 
     return plot;
 
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverStart(d, that) {
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
@@ -67,7 +77,13 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
             .attr("height", hoverHeight)
             .ease(transitionProperties.hoverEaseType);
 
-    };
+    }
+
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverEnd(d, that) {
         toolTip.hide();
         d3.select(that).transition()
@@ -79,9 +95,9 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
             .attr("height", plotProp.display.height)
             .ease(transitionProperties.hoverEaseType);
 
-    };
+    }
 
-};
+}
 
 /**
  *
@@ -127,7 +143,12 @@ function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties)
     return svg;
 }
 
-
+/**
+ *
+ * @param plot
+ * @param plotProp
+ * @param scales
+ */
 function zoomSquareSymbol(plot, plotProp, scales) {
 
     plot.selectAll('rect.' + plotProp.plotClassName).attr('y', function (d) {
@@ -136,5 +157,5 @@ function zoomSquareSymbol(plot, plotProp, scales) {
         return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
     });
 
-};
+}
 

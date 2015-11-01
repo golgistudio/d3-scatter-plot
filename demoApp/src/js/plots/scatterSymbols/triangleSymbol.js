@@ -1,11 +1,16 @@
 "use strict";
 
+/*global d3:false */
+/*jshint unused:true */
+
 
 /**
  *
  * @param plot
  * @param plotProp
  * @param scales
+ * @param toolTip
+ * @param transitionProperties
  * @returns {*}
  */
 function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
@@ -32,7 +37,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties
         .transition()
         .duration(transitionProperties.startDurationTime)
         .style("stroke", plotProp.display.strokeColor)
-        .style("fill", function (d) {
+        .style("fill", function () {
             return plotProp.display.fillColor;
         });
 
@@ -52,6 +57,11 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties
 
     return plot;
 
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverStart(d, that) {
         var currentFillColor = d3.select(that).style("fill");
         var hoverFillColor   = d3.rgb(currentFillColor).darker();
@@ -69,6 +79,11 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties
             .ease(transitionProperties.hoverEaseType);
     }
 
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverEnd(d, that) {
         var symbol = d3.svg.symbol().type('triangle-up');
 
@@ -138,6 +153,13 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
 
     return svg;
 }
+
+/**
+ *
+ * @param plot
+ * @param plotProp
+ * @param scales
+ */
 function zoomTriangleSymbol(plot, plotProp, scales) {
 
     plot.selectAll('path.' + plotProp.plotClassName).attr("x", function (d) {

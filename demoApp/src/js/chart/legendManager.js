@@ -1,9 +1,5 @@
 "use strict";
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Legend
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 /**
  *
@@ -11,6 +7,7 @@
  * @param width
  * @param height
  * @param properties
+ * @param legendData
  */
 function drawLegend(svg, width, height, properties, legendData) {
 
@@ -41,13 +38,24 @@ function drawLegend(svg, width, height, properties, legendData) {
 
     addLegendItems(legendCollection, legendData, properties);
 
-};
+}
 
+/**
+ *
+ * @param svg
+ * @param properties
+ */
 function removeLegendItems(svg, properties) {
 
    svg.selectAll("." + properties.itemClassName).data([]).exit().remove();
 }
 
+/**
+ *
+ * @param svg
+ * @param properties
+ * @param legendData
+ */
 function updateLegend(svg, properties, legendData) {
 
     removeLegendItems(svg, properties);
@@ -60,8 +68,14 @@ function updateLegend(svg, properties, legendData) {
 
     addLegendItems(legendCollection, legendData, properties);
 
-};
+}
 
+/**
+ *
+ * @param legendCollection
+ * @param legendData
+ * @param properties
+ */
 function addLegendItems(legendCollection, legendData, properties) {
     legendCollection.selectAll("text")
         .data(legendData)
@@ -72,7 +86,7 @@ function addLegendItems(legendCollection, legendData, properties) {
         })
         .attr("x", "4em")
         .attr("class", properties.textClassName)
-        .text(function(d, i) {
+        .text(function(d) {
             return d.name;
         })
         .on("click", function(d) {
@@ -92,7 +106,7 @@ function addLegendItems(legendCollection, legendData, properties) {
             var yVal = 18 * i + 15;
             return "translate(" + 30 + "," + yVal + ")";
         })
-        .style("fill", function(d, i) {
+        .style("fill", function(d) {
             return d.color;
         })
         .on("click", function(d) {
@@ -100,6 +114,10 @@ function addLegendItems(legendCollection, legendData, properties) {
         });
 }
 
+/**
+ *
+ * @param d
+ */
 function legendItemClickedHandler(d) {
 
     // Determine if current line is visible

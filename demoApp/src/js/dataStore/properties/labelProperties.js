@@ -2,9 +2,8 @@
 
 /**
  *
- * @type {{yAxisClassName: string, xAxisClassName: string, xAxisLabel: string, yAxisLabel: string, title: string, titleClassName: string}}
  */
-function labelProperties () {
+function LabelProperties () {
 
     this.titleProperties      = {
             "className":  "title",

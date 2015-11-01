@@ -1,6 +1,6 @@
 "use strict";
 
-function transitionProperties () {
+function TransitionProperties () {
     this.startDurationTime = 1000;
     this.delayAdjustment = 500;
     this.endDurationTime = 500;

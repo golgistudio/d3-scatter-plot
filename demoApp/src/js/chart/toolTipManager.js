@@ -2,9 +2,8 @@
 
 /**
  *
- * @type {{_toolTip: null, _toolTipFormatter: null, _showTransitionTime: number, _hideTransitionTime: number, _leftOffset: number, _topOffset: number, create: Function, show: Function, hide: Function}}
  */
-function toolTipManager() {
+function ToolTipManager() {
 
     var _toolTip= null,
     _toolTipProperties  = null;
@@ -19,7 +18,7 @@ function toolTipManager() {
 
         _toolTip =  d3.select("#" + _toolTipProperties.containerId).append("div")
             .attr("class", _toolTipProperties.className);
-    }
+    };
 
     /**
      *
@@ -27,6 +26,7 @@ function toolTipManager() {
      * @param pageX
      * @param pageY
      * @param plotPropIndex
+     * @param yProp
      */
     this.show = function(d, pageX, pageY, plotPropIndex, yProp) {
 
@@ -37,7 +37,7 @@ function toolTipManager() {
             .style("top",  (pageY - _toolTipProperties.topOffset) + "px");
         _toolTip.html("<div class=\"toolTipContent\" >" + _toolTipProperties.formatter(d, plotPropIndex, yProp) + "</div>");
 
-    }
+    };
 
     /**
      *
@@ -48,4 +48,4 @@ function toolTipManager() {
             .duration(_toolTipProperties.hideTransitionTime)
             .style("opacity", 0);
     }
-};
+}

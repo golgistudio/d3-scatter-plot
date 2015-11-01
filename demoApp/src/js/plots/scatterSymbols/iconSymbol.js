@@ -1,16 +1,19 @@
 "use strict";
 
+/*global d3:false */
+/*jshint unused:true */
+
+
 /**
  *
  * @param plot
  * @param plotProp
  * @param scales
+ * @param toolTip
+ * @param transitionProperties
  * @returns {*}
  */
 function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
-
-
-    var hoverSize = plotProp.display.radius * transitionProperties.sizeFactor;
 
 
     var iconPlot = plot.enter().append("image")
@@ -41,6 +44,11 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 
     return plot;
 
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverStart(d, that ) {
 
         var currentFillColor = d3.select(that).style("fill");
@@ -60,7 +68,13 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             .attr("height", hoverHeight)
             .ease(transitionProperties.hoverEaseType);
 
-    };
+    }
+
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverEnd(d, that ) {
         toolTip.hide();
         d3.select(that).transition()
@@ -72,9 +86,19 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             .attr("height", plotProp.display.height)
             .ease(transitionProperties.hoverEaseType);
 
-    };
-};
+    }
+}
 
+
+/**
+ *
+ * @param svg
+ * @param plotProp
+ * @param scales
+ * @param data
+ * @param transitionProperties
+ * @returns {*}
+ */
 function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
 
 
@@ -106,6 +130,12 @@ function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
     return svg;
 }
 
+/**
+ *
+ * @param plot
+ * @param plotProp
+ * @param scales
+ */
 function zoomIconSymbol(plot, plotProp, scales) {
 
     plot.selectAll('image.' + plotProp.plotClassName)
@@ -116,5 +146,5 @@ function zoomIconSymbol(plot, plotProp, scales) {
             return scales.yScale(d[plotProp.yProp]);
         });
 
-};
+}
 

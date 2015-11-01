@@ -3,7 +3,7 @@
 /**
  *
  * @param svg
- * @param config
+ * @param labelProps
  * @param width
  * @param height
  * @param margin
@@ -22,7 +22,7 @@ function drawChartLabels (svg, labelProps, width, height, margin) {
     drawLabel(svg, labelProps.titleProperties);
     drawLabel(svg, labelProps.xAxisLabelProperties);
     drawLabel(svg, labelProps.yAxisLabelProperties);
-};
+}
 
 /**
  *
@@ -39,4 +39,4 @@ function drawLabel(svg, properties) {
         .attr("transform", properties.transform)
         .attr("font-size", properties.fontSize)
         .text(properties.labelText);
-}  ;
+}

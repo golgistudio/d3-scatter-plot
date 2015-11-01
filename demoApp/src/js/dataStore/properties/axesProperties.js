@@ -1,6 +1,6 @@
 "use strict";
 
-function axesProperties() {
+function AxesProperties() {
     this.yPosition = 6;
     this.xPosition = 6;
 
@@ -18,7 +18,7 @@ function axesProperties() {
     this.xAxisClassSelector = ".x.axis";
 
     this.yTransitionDuration = 500;
-    this.xTransitionDuration = 500;
+    //this.xTransitionDuration = 500;
 
     this.xScaleRangeStart       = 0;
     this.xScaleRangePointsStart = 0;

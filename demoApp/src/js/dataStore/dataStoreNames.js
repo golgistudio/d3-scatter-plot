@@ -10,10 +10,11 @@
  * ~ transition
  * ~ experiment
  * ~ plotProperties (collection of properties)
+ */
+
+/**
  *
- *
- *
- * @type {{axes: string, chart: string, label: string, legend: string, toolTip: string, transition: string}}
+ * @type {{axes: string, chart: string, labels: string, legend: string, toolTip: string, transition: string, experiment: string, axesValues: string, zoomScaleFactors: string, domains: string}}
  */
 var dataStoreNames = {
     axes: "axes",

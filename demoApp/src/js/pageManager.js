@@ -4,7 +4,7 @@
 
 /**
  *
- * @type {{_chart: null, init: Function, resize: Function}}
+ * @type {{_dataStoreManager: null, _chartCollection: Array, _currentExperiment: null, _chartWidthFactor: number, init: Function, createChart: Function, getActiveExperiment: Function, resize: Function, updatePoints: Function, setSymbol: Function, setSymbolColor: Function, setPlotStyle: Function, switchExperiment: Function, getExperimentInfo: Function}}
  */
 var pageManager = {
 
@@ -42,12 +42,12 @@ var pageManager = {
 
     createChart: function(divID, experiment, uuid, data, plotProps, chartWidthFactor) {
 
-        var axesProps = new axesProperties();
-        var chartProps = new chartProperties();
-        var labelProps = new labelProperties();
-        var legendProps = new legendProperties();
-        var toolTipProps = new toolTipProperties();
-        var transitionProps = new transitionProperties();
+        var axesProps = new AxesProperties();
+        var chartProps = new ChartProperties();
+        var labelProps = new LabelProperties();
+        var legendProps = new LegendProperties();
+        var toolTipProps = new ToolTipProperties();
+        var transitionProps = new TransitionProperties();
 
         chartProps.height      = window.innerHeight - chartProps.heightMargin;
         chartProps.width       = (window.innerWidth /chartWidthFactor) - chartProps.widthMargin;
@@ -166,6 +166,7 @@ var pageManager = {
      * @param color
      * @param pageControl
      * @param plotName
+     * @param chartDiv
      */
     setSymbolColor: function(color, pageControl, plotName, chartDiv) {
 
@@ -198,9 +199,10 @@ var pageManager = {
 
     /**
      *
-     * @param color
+     * @param plotStyle
      * @param pageControl
      * @param plotName
+     * @param chartDiv
      */
     setPlotStyle: function(plotStyle, pageControl, plotName, chartDiv) {
 
@@ -232,23 +234,17 @@ var pageManager = {
 
     /**
      *
-     * @param color
+     * @param experimentName
      * @param pageControl
-     * @param plotName
      */
     switchExperiment: function(experimentName, pageControl) {
 
         this._currentExperiment = experimentName;
-        var data = null;
-        var properties1 = null;
-        var properties2 = null;
-        var expManager1 = null;
-        var expManager2 = null;
 
         var length = this._chartCollection.length;
 
-        for (var i = 0; i < length; i++) {
-            var chartItem = pageControl._chartCollection[i];
+        for (var iii = 0; iii < length; iii++) {
+            var chartItem = pageControl._chartCollection[iii];
             var olddiv = document.getElementById(chartItem.divId);
 
             while (olddiv.firstChild) {
@@ -258,18 +254,18 @@ var pageManager = {
 
         var expInfoCollection = this.getExperimentInfo();
 
-        for (var i=0; i < expInfoCollection.length; i++) {
+        for (var jjj=0; jjj < expInfoCollection.length; jjj++) {
 
-            var expInfo = expInfoCollection[i];
+            var expInfo = expInfoCollection[jjj];
 
             var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties, this._chartWidthFactor);
-            var chartItem = {
+            var item = {
                 uuid: expInfo.uuid,
                 chart: chart,
                 experiment: expInfo.experiment,
                 divId : expInfo.divId
             };
-            this._chartCollection.push(chartItem);
+            this._chartCollection.push(item);
 
         }
 
@@ -288,7 +284,7 @@ var pageManager = {
                 expInfoItem1 = {
                     divId:      "chart1",
                     properties: experimentPlotProperties,
-                    experiment: new experimentManager(),
+                    experiment: new ExperimentManager(),
                     uuid:       this._dataStoreManager.generateUUID(),
                     data:       experimentOriginalData
 
@@ -297,7 +293,7 @@ var pageManager = {
                 expInfoItem2 = {
                     divId:      "chart2",
                     properties: experimentPlotProperties2,
-                    experiment: new experimentManager2(),
+                    experiment: new ExperimentManager2(),
                     uuid:       this._dataStoreManager.generateUUID(),
                     data:       experimentOriginalData
                 };
@@ -306,7 +302,7 @@ var pageManager = {
                 expInfoItem1 = {
                     divId:      "chart1",
                     properties: experimentBPlotProperties,
-                    experiment: new experimentBManager(),
+                    experiment: new ExperimentBManager(),
                     uuid:       this._dataStoreManager.generateUUID(),
                     data:       experimentBOriginalData
 
@@ -315,7 +311,7 @@ var pageManager = {
                 expInfoItem2 = {
                     divId:      "chart2",
                     properties: experimentBPlotProperties2,
-                    experiment: new experimentBManager2(),
+                    experiment: new ExperimentBManager2(),
                     uuid:       this._dataStoreManager.generateUUID(),
                     data:       experimentBOriginalData
                 };

@@ -1,12 +1,12 @@
 "use strict";
 
+/*global d3:false */
+
 /**
  *
- * @type {{_dataDomains: null, init: Function, calcDomains: Function, mapData: Function}}
+ * @constructor
  */
-function experimentManager(name) {
-
-    _name: name;
+function ExperimentManager() {
 
     /**
      *
@@ -57,7 +57,7 @@ function experimentManager(name) {
 
         return {"xDomain": xDomain,
                 "yDomain": yDomain};
-    };
+    }
 
     /**
      *
@@ -78,6 +78,7 @@ function experimentManager(name) {
      *
      * @param d
      * @param plotPropIndex
+     * @param yProp
      * @returns {string}
      */
     this.experimentToolTipContent = function(d, plotPropIndex, yProp) {

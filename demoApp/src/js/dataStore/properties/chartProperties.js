@@ -3,7 +3,7 @@
 /**
  *
  */
-function chartProperties() {
+function ChartProperties() {
 
     this.margin= {
         top: 50,
@@ -16,4 +16,4 @@ function chartProperties() {
     this.heightMargin= 50;
     this.widthMargin= 35;
     this.containerId= "";
-};
+}

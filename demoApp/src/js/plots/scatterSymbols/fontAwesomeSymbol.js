@@ -1,12 +1,17 @@
 "use strict";
 
+/*global d3:false */
+/*jshint unused:true */
+
 
 /**
  *
  * @param plot
  * @param plotProp
  * @param scales
- * @returns {*}
+ * @param toolTip
+ * @param transitionProperties
+ * @returns {XMLList|*}
  */
 function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
 
@@ -34,7 +39,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
         .transition()
         .duration(transitionProperties.startDurationTime)
         .style("stroke", plotProp.display.strokeColor)
-        .style("fill", function (d) {
+        .style("fill", function () {
             return plotProp.display.textFill;
         });
 
@@ -71,7 +76,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
             .attr('font-size', fontVal)
             .ease(transitionProperties.hoverEaseType);
 
-    };
+    }
     function handleHoverEnd(d, that) {
         toolTip.hide();
         var id = "#" + d3.select(that).attr("id");
@@ -83,7 +88,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
             .style("fill", plotProp.display.textFill)
             .attr('font-size', plotProp.display.fontSize)
             .ease(transitionProperties.hoverEaseType);
-    };
+    }
 
 }
 
@@ -135,7 +140,7 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProper
 
     return svg;
 
-};
+}
 
 function zoomFontAwesomeSymbol(plot, plotProp, scales) {
 
@@ -146,5 +151,5 @@ function zoomFontAwesomeSymbol(plot, plotProp, scales) {
     });
 
 
-};
+}
 
