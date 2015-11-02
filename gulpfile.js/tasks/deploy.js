@@ -1,10 +1,10 @@
-var config  = require('../config')
-var ghPages = require('gulp-gh-pages')
-var gulp    = require('gulp')
-var open    = require('open')
-var os      = require('os')
-var package = require('../../package.json')
-var path    = require('path')
+var config  = require('../config');
+var ghPages = require('gulp-gh-pages');
+var gulp    = require('gulp');
+var open    = require('open');
+var os      = require('os');
+var package = require('../../package.json');
+var path    = require('path');
 
 var settings = {
   url: package.homepage,
@@ -12,7 +12,7 @@ var settings = {
   ghPages: {
     cacheDir: path.join(os.tmpdir(), package.name)
   }
-}
+};
 
 var deployTask = function() {
   return gulp.src(settings.src)
@@ -20,7 +20,7 @@ var deployTask = function() {
     .on('end', function(){
       open(settings.url)
     })
-}
+};
 
-gulp.task('deploy', ['production'], deployTask)
-module.exports = deployTask
+gulp.task('deploy', ['production'], deployTask);
+module.exports = deployTask;

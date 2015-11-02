@@ -1,17 +1,17 @@
-var gulp         = require('gulp')
-var render       = require('gulp-nunjucks-render')
-var rename       = require('gulp-rename')
-var handleErrors = require('../../lib/handleErrors')
-var gutil        = require('gulp-util')
+var gulp         = require('gulp');
+var render       = require('gulp-nunjucks-render');
+var rename       = require('gulp-rename');
+var handleErrors = require('../../lib/handleErrors');
+var gutil        = require('gulp-util');
 
 module.exports = function(config) {
   return function(glyphs, options) {
-    gutil.log(gutil.colors.blue('Generating ' + config.sassDest + '/' + config.sassOutputName))
-    render.nunjucks.configure(config.nunjucks, {watch: false })
+    gutil.log(gutil.colors.blue('Generating ' + config.sassDest + '/' + config.sassOutputName));
+    render.nunjucks.configure(config.nunjucks, {watch: false });
     return gulp.src(config.template)
       .pipe(render({
         icons: glyphs.map(function(glyph) {
-          gutil.log(gutil.colors.green('+ adding ' + glyph.name + ' glyph'))
+          gutil.log(gutil.colors.green('+ adding ' + glyph.name + ' glyph'));
           return {
             name: glyph.name,
             code: glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase()
@@ -27,4 +27,4 @@ module.exports = function(config) {
     .pipe(rename(config.sassOutputName))
     .pipe(gulp.dest(config.sassDest))
   }
-}
+};

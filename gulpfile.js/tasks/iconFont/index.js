@@ -1,15 +1,15 @@
-var config      = require('../../config')
-if(!config.tasks.iconFont) return
+var config      = require('../../config');
+if(!config.tasks.iconFont) return;
 
-var gulp             = require('gulp')
-var iconfont         = require('gulp-iconfont')
-var generateIconSass = require('./generateIconSass')
-var handleErrors     = require('../../lib/handleErrors')
-var package          = require('../../../package.json')
-var path             = require('path')
+var gulp             = require('gulp');
+var iconfont         = require('gulp-iconfont');
+var generateIconSass = require('./generateIconSass');
+var handleErrors     = require('../../lib/handleErrors');
+var package          = require('../../../package.json');
+var path             = require('path');
 
-var fontPath = path.join(config.root.dest, config.tasks.iconFont.dest)
-var cssPath = path.join(config.root.dest, config.tasks.css.dest)
+var fontPath = path.join(config.root.dest, config.tasks.iconFont.dest);
+var cssPath = path.join(config.root.dest, config.tasks.css.dest);
 
 var settings = {
   name: package.name + ' icons',
@@ -28,7 +28,7 @@ var settings = {
     normalize: false,
     formats: config.tasks.iconFont.extensions
   }
-}
+};
 
 var iconFontTask = function() {
   return gulp.src(settings.src)
@@ -36,7 +36,7 @@ var iconFontTask = function() {
     .on('glyphs', generateIconSass(settings))
     .on('error', handleErrors)
     .pipe(gulp.dest(settings.dest))
-}
+};
 
-gulp.task('iconFont', iconFontTask)
-module.exports = iconFontTask
+gulp.task('iconFont', iconFontTask);
+module.exports = iconFontTask;
