@@ -22,6 +22,19 @@
       "extensions": ["js"]
     },
 
+    "copyjs": {
+      "src": "js",
+      "dest": "js",
+      "extensions": ["js", "jsx"]
+    },
+
+    "jshint": {
+      "src": "js",
+      "dest": "js",
+      "props": ".jshintrc",
+      "extensions": ["js", "jsx"]
+    },
+
     "testJS": {
       "src": "js",
       "dest": "js",
