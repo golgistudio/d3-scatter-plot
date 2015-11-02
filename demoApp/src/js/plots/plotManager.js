@@ -1,6 +1,7 @@
 "use strict";
 
-function PlotManager() {
+
+var PlotManager = function() {
 
     /**
      *
@@ -122,3 +123,5 @@ function PlotManager() {
     }
 
 }
+
+module.exports = PlotManager;
