@@ -1,13 +1,19 @@
-"use strict";
+/**
+ * @file
+ */
 
 /*global d3:false */
+
+/*global dataStoreNames:false */
 
 /**
  *
  * @param uuid
  * @param dataStoreManager
+ * @constructor
  */
 function AxesManager(uuid, dataStoreManager) {
+    "use strict";
 
     var _uuid = uuid;
     var _dataStoreManager = dataStoreManager;
@@ -17,6 +23,7 @@ function AxesManager(uuid, dataStoreManager) {
      *
      */
     this.createAxes = function () {
+
 
         var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
         var domains = _dataStoreManager.getData(_uuid, dataStoreNames.domains);
@@ -84,6 +91,7 @@ function AxesManager(uuid, dataStoreManager) {
      * @param y
      */
     this.translate = function(x,y) {
+
         _zoomListener.translate(x,y);
     };
 
@@ -94,6 +102,7 @@ function AxesManager(uuid, dataStoreManager) {
      * @returns {*}
      */
     this.createZoomListener = function(that, zoomHandler) {
+
 
         var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
         var zoomScaleFactors = _dataStoreManager.getData(_uuid, dataStoreNames.zoomScaleFactors);
@@ -116,6 +125,7 @@ function AxesManager(uuid, dataStoreManager) {
      * @param svg
      */
     this.drawAxes = function  (svg) {
+
 
         var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
         var chartProperties = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
@@ -162,6 +172,7 @@ function AxesManager(uuid, dataStoreManager) {
     * @param svg
      */
     this.updateAxes = function  (svg) {
+
 
         var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
         var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);

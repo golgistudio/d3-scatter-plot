@@ -1,9 +1,13 @@
-"use strict";
+/**
+ * @file
+ */
 
 /**
  *
+ * @constructor
  */
 function ChartProperties() {
+    "uses strict";
 
     this.margin= {
         top: 50,

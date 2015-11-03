@@ -1,6 +1,13 @@
-"use strict";
+/**
+ * @file
+ */
 
+/**
+ *
+ * @constructor
+ */
 function TransitionProperties () {
+    "uses strict";
     this.startDurationTime = 1000;
     this.delayAdjustment = 500;
     this.endDurationTime = 500;
@@ -10,6 +17,6 @@ function TransitionProperties () {
     this.enterColor= "green";
     this.hoverDelayTime= 10;
     this.hoverTransitionDuration= 1000;
-    this.hoverEaseType= "elastic"
+    this.hoverEaseType= "elastic";
 }
 

@@ -1,10 +1,23 @@
 /**
- * Created by laurie on 10/27/15.
+ * @file
  */
 
-"use strict";
+/*global document:false */
+/*global experimentAddData:false */
+/*global experimentBAddData:false */
+/*global experimentRemoveData:false */
+/*global experimentBRemoveData:false */
+/*global experimentDifferentTimesData:false */
+/*global experimentBDifferentTimesData:false */
+/*global experimentOriginalData:false */
+/*global experimentBOriginalData:false */
 
+/**
+ *
+ * @param pageManager
+ */
 function addMenuEventHandlers(pageManager) {
+    "use strict";
 
     addTopMenuEventHandlers();
 
@@ -175,7 +188,11 @@ function addMenuEventHandlers(pageManager) {
     });
 }
 
+/**
+ *
+ */
 function addTopMenuEventHandlers() {
+    "use strict";
 
     document.body.addEventListener("click", function(event){
         closeAllMenus();

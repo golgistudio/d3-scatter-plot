@@ -1,7 +1,18 @@
-"use strict";
+/**
+ * @file
+ */
 
+/*global ScatterPlot:false */
+/*global BarChart:false */
+/*global module:false */
 
+/**
+ *
+ * @constructor
+ */
 var PlotManager = function() {
+
+    "use strict";
 
     /**
      *
@@ -122,6 +133,6 @@ var PlotManager = function() {
 
     }
 
-}
+};
 
 module.exports = PlotManager;

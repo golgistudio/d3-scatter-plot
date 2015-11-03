@@ -1,16 +1,26 @@
-"use strict";
+/**
+ * @file
+ */
+
+/*global module:false */
 
 /**
  *
  * @type {{getInstance}}
  */
 var dataStoreManager = (function () {
+
+    "use strict";
+
+
     // Instance stores a reference to the Singleton
     var instance;
     var storeCollection = [];
     function init() {
+
         return {
             setData : function(keyId, dataName, data) {
+
                 var keyCollection = storeCollection[keyId];
                 if (!keyCollection) {
                     keyCollection = [];
@@ -21,16 +31,18 @@ var dataStoreManager = (function () {
             },
 
             getData : function(keyId, dataName) {
+
                 var keyCollection = storeCollection[keyId];
                 var dataSet = null;
 
                 if (keyCollection) {
                     dataSet = keyCollection[dataName];
                 }
-                return dataSet
+                return dataSet;
             },
 
             generateUUID : function() {
+
                 var d    = new Date().getTime();
                 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                     var r = (d + Math.random() * 16) % 16 | 0;
@@ -49,7 +61,7 @@ var dataStoreManager = (function () {
             }
             return instance;
         }
-    }
+    };
 
 })();
 

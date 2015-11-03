@@ -1,9 +1,13 @@
-"use strict";
+/**
+ * @file
+ */
 
 /**
  *
+ * @constructor
  */
 function ToolTipProperties() {
+    "uses strict";
 
     this.containerId  = "";
     this.className  = "tooltip";

@@ -1,4 +1,10 @@
-"use strict";
+/**
+ * @file
+ */
+
+
+
+
 
 /*global d3:false */
 /*jshint unused:true */
@@ -14,6 +20,7 @@
  * @returns {*}
  */
 function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+    "use strict";
 
 
     plot = plot.enter().append("rect")
@@ -85,6 +92,7 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
      * @param that
      */
     function handleHoverEnd(d, that) {
+
         toolTip.hide();
         d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)
@@ -109,6 +117,7 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
  * @returns {*}
  */
 function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties) {
+    "use strict";
 
 
     svg.transition()  // Transition from old to new
@@ -150,6 +159,7 @@ function updateSquareSymbols( svg, plotProp, scales, data, transitionProperties)
  * @param scales
  */
 function zoomSquareSymbol(plot, plotProp, scales) {
+    "use strict";
 
     plot.selectAll('rect.' + plotProp.plotClassName).attr('y', function (d) {
         return scales.yScale(d[plotProp.yProp]);

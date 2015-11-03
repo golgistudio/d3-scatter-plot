@@ -1,4 +1,7 @@
-"use strict";
+/**
+ * @file
+ */
+
 
 /*global d3:false */
 
@@ -7,22 +10,30 @@
  * @constructor
  */
 function ExperimentManager2() {
+    "use strict";
+
 
     /**
      *
      * @param data
      */
     this.init =  function (data) {
+
         var dataDomains = calcDomains(data);
         var zoomScaleFactors = initializeZoomFactors();
 
         return {
             domains: dataDomains,
             zoomScaleFactors: zoomScaleFactors
-        }
+        };
     };
 
+    /**
+     *
+     * @returns {{yZoomFactors: {yMin: number, yMax: number}, xZoomFactors: {xMin: number, xMax: number}}}
+     */
     function initializeZoomFactors() {
+
         return {
             yZoomFactors : {
                 "yMin": 1,
@@ -114,6 +125,7 @@ function ExperimentManager2() {
      * @param labelProperties
      */
     this.updateLabelProperties  = function(labelProperties) {
+
         labelProperties.xAxisLabelProperties.labelText = "Participants";
         labelProperties.yAxisLabelProperties.labelText = "Time (seconds)";
         labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment A";

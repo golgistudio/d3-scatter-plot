@@ -1,9 +1,15 @@
-"use strict";
+/**
+ * @file
+ */
+
 
 /**
  *
+ * @constructor
  */
 function LegendProperties () {
+    "uses strict";
+
     this.legendClassName= "legend";
     this.textClassName= "legendText";
     this.x= 10;
@@ -21,7 +27,7 @@ function LegendProperties () {
     //this.font_size= 12;
     this.offset= 20;
     this.symbolWidth= 8;
-    this.symbolHeight= 8
+    this.symbolHeight= 8;
 
 }
 

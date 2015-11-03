@@ -1,4 +1,10 @@
-"use strict";
+/**
+ * @file
+ */
+
+
+
+
 
 // Update with new values
 // http://bl.ocks.org/WilliamQLiu/bd12f73d0b79d70bfbae
@@ -30,13 +36,15 @@
 // Connected data
 // http://jsfiddle.net/JVAdams/bTHk2/2/
 
-"use strict";
-
+/*global addMenuEventHandlers:false */
+/*global pageManager:false */
+/*global document:false */
 
 /**
  *
  */
 function main() {
+    "use strict";
 
     addMenuEventHandlers(pageManager);
     pageManager.init();

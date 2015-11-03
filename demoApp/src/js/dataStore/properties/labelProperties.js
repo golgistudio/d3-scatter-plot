@@ -1,9 +1,13 @@
-"use strict";
+/**
+ * @file
+ */
 
 /**
  *
+ * @constructor
  */
 function LabelProperties () {
+    "uses strict";
 
     this.titleProperties      = {
             "className":  "title",

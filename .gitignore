@@ -2,6 +2,7 @@
 demoApp/logs
 demoApp/*.log
 demoApp/npm-debug.log*
+*.log
 
 # Runtime data
 pids
@@ -17,6 +18,7 @@ pids
 
 # public build
 demoApp/public/
+demoApp/quality/
 
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git

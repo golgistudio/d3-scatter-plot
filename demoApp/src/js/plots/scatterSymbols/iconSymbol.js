@@ -1,4 +1,7 @@
-"use strict";
+/**
+ * @file
+ */
+
 
 /*global d3:false */
 /*jshint unused:true */
@@ -14,6 +17,7 @@
  * @returns {*}
  */
 function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+    "use strict";
 
 
     var iconPlot = plot.enter().append("image")
@@ -51,6 +55,7 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
      */
     function handleHoverStart(d, that ) {
 
+
         var currentFillColor = d3.select(that).style("fill");
         var hoverFillColor   = d3.rgb(currentFillColor).darker();
 
@@ -76,6 +81,7 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
      * @param that
      */
     function handleHoverEnd(d, that ) {
+
         toolTip.hide();
         d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)
@@ -100,6 +106,7 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
  * @returns {*}
  */
 function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
+    "use strict";
 
 
     svg.transition()  // Transition from old to new
@@ -137,6 +144,7 @@ function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
  * @param scales
  */
 function zoomIconSymbol(plot, plotProp, scales) {
+    "use strict";
 
     plot.selectAll('image.' + plotProp.plotClassName)
         .attr("x", function(d) {

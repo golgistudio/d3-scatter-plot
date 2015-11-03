@@ -1,4 +1,10 @@
-"use strict";
+/**
+ * @file
+ */
+
+
+
+
 
 /*global d3:false */
 /*jshint unused:true */
@@ -14,6 +20,7 @@
  * @returns {XMLList|*}
  */
 function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+    "use strict";
 
     var textPlot = plot.enter()
         .append("text")
@@ -58,6 +65,11 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
 
     return textPlot;
 
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverStart(d, that) {
 
         var currentFillColor = d3.select(that).style("fill");
@@ -77,7 +89,14 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
             .ease(transitionProperties.hoverEaseType);
 
     }
+
+    /**
+     *
+     * @param d
+     * @param that
+     */
     function handleHoverEnd(d, that) {
+
         toolTip.hide();
         var id = "#" + d3.select(that).attr("id");
 
@@ -103,6 +122,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
  * @returns {*}
  */
 function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProperties) {
+    "use strict";
 
 
     svg.transition()  // Transition from old to new
@@ -142,7 +162,14 @@ function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProper
 
 }
 
+/**
+ *
+ * @param plot
+ * @param plotProp
+ * @param scales
+ */
 function zoomFontAwesomeSymbol(plot, plotProp, scales) {
+    "use strict";
 
     plot.selectAll('text.' + plotProp.plotClassName).attr('y', function (d) {
         return scales.yScale(d[plotProp.yProp]);

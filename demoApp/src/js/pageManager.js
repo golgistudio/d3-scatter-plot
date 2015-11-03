@@ -1,6 +1,33 @@
+/**
+ * @file
+ */
+/*global window:false */
+/*global document:false */
 
-"use strict";
+/*global d3:false */
 
+/*global dataStoreManager:false */
+/*global dataStoreNames:false */
+
+/*global AxesProperties:false */
+/*global ChartProperties:false */
+/*global LabelProperties:false */
+/*global LegendProperties:false */
+/*global ToolTipProperties:false */
+/*global TransitionProperties:false */
+
+/*global experimentPlotProperties:false */
+/*global Chart:false */
+/*global ExperimentManager:false */
+/*global experimentOriginalData:false */
+/*global experimentPlotProperties2:false */
+/*global ExperimentManager2:false */
+
+/*global experimentBPlotProperties:false */
+/*global ExperimentBManager:false */
+/*global experimentBOriginalData:false */
+/*global experimentBPlotProperties2:false */
+/*global ExperimentBManager2:false */
 
 /**
  *
@@ -14,6 +41,7 @@ var pageManager = {
     _chartWidthFactor: 2,
 
     init: function () {
+        "use strict";
 
         this._dataStoreManager = dataStoreManager.getInstance();
 
@@ -41,6 +69,7 @@ var pageManager = {
     },
 
     createChart: function(divID, experiment, uuid, data, plotProps, chartWidthFactor) {
+        "use strict";
 
         var axesProps = new AxesProperties();
         var chartProps = new ChartProperties();
@@ -82,10 +111,12 @@ var pageManager = {
     },
 
     getActiveExperiment : function() {
+        "use strict";
         return this._currentExperiment;
     },
 
     resize: function() {
+        "use strict";
 
         var params = {
             "height" : window.innerHeight,
@@ -100,6 +131,7 @@ var pageManager = {
     },
 
     updatePoints: function(data, pageControl) {
+        "use strict";
 
         var length = this._chartCollection.length;
 
@@ -122,6 +154,7 @@ var pageManager = {
     },
 
     setSymbol: function(symbol, pageControl, plotName, chartDiv) {
+        "use strict";
 
         var length = this._chartCollection.length;
 
@@ -137,7 +170,7 @@ var pageManager = {
                         configItem.display.symbol = symbol;
                         switch (symbol) {
                             case "icon":
-                                configItem.display.icon = "../images/stopwatch-1-64x64.png";
+                                configItem.display.icon = "images/stopwatch-1-64x64.png";
                                 configItem.display.width = 20;
                                 configItem.display.height = 20;
                                 break;
@@ -169,6 +202,7 @@ var pageManager = {
      * @param chartDiv
      */
     setSymbolColor: function(color, pageControl, plotName, chartDiv) {
+        "use strict";
 
         var length = this._chartCollection.length;
 
@@ -205,6 +239,7 @@ var pageManager = {
      * @param chartDiv
      */
     setPlotStyle: function(plotStyle, pageControl, plotName, chartDiv) {
+        "use strict";
 
         var length = this._chartCollection.length;
 
@@ -238,6 +273,7 @@ var pageManager = {
      * @param pageControl
      */
     switchExperiment: function(experimentName, pageControl) {
+        "use strict";
 
         this._currentExperiment = experimentName;
 
@@ -274,6 +310,8 @@ var pageManager = {
     },
 
     getExperimentInfo: function() {
+        "use strict";
+
         var expInfoCollection = [];
 
         var expInfoItem1 = null;

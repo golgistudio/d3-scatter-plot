@@ -1,14 +1,18 @@
 
-"use strict";
+/**
+ * @file
+ */
+
 
 /*global d3:false */
 /*jshint unused:true */
 
-
 /**
  *
+ * @constructor
  */
 function BarChart() {
+    "use strict";
 
     /**
      *
@@ -39,6 +43,7 @@ function BarChart() {
      * @returns {*}
      */
     function setData(svg, data, plotClassName) {
+
         return svg.selectAll("." + plotClassName)
             .data(data);
     }
@@ -65,6 +70,7 @@ function BarChart() {
      * @returns {*}
      */
     function addElements(plot, plotProp, scales, toolTip, transitionProperties) {
+
 
         plot = plot.enter().append("rect")
             .attr("class", plotProp.plotClassName)
@@ -106,6 +112,11 @@ function BarChart() {
 
         return plot;
 
+        /**
+         *
+         * @param d
+         * @param that
+         */
         function handleHoverStart(d, that) {
 
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
@@ -126,7 +137,14 @@ function BarChart() {
                 .ease(transitionProperties.hoverEaseType);
 
         }
+
+        /**
+         *
+         * @param d
+         * @param that
+         */
         function handleHoverEnd(d, that) {
+
             toolTip.hide();
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
@@ -204,10 +222,12 @@ function BarChart() {
      * @param parameters
      */
     function zoomPlot(parameters) {
+
         zoomElements(parameters.svg, parameters.plotProp, parameters.scales);
     }
 
     function zoomElements(plot, plotProp, scales) {
+
 
         plot.selectAll('rect.' + plotProp.plotClassName).attr("height", function (d) {
             return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
@@ -226,6 +246,7 @@ function BarChart() {
      */
     function updatePlot(parameters) {
 
+
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
         updateElements(plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
@@ -240,6 +261,7 @@ function BarChart() {
      * @param transitionProperties
      */
     function removeElements( svg,  transitionProperties) {
+
         svg = svg.exit();
         svg.style('fill', transitionProperties.exitColor);
         svg.transition().delay(transitionProperties.endDurationTime).remove();

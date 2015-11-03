@@ -1,20 +1,123 @@
-{#
-  Nunjucks Templating!
-  Homepage: https://mozilla.github.io/nunjucks/
-  Docs: https://mozilla.github.io/nunjucks/api.html
-#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="styles/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div>
+    <ul class="menu">
 
-{% extends 'layouts/application.html' %}
+        <li title="home"><a href="#" class="menu-button data" id="dataMenu">menu</a></li>
 
-{% block content %}
-  <img src="images/gulp.png" alt="gulp.js">
-  <h4>Ubiquitous Social Icons!</h4>
-  {% include "shared/social-icons-font.html" %}
-  {% include "shared/social-icons-svg.html" %}
-  <button id="button">Manually Load Async Module</button>
-  <p data-module="Highlight">An auto-loaded async module highlighted this!</p>
-{% endblock %}
+        <li title="search"><a href="#" class="search" id="symbolMenu">search</a></li>
+        <li title="pencil"><a href="#" class="pencil" id="colorMenu">pencil</a></li>
+        <li title="pencil"><a href="#" class="industry" id="plotStyleMenu">pencil</a></li>
+        <li title="pencil"><a href="#" class="heartBeat" id="experimentMenu">pencil</a></li>
+    </ul>
 
+    <ul class="menu-bar" id="dataControl">
+        <li><a href="#">Data</a>
+        </li>
+        <li><a href="#" id="resetPointsButton">Reset</a>
+        </li>
+        <li><a href="#" id="addPointButton">Add</a>
+        </li>
+        <li><a href="#" id="removePointButton">Remove</a>
+        </li>
+        <li><a href="#" id="changePointButton">Change</a>
+        </li>
+    </ul>
+    <ul class="menu-bar" id="symbolControl">
+        <li><a href="#">Symbol</a>
+        </li>
+        <li><a href="#" id="circleSymbol">Circle</a>
+        </li>
+        <li><a href="#" id="triangleSymbol">Triangle</a>
+        </li>
+        <li><a href="#" id="iconSymbol">Icon</a>
+
+    </ul>
+    <ul class="menu-bar" id="colorControl">
+        <li><a href="#">Color</a>
+        </li>
+        <li><a href="#" id="blueColor">Blue</a>
+        </li>
+        <li><a href="#" id="pinkColor">Purple</a>
+        </li>
+    </ul>
+
+    <ul class="menu-bar" id="plotStyleControl">
+        <li><a href="#">Plot Style</a>
+        </li>
+        <li><a href="#" id="scatter">Scatter</a>
+        </li>
+        <li><a href="#" id="barChart">Bar Chart</a>
+        </li>
+    </ul>
+
+    <ul class="menu-bar" id="experimentControl">
+        <li><a href="#">Experiment</a>
+        </li>
+        <li><a href="#" id="expA">Experiment A</a>
+        </li>
+        <li><a href="#" id="expB">Experiment B</a>
+        </li>
+    </ul>
+
+</div>
+<div id="chartContainer">
+    <div id="chart1"></div>
+
+    <div id="chart2"></div>
+
+</div>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 {% block javascript %}
-<script src="javascripts/app.js"></script>
+<script src="js/shared.js"></script>
+
+<script src="js/dataStoreNames.js"></script>
+<script src="js/dataStoreManager.js"></script>
+<script src="js/toolTipProperties.js"></script>
+<script src="js/toolTipManager.js"></script>
+<script src="js/dotSymbol.js"></script>
+<script src="js/fontAwesomeSymbol.js"></script>
+<script src="js/iconSymbol.js"></script>
+<script src="js/squareSymbol.js"></script>
+<script src="js/triangleSymbol.js"></script>
+<script src="js/labels.js"></script>
+<script src="js/legendManager.js"></script>
+<script src="js/axesManager.js"></script>
+<script src="js/chartProperties.js"></script>
+<script src="js/axesProperties.js"></script>
+<script src="js/labelProperties.js"></script>
+<script src="js/legendProperties.js"></script>
+<script src="js/barChart.js"></script>
+<script src="js/scatter.js"></script>
+<script src="js/plotManager.js"></script>
+<script src="js/transitionProperties.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/experimentBAddData.js"></script>
+<script src="js/experimentBDifferentTimesData.js"></script>
+<script src="js/experimentBRemoveData.js"></script>
+<script src="js/experimentBOriginalData.js"></script>
+<script src="js/experimentBPlotProperties.js"></script>
+<script src="js/experimentBPlotProperties2.js"></script>
+<script src="js/experimentBManager.js"></script>
+<script src="js/experimentBManager2.js"></script>
+<script src="js/experimentAddData.js"></script>
+<script src="js/experimentDifferentTimesData.js"></script>
+<script src="js/experimentRemoveData.js"></script>
+<script src="js/experimentOriginalData.js"></script>
+<script src="js/experimentPlotProperties.js"></script>
+<script src="js/experimentPlotProperties2.js"></script>
+<script src="js/experimentManager.js"></script>
+<script src="js/experimentManager2.js"></script>
+<script src="js/pageManager.js"></script>
+<script src="js/menuManager.js"></script>
+<script src="js/main.js"></script>
 {% endblock %}
+</body>
+</html>

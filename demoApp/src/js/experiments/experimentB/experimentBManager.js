@@ -1,4 +1,10 @@
-"use strict";
+/**
+ * @file
+ */
+
+
+
+
 
 /*global d3:false */
 
@@ -8,22 +14,25 @@
  * @constructor
  */
 function ExperimentBManager() {
+    "use strict";
 
     /**
      *
      * @param data
      */
     this.init =  function (data ) {
+
         var dataDomains = calcDomains(data);
         var zoomScaleFactors = initializeZoomFactors();
 
         return {
             domains: dataDomains,
             zoomScaleFactors: zoomScaleFactors
-        }
+        };
     };
 
     function initializeZoomFactors() {
+
         return {
             yZoomFactors : {
                 "yMin": 0.25,
@@ -115,6 +124,7 @@ function ExperimentBManager() {
      * @param labelProperties
      */
     this.updateLabelProperties  = function(labelProperties) {
+
         labelProperties.xAxisLabelProperties.labelText = "Subjects";
         labelProperties.yAxisLabelProperties.labelText = "Count";
         labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment B";

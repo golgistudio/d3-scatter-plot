@@ -1,4 +1,9 @@
-"use strict";
+/**
+ * @file
+ */
+
+
+/*global d3:false */
 
 
 /**
@@ -10,6 +15,8 @@
  * @param legendData
  */
 function drawLegend(svg, width, height, properties, legendData) {
+
+    "use strict";
 
     var legend = svg.selectAll("." + properties.legendClassName)
         .data([true])
@@ -47,6 +54,8 @@ function drawLegend(svg, width, height, properties, legendData) {
  */
 function removeLegendItems(svg, properties) {
 
+    "use strict";
+
    svg.selectAll("." + properties.itemClassName).data([]).exit().remove();
 }
 
@@ -57,6 +66,8 @@ function removeLegendItems(svg, properties) {
  * @param legendData
  */
 function updateLegend(svg, properties, legendData) {
+
+    "use strict";
 
     removeLegendItems(svg, properties);
 
@@ -77,6 +88,8 @@ function updateLegend(svg, properties, legendData) {
  * @param properties
  */
 function addLegendItems(legendCollection, legendData, properties) {
+
+    "use strict";
     legendCollection.selectAll("text")
         .data(legendData)
         .enter()
@@ -119,6 +132,8 @@ function addLegendItems(legendCollection, legendData, properties) {
  * @param d
  */
 function legendItemClickedHandler(d) {
+
+    "use strict";
 
     // Determine if current line is visible
     var active = d.active ? false : true;

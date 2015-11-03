@@ -1,6 +1,15 @@
-"use strict";
+/**
+ * @file
+ */
 
+/*global module:false */
+
+/**
+ *
+ * @constructor
+ */
 function AxesProperties() {
+    "uses strict";
     this.yPosition = 6;
     this.xPosition = 6;
 

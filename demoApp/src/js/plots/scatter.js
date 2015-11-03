@@ -1,14 +1,32 @@
-"use strict";
+/**
+ * @file
+ */
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Scatter Plot
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*global addTriangleSymbol:false */
+/*global addDotSymbol:false */
+/*global addSquareSymbol:false */
+/*global addIconSymbol:false */
+/*global addFontAwesomeSymbol:false */
+
+/*global zoomTriangleSymbol:false */
+/*global zoomDotSymbol:false */
+/*global zoomSquareSymbol:false */
+/*global zoomIconSymbol:false */
+/*global zoomFontAwesomeSymbol:false */
+
+/*global updateTriangleSymbols:false */
+/*global updateDotSymbols:false */
+/*global updateSquareSymbols:false */
+/*global updateIconSymbols:false */
+/*global updateFontAwesomeSymbols:false */
 
 
 /**
  *
+ * @constructor
  */
 function ScatterPlot() {
+    "use strict";
 
     /**
      *
@@ -48,6 +66,7 @@ function ScatterPlot() {
      * @returns {*}
      */
     function setData(svg, data, plotClassName) {
+
         return svg.selectAll("." + plotClassName)
             .data(data);
     }
@@ -83,6 +102,13 @@ function ScatterPlot() {
         return plot;
     }
 
+    /**
+     *
+     * @param plot
+     * @param plotProp
+     * @param scales
+     * @returns {*}
+     */
     function zoomSymbols(plot, plotProp, scales) {
 
         switch (plotProp.display.symbol) {
@@ -110,6 +136,7 @@ function ScatterPlot() {
      * @param parameters
      */
     function zoomPlot(parameters) {
+
         zoomSymbols(parameters.svg, parameters.plotProp, parameters.scales);
     }
 
@@ -134,6 +161,7 @@ function ScatterPlot() {
      * @param transitionProperties
      */
     function removeSymbols( svg,  transitionProperties) {
+
         svg = svg.exit();
         svg.style('fill', transitionProperties.exitColor);
         svg.transition().delay(transitionProperties.endDurationTime).remove();

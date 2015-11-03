@@ -1,9 +1,15 @@
-"use strict";
+/**
+ * @file
+ */
+
+/*global d3:false */
 
 /**
  *
+ * @constructor
  */
 function ToolTipManager() {
+    "use strict";
 
     var _toolTip= null,
     _toolTipProperties  = null;
@@ -47,5 +53,5 @@ function ToolTipManager() {
         _toolTip.transition()
             .duration(_toolTipProperties.hideTransitionTime)
             .style("opacity", 0);
-    }
+    };
 }

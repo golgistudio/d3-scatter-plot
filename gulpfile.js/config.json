@@ -1,7 +1,9 @@
 {
   "root": {
     "src": "./demoApp/src",
-    "dest": "./demoApp/public"
+    "dest": "./demoApp/public",
+    "docroot" : "./demoApp/quality",
+    "rootDir" : "."
   },
 
   "tasks": {
@@ -12,12 +14,51 @@
     },
 
     "js": {
-      "src": "javascripts",
-      "dest": "javascripts",
+      "src": "js",
+      "dest": "js",
       "extractSharedJs": true,
       "entries": {
-        "app": ["./app.js"],
-        "page": ["./page.js"]
+
+        "experimentBManager": ["./experiments/experimentB/experimentBManager.js"],
+        "experimentBManager2": ["./experiments/experimentB/experimentBManager2.js"],
+        "experimentBPlotProperties": ["./experiments/experimentB/experimentBPlotProperties.js"],
+        "experimentBRemoveData": ["./experiments/experimentB/data/experimentBRemoveData.js"],
+        "experimentBDifferentTimesData": ["./experiments/experimentB/data/experimentBDifferentTimesData.js"],
+        "experimentBOriginalData": ["./experiments/experimentB/data/experimentBOriginalData.js"],
+        "experimentBAddData": ["./experiments/experimentB/data/experimentBAddData.js"],
+        "experimentBPlotProperties2": ["./experiments/experimentB/experimentBPlotProperties2.js"],
+        "experimentManager": ["./experiments/experimentResults/experimentManager.js"],
+        "experimentAddData": ["./experiments/experimentResults/data/experimentAddData.js"],
+        "experimentDifferentTimesData": ["./experiments/experimentResults/data/experimentDifferentTimesData.js"],
+        "experimentRemoveData": ["./experiments/experimentResults/data/experimentRemoveData.js"],
+        "experimentOriginalData": ["./experiments/experimentResults/data/experimentOriginalData.js"],
+        "experimentPlotProperties": ["./experiments/experimentResults/experimentPlotProperties.js"],
+        "experimentManager2": ["./experiments/experimentResults/experimentManager2.js"],
+        "experimentPlotProperties2": ["./experiments/experimentResults/experimentPlotProperties2.js"],
+        "dataStoreNames": ["./dataStore/dataStoreNames.js"],
+        "dataStoreManager": ["./dataStore/dataStoreManager.js"],
+        "chartProperties": ["./dataStore/properties/chartProperties.js"],
+        "labelProperties": ["./dataStore/properties/labelProperties.js"],
+        "legendProperties": ["./dataStore/properties/legendProperties.js"],
+        "toolTipProperties": ["./dataStore/properties/toolTipProperties.js"],
+        "transitionProperties": ["./dataStore/properties/transitionProperties.js"],
+        "axesProperties": ["./dataStore/properties/axesProperties.js"],
+        "plotManager": ["./plots/plotManager.js"],
+        "dotSymbol": ["./plots/scatterSymbols/dotSymbol.js"],
+        "triangleSymbol": ["./plots/scatterSymbols/triangleSymbol.js"],
+        "squareSymbol": ["./plots/scatterSymbols/squareSymbol.js"],
+        "fontAwesomeSymbol": ["./plots/scatterSymbols/fontAwesomeSymbol.js"],
+        "iconSymbol": ["./plots/scatterSymbols/iconSymbol.js"],
+        "barChart": ["./plots/barChart.js"],
+        "scatter": ["./plots/scatter.js"],
+        "chart": ["./chart/chart.js"],
+        "toolTipManager": ["./chart/toolTipManager.js"],
+        "axesManager": ["./chart/axesManager.js"],
+        "legendManager": ["./chart/legendManager.js"],
+        "labels": ["./chart/labels.js"],
+        "pageManager": ["./pageManager.js"],
+        "menuManager": ["./menuManager.js"],
+        "main": ["./main.js"]
       },
       "extensions": ["js"]
     },
@@ -35,15 +76,10 @@
       "extensions": ["js", "jsx"]
     },
 
-    "testJS": {
+    "jsdoc": {
       "src": "js",
-      "dest": "js",
-      "extractSharedJs": true,
-      "entries": {
-        "app": ["./app.js"],
-        "page": ["./page.js"]
-      },
-      "extensions": ["js"]
+      "dest": "docs",
+      "extensions": ["js", "jsx"]
     },
 
     "sass": {

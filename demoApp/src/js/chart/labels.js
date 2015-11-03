@@ -1,4 +1,10 @@
-"use strict";
+/**
+ * @file
+ */
+
+
+
+
 
 /**
  *
@@ -9,6 +15,7 @@
  * @param margin
  */
 function drawChartLabels (svg, labelProps, width, height, margin) {
+    "use strict";
 
     labelProps.titleProperties.xPosition =  (width / 2);
     labelProps.titleProperties.yPosition =  -(margin.top / 2);
@@ -30,6 +37,7 @@ function drawChartLabels (svg, labelProps, width, height, margin) {
  * @param properties
  */
 function drawLabel(svg, properties) {
+    "use strict";
 
     svg.append("text")
         .attr("class", properties.className)

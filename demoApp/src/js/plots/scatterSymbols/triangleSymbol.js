@@ -1,7 +1,10 @@
-"use strict";
+/**
+ * @file
+ */
+
 
 /*global d3:false */
-/*jshint unused:true */
+/*jshint unused:false */
 
 
 /**
@@ -14,6 +17,7 @@
  * @returns {*}
  */
 function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+    "use strict";
 
     var symbolType = 'triangle-up';
     var symbol     = d3.svg.symbol().type(symbolType);
@@ -63,10 +67,11 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties
      * @param that
      */
     function handleHoverStart(d, that) {
+
         var currentFillColor = d3.select(that).style("fill");
         var hoverFillColor   = d3.rgb(currentFillColor).darker();
 
-        var hoverSize = plotProp.display.size * transitionTimes.sizeFactor;
+        var hoverSize = plotProp.display.size * transitionProperties.sizeFactor;
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
@@ -85,6 +90,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties
      * @param that
      */
     function handleHoverEnd(d, that) {
+
         var symbol = d3.svg.symbol().type('triangle-up');
 
         toolTip.hide();
@@ -109,6 +115,8 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties
  * @returns {*}
  */
 function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties) {
+    "use strict";
+
 
     // Update
 
@@ -148,7 +156,7 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
                 .transition()
                 .duration(transitionProperties.endDurationTime)
                 .style("fill", plotProp.display.fillColor)  // Change color
-                .attr("d", symbol.size(plotProp.display.size))
+                .attr("d", symbol.size(plotProp.display.size));
         });
 
     return svg;
@@ -161,6 +169,7 @@ function updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties
  * @param scales
  */
 function zoomTriangleSymbol(plot, plotProp, scales) {
+    "use strict";
 
     plot.selectAll('path.' + plotProp.plotClassName).attr("x", function (d) {
         return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));

@@ -25,7 +25,6 @@ var getData = function(file) {
 
 var htmlTask = function() {
   render.nunjucks.configure([path.join(config.root.src, config.tasks.html.src)], {watch: false })
-
   return gulp.src(paths.src)
     .pipe(data(getData))
     .on('error', handleErrors)

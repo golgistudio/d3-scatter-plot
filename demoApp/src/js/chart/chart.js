@@ -1,12 +1,26 @@
-"use strict";
+/**
+ * @file
+ */
 
 /*global d3:false */
 
+/*global AxesManager:false */
+/*global PlotManager:false */
+/*global ToolTipManager:false */
+/*global dataStoreNames:false */
+/*global drawChartLabels:false */
+/*global drawLegend:false */
+/*global updateLegend:false */
+
 /**
  *
+ * @param dataManager
+ * @param uuid
+ * @param containerId
  * @constructor
  */
 function Chart(dataManager, uuid, containerId) {
+    "use strict";
 
     var _dataStoreManager =  dataManager;
     var _uuid = uuid;

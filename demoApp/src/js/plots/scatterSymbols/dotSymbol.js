@@ -1,4 +1,10 @@
-"use strict";
+/**
+ * @file
+ */
+
+
+
+
 
 /*global d3:false */
 /*jshint unused:true */
@@ -13,7 +19,7 @@
  * @returns {*}
  */
 function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
-
+    "use strict";
 
     plot = plot.enter().append("circle")
         .attr("class", plotProp.plotClassName)
@@ -108,6 +114,7 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
  * @returns {*}
  */
 function updateDotSymbols( svg, plotProp, scales, data, transitionProperties) {
+    "use strict";
 
     var transitionSize  = plotProp.display.radius * transitionProperties.sizeFactor;
 
@@ -154,6 +161,7 @@ function updateDotSymbols( svg, plotProp, scales, data, transitionProperties) {
  * @param scales
  */
 function zoomDotSymbol(plot, plotProp, scales) {
+    "use strict";
 
         plot.selectAll('circle.' + plotProp.plotClassName).attr('cy', function (d) {
                 return scales.yScale(d[plotProp.yProp]);
