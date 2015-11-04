@@ -200,7 +200,7 @@ var pageManager = {
                 var len = plotProps.length;
 
                 for (var j = 0; j < len; j++) {
-                    var configItem = plotProps[i];
+                    var configItem = plotProps[j];
                     if (configItem.name === plotName) {
                         this.updatePlotSymbol(configItem, symbol);
                     }
@@ -237,7 +237,7 @@ var pageManager = {
                 var len = plotProps.length;
 
                 for (var j = 0; j < len; j++) {
-                    var configItem = plotProps[i];
+                    var configItem = plotProps[j];
                     if (configItem.name === plotName) {
                         configItem.display.fillColor = color;
                     }
@@ -273,9 +273,9 @@ var pageManager = {
 
                 var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
 
-                var len = plotProps.len;
+                var len = plotProps.length;
                 for (var j = 0; j < len; j++) {
-                    var configItem = plotProps[i];
+                    var configItem = plotProps[j];
                     if (configItem.name === plotName) {
                         configItem.display.plotStyle = plotStyle;
                     }

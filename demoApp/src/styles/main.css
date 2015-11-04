@@ -165,8 +165,7 @@ h1 {
     content: "\f21e";
 }
 .menu-bar li a:hover,
-.menu li a:hover,
-.menu li:first-child a {
+.menu li a:hover {
     background: #267fdd;
     color: #fff;
 }

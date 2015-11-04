@@ -255,7 +255,6 @@ function addMenuEventHandlers(pageManager) {
     document.getElementById("barChart").addEventListener("click", function(event) {
 
         updateSelected(["scatter"], "barChart");
-        document.getElementById("expB").classList.toggle( "optionSelected" );
 
         var experiment = pageManager.getActiveExperiment();
         var chartDiv = null;
