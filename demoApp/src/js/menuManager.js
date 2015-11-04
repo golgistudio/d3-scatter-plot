@@ -12,6 +12,105 @@
 /*global experimentOriginalData:false */
 /*global experimentBOriginalData:false */
 
+
+
+/**
+ *
+ * @param selected
+ */
+function updateSelected(unselected, selected) {
+
+    var length = unselected.length;
+
+    for (var iii = 0; iii < length; iii++){
+        document.getElementById(unselected[iii]).classList.remove( "optionSelected" );
+    }
+
+    document.getElementById(selected).classList.toggle( "optionSelected" );
+}
+
+/**
+ *
+ */
+function initializeSelectedMenus() {
+    updateSelected(["expB"], "expA");
+    updateSelected(["scatter"], "barChart");
+    updateSelected(["pinkColor"], "blueColor");
+    updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
+    updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
+}
+
+
+/**
+ *
+ */
+function addTopMenuEventHandlers() {
+    "use strict";
+
+    document.body.addEventListener("click", function(event){
+        closeAllMenus();
+        event.stopPropagation();
+    });
+
+    document.getElementById("dataMenu").addEventListener("click", function(event){
+        handleMenuEvent(event);
+    });
+
+    document.getElementById("symbolMenu").addEventListener("click", function(event){
+        handleMenuEvent(event);
+    });
+
+    document.getElementById("colorMenu").addEventListener("click", function(event){
+        handleMenuEvent(event);
+    });
+    document.getElementById("plotStyleMenu").addEventListener("click", function(event){
+        handleMenuEvent(event);
+    });
+
+    document.getElementById("experimentMenu").addEventListener("click", function(event){
+        handleMenuEvent(event);
+    });
+
+    function closeAllMenus() {
+        document.getElementById("dataControl").classList.remove( "open" );
+        document.getElementById("symbolControl").classList.remove( "open" );
+        document.getElementById("colorControl").classList.remove( "open" );
+        document.getElementById("plotStyleControl").classList.remove( "open" );
+        document.getElementById("experimentControl").classList.remove( "open" );
+    }
+
+    function handleMenuEvent(event) {
+        var topMenuId =  event.target.id;
+        var menuId = topMenuId.replace(/Menu/g, "Control");
+        closeOtherMenus(menuId);
+        document.getElementById(menuId).classList.toggle( "open" );
+        event.stopPropagation();
+    }
+
+    function closeOtherMenus(id) {
+        if (id !== "dataControl") {
+            document.getElementById("dataControl").classList.remove( "open" );
+        }
+
+        if (id !== "symbolControl") {
+            document.getElementById("symbolControl").classList.remove( "open" );
+        }
+
+        if (id !== "colorControl") {
+            document.getElementById("colorControl").classList.remove( "open" );
+        }
+
+        if (id !== "plotStyleControl") {
+            document.getElementById("plotStyleControl").classList.remove( "open" );
+        }
+
+        if (id !== "experimentControl") {
+            document.getElementById("experimentControl").classList.remove( "open" );
+        }
+    }
+
+}
+
 /**
  *
  * @param pageManager
@@ -199,99 +298,4 @@ function addMenuEventHandlers(pageManager) {
 
 }
 
-/**
- *
- */
-function initializeSelectedMenus() {
-    updateSelected(["expB"], "expA");
-    updateSelected(["scatter"], "barChart");
-    updateSelected(["pinkColor"], "blueColor");
-    updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
-    updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
-}
 
-/**
- *
- * @param selected
- */
-function updateSelected(unselected, selected) {
-
-    var length = unselected.length;
-
-    for (var iii = 0; iii < length; iii++){
-        document.getElementById(unselected[iii]).classList.remove( "optionSelected" );
-    }
-
-    document.getElementById(selected).classList.toggle( "optionSelected" );
-}
-
-
-/**
- *
- */
-function addTopMenuEventHandlers() {
-    "use strict";
-
-    document.body.addEventListener("click", function(event){
-        closeAllMenus();
-        event.stopPropagation();
-    });
-
-    document.getElementById("dataMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    document.getElementById("symbolMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    document.getElementById("colorMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-    document.getElementById("plotStyleMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    document.getElementById("experimentMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    function closeAllMenus() {
-        document.getElementById("dataControl").classList.remove( "open" );
-        document.getElementById("symbolControl").classList.remove( "open" );
-        document.getElementById("colorControl").classList.remove( "open" );
-        document.getElementById("plotStyleControl").classList.remove( "open" );
-        document.getElementById("experimentControl").classList.remove( "open" );
-    }
-
-    function handleMenuEvent(event) {
-        var topMenuId =  event.target.id;
-        var menuId = topMenuId.replace(/Menu/g, "Control");
-        closeOtherMenus(menuId);
-        document.getElementById(menuId).classList.toggle( "open" );
-        event.stopPropagation();
-    }
-
-    function closeOtherMenus(id) {
-        if (id !== "dataControl") {
-            document.getElementById("dataControl").classList.remove( "open" );
-        }
-
-        if (id !== "symbolControl") {
-            document.getElementById("symbolControl").classList.remove( "open" );
-        }
-
-        if (id !== "colorControl") {
-            document.getElementById("colorControl").classList.remove( "open" );
-        }
-
-        if (id !== "plotStyleControl") {
-            document.getElementById("plotStyleControl").classList.remove( "open" );
-        }
-
-        if (id !== "experimentControl") {
-            document.getElementById("experimentControl").classList.remove( "open" );
-        }
-    }
-
-}

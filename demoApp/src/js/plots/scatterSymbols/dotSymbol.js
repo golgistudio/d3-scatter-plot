@@ -2,12 +2,9 @@
  * @file
  */
 
-
-
-
-
 /*global d3:false */
 /*jshint unused:true */
+/*exported addDotSymbol, updateDotSymbols, zoomDotSymbol */
 
 /**
  *
@@ -20,44 +17,6 @@
  */
 function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
-
-    plot = plot.enter().append("circle")
-        .attr("class", plotProp.plotClassName)
-        .attr("r", plotProp.display.radius)
-        .attr("cx", function(d) {
-            return scales.xScale(d[plotProp.xProp]);
-        })
-        .attr("cy", function(d) {
-            return scales.yScale(d[plotProp.yProp]);
-        });
-
-        plot.style("opacity", "0")
-        .style('opacity', 1e-6)
-        .transition()
-        .style('fill', transitionProperties.enterColor)
-        .style('opacity', 1)
-        .transition()
-        .duration(transitionProperties.startDurationTime)
-        .style("stroke", plotProp.display.strokeColor)
-        .style("fill", function () {
-            return plotProp.display.fillColor;
-        });
-
-    plot.on("mouseover", function (d) {
-            handleHoverStart(d, this);
-        })
-        .on("mouseout", function (d) {
-            handleHoverEnd(d, this);
-        })
-        .on("touchstart", function (d){
-            handleHoverStart(d, this);
-        })
-        .on("touchend", function (d) {
-            handleHoverEnd(d, this);
-        });
-    
-    return plot;
-
 
     /**
      *
@@ -100,6 +59,46 @@ function addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             .ease(transitionProperties.hoverEaseType);
 
     }
+
+    plot = plot.enter().append("circle")
+        .attr("class", plotProp.plotClassName)
+        .attr("r", plotProp.display.radius)
+        .attr("cx", function(d) {
+            return scales.xScale(d[plotProp.xProp]);
+        })
+        .attr("cy", function(d) {
+            return scales.yScale(d[plotProp.yProp]);
+        });
+
+        plot.style("opacity", "0")
+        .style('opacity', 1e-6)
+        .transition()
+        .style('fill', transitionProperties.enterColor)
+        .style('opacity', 1)
+        .transition()
+        .duration(transitionProperties.startDurationTime)
+        .style("stroke", plotProp.display.strokeColor)
+        .style("fill", function () {
+            return plotProp.display.fillColor;
+        });
+
+    plot.on("mouseover", function (d) {
+            handleHoverStart(d, this);
+        })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this);
+        })
+        .on("touchstart", function (d){
+            handleHoverStart(d, this);
+        })
+        .on("touchend", function (d) {
+            handleHoverEnd(d, this);
+        });
+    
+    return plot;
+
+
+
 
 }
 

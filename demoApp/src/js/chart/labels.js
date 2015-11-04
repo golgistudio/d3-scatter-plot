@@ -4,7 +4,23 @@
 
 
 
+/**
+ *
+ * @param svg
+ * @param properties
+ */
+function drawLabel(svg, properties) {
+    "use strict";
 
+    svg.append("text")
+        .attr("class", properties.className)
+        .attr("text-anchor", properties.textAnchor)
+        .attr("x", properties.xPosition)
+        .attr("y", properties.yPosition)
+        .attr("transform", properties.transform)
+        .attr("font-size", properties.fontSize)
+        .text(properties.labelText);
+}
 
 /**
  *
@@ -31,20 +47,4 @@ function drawChartLabels (svg, labelProps, width, height, margin) {
     drawLabel(svg, labelProps.yAxisLabelProperties);
 }
 
-/**
- *
- * @param svg
- * @param properties
- */
-function drawLabel(svg, properties) {
-    "use strict";
 
-    svg.append("text")
-        .attr("class", properties.className)
-        .attr("text-anchor", properties.textAnchor)
-        .attr("x", properties.xPosition)
-        .attr("y", properties.yPosition)
-        .attr("transform", properties.transform)
-        .attr("font-size", properties.fontSize)
-        .text(properties.labelText);
-}

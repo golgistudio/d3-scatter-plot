@@ -5,7 +5,7 @@
 
 
 /*global d3:false */
-/*jshint unused:true */
+/*exported BarChart */
 
 /**
  *
@@ -16,24 +16,18 @@ function BarChart() {
 
     /**
      *
-     * @param request
      * @param parameters
      */
-    this.plotInterface = function (request, parameters) {
+    function updatePlot(parameters) {
 
-        switch (request) {
-            case "render" :
-                renderPlot(parameters);
-                break;
-            case "update" :
-                updatePlot(parameters);
-                break;
-            case "zoom" :
-                zoomPlot(parameters);
-                break;
 
-        }
-    };
+        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
+
+        updateElements(plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
+        addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        removeElements(plot,  parameters.transitionProperties);
+
+    }
 
     /**
      *
@@ -48,17 +42,8 @@ function BarChart() {
             .data(data);
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    function renderPlot (parameters) {
 
-        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
-        addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
-
-    }
 
     /**
      *
@@ -70,48 +55,6 @@ function BarChart() {
      * @returns {*}
      */
     function addElements(plot, plotProp, scales, toolTip, transitionProperties) {
-
-
-        plot = plot.enter().append("rect")
-            .attr("class", plotProp.plotClassName)
-            .attr("width", plotProp.display.width)
-            .attr("height", function (d) {
-                return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-            })
-            .attr("x", function (d) {
-                return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
-            })
-            .attr("y", function (d) {
-                return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-            });
-
-        plot.style("opacity", "0")
-            .style('opacity', 1e-6)
-            .transition()
-            .style('fill', transitionProperties.enterColor)
-            .style('opacity', 0.5)
-            .transition()
-            .style('stroke', plotProp.display.strokeColor)
-            .duration(transitionProperties.startDurationTime)
-            .style("fill", function () {
-                return plotProp.display.fillColor;
-            });
-
-        plot.on("mouseover", function (d) {
-                handleHoverStart(d, this);
-            })
-            .on("mouseout", function (d) {
-                handleHoverEnd(d, this);
-            })
-            .on("touchstart", function (d) {
-                handleHoverStart(d, this);
-            })
-            .on("touchend", function (d) {
-                handleHoverEnd(d, this);
-            });
-
-        return plot;
-
         /**
          *
          * @param d
@@ -158,6 +101,61 @@ function BarChart() {
                 .ease(transitionProperties.hoverEaseType);
 
         }
+
+        plot = plot.enter().append("rect")
+            .attr("class", plotProp.plotClassName)
+            .attr("width", plotProp.display.width)
+            .attr("height", function (d) {
+                return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
+            })
+            .attr("x", function (d) {
+                return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
+            })
+            .attr("y", function (d) {
+                return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
+            });
+
+        plot.style("opacity", "0")
+            .style('opacity', 1e-6)
+            .transition()
+            .style('fill', transitionProperties.enterColor)
+            .style('opacity', 0.5)
+            .transition()
+            .style('stroke', plotProp.display.strokeColor)
+            .duration(transitionProperties.startDurationTime)
+            .style("fill", function () {
+                return plotProp.display.fillColor;
+            });
+
+        plot.on("mouseover", function (d) {
+                handleHoverStart(d, this);
+            })
+            .on("mouseout", function (d) {
+                handleHoverEnd(d, this);
+            })
+            .on("touchstart", function (d) {
+                handleHoverStart(d, this);
+            })
+            .on("touchend", function (d) {
+                handleHoverEnd(d, this);
+            });
+
+        return plot;
+
+
+
+    }
+
+
+    /**
+     *
+     * @param parameters
+     */
+    function renderPlot (parameters) {
+
+        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
+
+        addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
 
     }
 
@@ -217,14 +215,7 @@ function BarChart() {
     }
 
 
-    /**
-     *
-     * @param parameters
-     */
-    function zoomPlot(parameters) {
 
-        zoomElements(parameters.svg, parameters.plotProp, parameters.scales);
-    }
 
     function zoomElements(plot, plotProp, scales) {
 
@@ -244,16 +235,12 @@ function BarChart() {
      *
      * @param parameters
      */
-    function updatePlot(parameters) {
+    function zoomPlot(parameters) {
 
-
-        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
-
-        updateElements(plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
-        addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
-        removeElements(plot,  parameters.transitionProperties);
-
+        zoomElements(parameters.svg, parameters.plotProp, parameters.scales);
     }
+
+
 
     /**
      *
@@ -267,4 +254,26 @@ function BarChart() {
         svg.transition().delay(transitionProperties.endDurationTime).remove();
 
     }
+
+
+    /**
+     *
+     * @param request
+     * @param parameters
+     */
+    this.plotInterface = function (request, parameters) {
+
+        switch (request) {
+            case "render" :
+                renderPlot(parameters);
+                break;
+            case "update" :
+                updatePlot(parameters);
+                break;
+            case "zoom" :
+                zoomPlot(parameters);
+                break;
+
+        }
+    };
 }

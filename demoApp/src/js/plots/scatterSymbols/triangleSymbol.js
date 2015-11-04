@@ -5,7 +5,7 @@
 
 /*global d3:false */
 /*jshint unused:false */
-
+/*exported addTriangleSymbol, updateTriangleSymbols, zoomTriangleSymbol */
 
 /**
  *
@@ -18,6 +18,48 @@
  */
 function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
+
+    /**
+     *
+     * @param d
+     * @param that
+     */
+    function handleHoverStart(d, that) {
+
+        var currentFillColor = d3.select(that).style("fill");
+        var hoverFillColor   = d3.rgb(currentFillColor).darker();
+
+        var hoverSize = plotProp.display.size * transitionProperties.sizeFactor;
+
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
+
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", plotProp.display.strokeColor)
+            .style("fill", hoverFillColor)
+            .attr('d', symbol.size(hoverSize))
+            .ease(transitionProperties.hoverEaseType);
+    }
+
+    /**
+     *
+     * @param d
+     * @param that
+     */
+    function handleHoverEnd(d, that) {
+
+        var symbol = d3.svg.symbol().type('triangle-up');
+
+        toolTip.hide();
+        d3.select(that).transition()
+            .delay(transitionProperties.hoverDelayTime)
+            .duration(transitionProperties.hoverTransitionDuration)
+            .style("stroke", plotProp.display.strokeColor)
+            .style("fill", plotProp.display.fillColor)
+            .attr("d", symbol.size(plotProp.display.size))
+            .ease(transitionProperties.hoverEaseType);
+    }
 
     var symbolType = 'triangle-up';
     var symbol     = d3.svg.symbol().type(symbolType);
@@ -61,47 +103,7 @@ function addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties
 
     return plot;
 
-    /**
-     *
-     * @param d
-     * @param that
-     */
-    function handleHoverStart(d, that) {
 
-        var currentFillColor = d3.select(that).style("fill");
-        var hoverFillColor   = d3.rgb(currentFillColor).darker();
-
-        var hoverSize = plotProp.display.size * transitionProperties.sizeFactor;
-
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
-
-        d3.select(that).transition()
-            .delay(transitionProperties.hoverDelayTime)
-            .duration(transitionProperties.hoverTransitionDuration)
-            .style("stroke", plotProp.display.strokeColor)
-            .style("fill", hoverFillColor)
-            .attr('d', symbol.size(hoverSize))
-            .ease(transitionProperties.hoverEaseType);
-    }
-
-    /**
-     *
-     * @param d
-     * @param that
-     */
-    function handleHoverEnd(d, that) {
-
-        var symbol = d3.svg.symbol().type('triangle-up');
-
-        toolTip.hide();
-        d3.select(that).transition()
-            .delay(transitionProperties.hoverDelayTime)
-            .duration(transitionProperties.hoverTransitionDuration)
-            .style("stroke", plotProp.display.strokeColor)
-            .style("fill", plotProp.display.fillColor)
-            .attr("d", symbol.size(plotProp.display.size))
-            .ease(transitionProperties.hoverEaseType);
-    }
 }
 
 

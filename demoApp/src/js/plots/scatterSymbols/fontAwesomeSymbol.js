@@ -4,10 +4,9 @@
 
 
 
-
-
 /*global d3:false */
 /*jshint unused:true */
+/*exported addFontAwesomeSymbol, updateFontAwesomeSymbols, zoomFontAwesomeSymbol */
 
 
 /**
@@ -21,49 +20,6 @@
  */
 function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
-
-    var textPlot = plot.enter()
-        .append("text")
-        .attr("class", plotProp.plotClassName)
-        .attr("x", function (d) {
-            return scales.xScale(d[plotProp.xProp]) - plotProp.display.textOffset;
-        })
-        .attr("y", function (d) {
-            return scales.yScale(d[plotProp.yProp]);
-        })
-        .attr("id", function (d) {
-            return "text-" + plotProp.name + "-" + Math.round(scales.xScale(d[plotProp.xProp])) + "-" + Math.round(scales.yScale(d[plotProp.yProp]));
-        })
-        .attr("font-family", "FontAwesome")
-        .attr('font-size', plotProp.display.fontSize)
-        .text(plotProp.display.unicode);
-
-    textPlot.style("opacity", "0")
-        .style('opacity', 1e-6)
-        .transition()
-        .style('fill', transitionProperties.enterColor)
-        .style('opacity', 1)
-        .transition()
-        .duration(transitionProperties.startDurationTime)
-        .style("stroke", plotProp.display.strokeColor)
-        .style("fill", function () {
-            return plotProp.display.textFill;
-        });
-
-    textPlot.on("mouseover", function (d) {
-        handleHoverStart(d, this);
-    })
-        .on("mouseout", function (d) {
-            handleHoverEnd(d, this);
-        })
-        .on("touchstart", function (d) {
-            handleHoverStart(d, this);
-        })
-        .on("touchend", function (d) {
-            handleHoverEnd(d, this);
-        });
-
-    return textPlot;
 
     /**
      *
@@ -109,6 +65,51 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
             .ease(transitionProperties.hoverEaseType);
     }
 
+    var textPlot = plot.enter()
+        .append("text")
+        .attr("class", plotProp.plotClassName)
+        .attr("x", function (d) {
+            return scales.xScale(d[plotProp.xProp]) - plotProp.display.textOffset;
+        })
+        .attr("y", function (d) {
+            return scales.yScale(d[plotProp.yProp]);
+        })
+        .attr("id", function (d) {
+            return "text-" + plotProp.name + "-" + Math.round(scales.xScale(d[plotProp.xProp])) + "-" + Math.round(scales.yScale(d[plotProp.yProp]));
+        })
+        .attr("font-family", "FontAwesome")
+        .attr('font-size', plotProp.display.fontSize)
+        .text(plotProp.display.unicode);
+
+    textPlot.style("opacity", "0")
+        .style('opacity', 1e-6)
+        .transition()
+        .style('fill', transitionProperties.enterColor)
+        .style('opacity', 1)
+        .transition()
+        .duration(transitionProperties.startDurationTime)
+        .style("stroke", plotProp.display.strokeColor)
+        .style("fill", function () {
+            return plotProp.display.textFill;
+        });
+
+    textPlot.on("mouseover", function (d) {
+        handleHoverStart(d, this);
+    })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this);
+        })
+        .on("touchstart", function (d) {
+            handleHoverStart(d, this);
+        })
+        .on("touchend", function (d) {
+            handleHoverEnd(d, this);
+        });
+
+    return textPlot;
+
+
+
 }
 
 
@@ -123,6 +124,7 @@ function addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionPropert
  */
 function updateFontAwesomeSymbols( svg, plotProp, scales, data, transitionProperties) {
     "use strict";
+
 
 
     svg.transition()  // Transition from old to new

@@ -16,28 +16,6 @@ var PlotManager = function() {
 
     /**
      *
-     * @param request
-     * @param parameters
-     */
-    this.plotManagerInterface = function (request, parameters) {
-
-        switch(request) {
-            case "update" : updatePlots(parameters);
-                break;
-            case "draw" : drawPlots(parameters);
-                break;
-            case "drawSelected" : drawSelectedPlot(parameters);
-                break;
-            case "zoom" : zoomPlots(parameters);
-                break;
-            case "getPlotRenderer" :
-                return getPlotRenderer(parameters);
-                break;
-        }
-    };
-
-    /**
-     *
      * @param parameters
      * @returns {*}
      */
@@ -132,6 +110,32 @@ var PlotManager = function() {
         });
 
     }
+
+    /**
+     *
+     * @param request
+     * @param parameters
+     */
+    this.plotManagerInterface = function (request, parameters) {
+
+        var returnVal = null;
+
+        switch(request) {
+            case "update" : updatePlots(parameters);
+                break;
+            case "draw" : drawPlots(parameters);
+                break;
+            case "drawSelected" : drawSelectedPlot(parameters);
+                break;
+            case "zoom" : zoomPlots(parameters);
+                break;
+            case "getPlotRenderer" :
+                returnVal = getPlotRenderer(parameters);
+                break;
+        }
+
+        return returnVal;
+    };
 
 };
 

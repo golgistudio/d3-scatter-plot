@@ -28,23 +28,6 @@
 function ScatterPlot() {
     "use strict";
 
-    /**
-     *
-     * @param request
-     * @param parameters
-     */
-    this.plotInterface = function (request, parameters) {
-
-        switch(request) {
-            case "render" : renderPlot(parameters);
-                break;
-            case "update" : updatePlot(parameters);
-                break;
-            case "zoom" : zoomPlot(parameters);
-                break;
-
-        }
-    };
 
     /**
      *
@@ -200,6 +183,25 @@ function ScatterPlot() {
 
         return svg;
     }
+
+    /**
+     *
+     * @param request
+     * @param parameters
+     */
+    this.plotInterface = function (request, parameters) {
+
+        switch(request) {
+            case "render" : renderPlot(parameters);
+                break;
+            case "update" : updatePlot(parameters);
+                break;
+            case "zoom" : zoomPlot(parameters);
+                break;
+
+        }
+    };
+
 
 }
 

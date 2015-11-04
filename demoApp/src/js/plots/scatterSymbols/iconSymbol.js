@@ -5,7 +5,7 @@
 
 /*global d3:false */
 /*jshint unused:true */
-
+/*exported addIconSymbol, updateIconSymbols, zoomIconSymbol */
 
 /**
  *
@@ -18,35 +18,6 @@
  */
 function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
-
-
-    var iconPlot = plot.enter().append("image")
-
-        .attr("class", plotProp.plotClassName)
-        .attr("xlink:href", plotProp.display.icon)
-        .attr("x", function (d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
-        })
-        .attr("y", function (d) {
-            return scales.yScale(d[plotProp.yProp]);
-        })
-        .attr("width", plotProp.display.width)
-        .attr("height", plotProp.display.height);
-
-    iconPlot.on("mouseover", function (d) {
-        handleHoverStart(d, this );
-    })
-        .on("mouseout", function (d) {
-            handleHoverEnd(d, this );
-        })
-        .on("touchstart", function (d) {
-            handleHoverStart(d, this );
-        })
-        .on("touchend", function (d) {
-            handleHoverEnd(d, this );
-        });
-
-    return plot;
 
     /**
      *
@@ -93,6 +64,36 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
             .ease(transitionProperties.hoverEaseType);
 
     }
+
+    var iconPlot = plot.enter().append("image")
+
+        .attr("class", plotProp.plotClassName)
+        .attr("xlink:href", plotProp.display.icon)
+        .attr("x", function (d) {
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
+        })
+        .attr("y", function (d) {
+            return scales.yScale(d[plotProp.yProp]);
+        })
+        .attr("width", plotProp.display.width)
+        .attr("height", plotProp.display.height);
+
+    iconPlot.on("mouseover", function (d) {
+        handleHoverStart(d, this );
+    })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this );
+        })
+        .on("touchstart", function (d) {
+            handleHoverStart(d, this );
+        })
+        .on("touchend", function (d) {
+            handleHoverEnd(d, this );
+        });
+
+    return plot;
+
+
 }
 
 
@@ -107,6 +108,7 @@ function addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
  */
 function updateIconSymbols( svg, plotProp, scales, data, transitionProperties) {
     "use strict";
+
 
 
     svg.transition()  // Transition from old to new

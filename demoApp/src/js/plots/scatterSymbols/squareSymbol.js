@@ -8,7 +8,7 @@
 
 /*global d3:false */
 /*jshint unused:true */
-
+/*exported addSquareSymbol, updateSquareSymbols, zoomSquareSymbol */
 
 /**
  *
@@ -21,45 +21,6 @@
  */
 function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
-
-
-    plot = plot.enter().append("rect")
-        .attr("class", plotProp.plotClassName)
-        .attr("width", plotProp.display.width)
-        .attr("height", plotProp.display.height)
-        .attr("x", function (d) {
-            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
-        })
-        .attr("y", function (d) {
-            return scales.yScale(d[plotProp.yProp]);
-        });
-
-    plot.style("opacity", "0")
-        .style('opacity', 1e-6)
-        .transition()
-        .style('fill', transitionProperties.enterColor)
-        .style('opacity', 1)
-        .transition()
-        .style('stroke', plotProp.display.strokeColor)
-        .duration(transitionProperties.startDurationTime)
-        .style("fill", function () {
-            return plotProp.display.fillColor;
-        });
-
-    plot.on("mouseover", function (d) {
-        handleHoverStart(d, this);
-    })
-        .on("mouseout", function (d) {
-            handleHoverEnd(d, this);
-        })
-        .on("touchstart", function (d) {
-            handleHoverStart(d, this);
-        })
-        .on("touchend", function (d) {
-            handleHoverEnd(d, this);
-        });
-
-    return plot;
 
     /**
      *
@@ -104,6 +65,46 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
             .ease(transitionProperties.hoverEaseType);
 
     }
+
+
+    plot = plot.enter().append("rect")
+        .attr("class", plotProp.plotClassName)
+        .attr("width", plotProp.display.width)
+        .attr("height", plotProp.display.height)
+        .attr("x", function (d) {
+            return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
+        })
+        .attr("y", function (d) {
+            return scales.yScale(d[plotProp.yProp]);
+        });
+
+    plot.style("opacity", "0")
+        .style('opacity', 1e-6)
+        .transition()
+        .style('fill', transitionProperties.enterColor)
+        .style('opacity', 1)
+        .transition()
+        .style('stroke', plotProp.display.strokeColor)
+        .duration(transitionProperties.startDurationTime)
+        .style("fill", function () {
+            return plotProp.display.fillColor;
+        });
+
+    plot.on("mouseover", function (d) {
+        handleHoverStart(d, this);
+    })
+        .on("mouseout", function (d) {
+            handleHoverEnd(d, this);
+        })
+        .on("touchstart", function (d) {
+            handleHoverStart(d, this);
+        })
+        .on("touchend", function (d) {
+            handleHoverEnd(d, this);
+        });
+
+    return plot;
+
 
 }
 

@@ -153,6 +153,38 @@ var pageManager = {
         }
     },
 
+    /**
+     *
+     * @param configItem
+     * @param symbol
+     */
+    updatePlotSymbol: function (configItem, symbol) {
+        "use strict";
+
+        configItem.display.symbol = symbol;
+        switch (symbol) {
+            case "icon":
+                configItem.display.icon   = "images/stopwatch-1-64x64.png";
+                configItem.display.width  = 20;
+                configItem.display.height = 20;
+                break;
+            case "triangle" :
+                configItem.display.size = 150;
+                break;
+            case "circle" :
+                configItem.display.radius = 5;
+                break;
+        }
+    },
+
+    /**
+     *
+     * @param symbol
+     * @param pageControl
+     * @param plotName
+     * @param chartDiv
+     */
+
     setSymbol: function(symbol, pageControl, plotName, chartDiv) {
         "use strict";
 
@@ -165,25 +197,14 @@ var pageManager = {
             if (chartItem.divId === chartDiv) {
 
                 var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
-                plotProps.forEach( function (configItem) {
-                    if (configItem.name === plotName) {
-                        configItem.display.symbol = symbol;
-                        switch (symbol) {
-                            case "icon":
-                                configItem.display.icon = "images/stopwatch-1-64x64.png";
-                                configItem.display.width = 20;
-                                configItem.display.height = 20;
-                                break;
-                            case "triangle" :
-                                configItem.display.size = 150;
-                                break;
-                            case "circle" :
-                                configItem.display.radius = 5;
-                                break;
-                        }
+                var len = plotProps.length;
 
+                for (var j = 0; j < len; j++) {
+                    var configItem = plotProps[i];
+                    if (configItem.name === plotName) {
+                        this.updatePlotSymbol(configItem, symbol);
                     }
-                });
+                }
                 pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
                 var params = {
@@ -213,15 +234,16 @@ var pageManager = {
             if (chartItem.divId === chartDiv) {
 
                 var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
+                var len = plotProps.length;
 
-                plotProps.forEach( function (configItem) {
+                for (var j = 0; j < len; j++) {
+                    var configItem = plotProps[i];
                     if (configItem.name === plotName) {
-
                         configItem.display.fillColor = color;
                     }
-                });
-                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
+                }
 
+                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
                 var params = {
                     "plotName": plotName
@@ -250,12 +272,15 @@ var pageManager = {
             if (chartItem.divId === chartDiv) {
 
                 var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
-                plotProps.forEach( function (configItem) {
-                    if (configItem.name === plotName) {
 
+                var len = plotProps.len;
+                for (var j = 0; j < len; j++) {
+                    var configItem = plotProps[i];
+                    if (configItem.name === plotName) {
                         configItem.display.plotStyle = plotStyle;
                     }
-                });
+                }
+
                 pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
                 var params = {
