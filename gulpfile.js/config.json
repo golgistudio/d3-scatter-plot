@@ -2,7 +2,7 @@
   "root": {
     "src": "./demoApp/src",
     "dest": "./demoApp/public",
-    "docroot" : "./demoApp/quality",
+    "qualityRoot" : "./demoApp/quality",
     "rootDir" : "."
   },
 
@@ -71,7 +71,6 @@
 
     "jshint": {
       "src": "js",
-      "dest": "js",
       "props": ".jshintrc",
       "extensions": ["js", "jsx"]
     },
@@ -94,7 +93,7 @@
       "extensions": ["sass", "scss"]
     },
 
-    "css": {
+    "purecss": {
       "src": "styles",
       "dest": "styles",
       "autoprefixer": {

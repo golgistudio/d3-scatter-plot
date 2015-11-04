@@ -6,7 +6,7 @@
 
 /**
  *
- * @type {*[]}
+ * @type {Array}
  */
 var experimentBDifferentTimesData = [{
     "Participant": "P-100",

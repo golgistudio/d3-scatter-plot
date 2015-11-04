@@ -9,16 +9,16 @@ var package          = require('../../../package.json');
 var path             = require('path');
 
 var fontPath = path.join(config.root.dest, config.tasks.iconFont.dest);
-var cssPath = path.join(config.root.dest, config.tasks.css.dest);
+var sassPath = path.join(config.root.dest, config.tasks.sass.dest);
 
 var settings = {
   name: package.name + ' icons',
   src: path.join(config.root.src, config.tasks.iconFont.src, '/*.svg'),
   dest: path.join(config.root.dest, config.tasks.iconFont.dest),
-  sassDest: path.join(config.root.src, config.tasks.css.src, config.tasks.iconFont.sassDest),
+  sassDest: path.join(config.root.src, config.tasks.sass.src, config.tasks.iconFont.sassDest),
   template: path.normalize('./gulpfile.js/tasks/iconFont/template.sass'),
   sassOutputName: '_icons.sass',
-  fontPath: path.relative(cssPath, fontPath),
+  fontPath: path.relative(sassPath, fontPath),
   className: 'icon',
   options: {
     svg: true,

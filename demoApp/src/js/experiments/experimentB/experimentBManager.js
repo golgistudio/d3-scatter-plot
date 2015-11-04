@@ -3,9 +3,6 @@
  */
 
 
-
-
-
 /*global d3:false */
 
 
@@ -45,10 +42,11 @@ function ExperimentBManager() {
         };
     }
 
+
     /**
      *
      * @param data
-     * @returns {{xDomain: Array, yDomain: *[]}}
+     * @returns {{xDomain: Array, yDomain: Array}}
      */
     function calcDomains (data) {
 

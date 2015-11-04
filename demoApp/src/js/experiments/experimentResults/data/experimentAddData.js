@@ -4,7 +4,7 @@
 
 /**
  *
- * @type {*[]}
+ * @type {Array}
  */
 var experimentAddData = [{
     "Participant": "P-100",

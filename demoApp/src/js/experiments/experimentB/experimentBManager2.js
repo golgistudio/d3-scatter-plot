@@ -47,7 +47,7 @@ function ExperimentBManager2() {
     /**
      *
      * @param data
-     * @returns {{xDomain: Array, yDomain: *[]}}
+     * @returns {{xDomain: Array, yDomain: Array}}
      */
     function calcDomains (data) {
 

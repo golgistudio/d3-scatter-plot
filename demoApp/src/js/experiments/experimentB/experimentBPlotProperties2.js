@@ -5,7 +5,7 @@
 
 /**
  *
- * @type {*[]}
+ * @type {Array}
  */
 var experimentBPlotProperties2 = [
     {

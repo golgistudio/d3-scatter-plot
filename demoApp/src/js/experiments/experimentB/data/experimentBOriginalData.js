@@ -5,7 +5,7 @@
 
 /**
  *
- * @type {*[]}
+ * @type {Array}
  */
 var experimentBOriginalData = [{
     "Participant": "P-100",

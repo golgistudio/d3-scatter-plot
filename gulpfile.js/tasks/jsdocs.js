@@ -8,7 +8,7 @@ var handleErrors = require('../lib/handleErrors');
 
 var paths = {
     src:  path.join(config.root.src, config.tasks.jsdoc.src, '/**/*.{' + config.tasks.jsdoc.extensions + '}'),
-    dest: path.join(config.root.docroot, config.tasks.jsdoc.dest)
+    dest: path.join(config.root.qualityRoot, config.tasks.jsdoc.dest)
 };
 
 var jsdocTask = function () {

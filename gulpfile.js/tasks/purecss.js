@@ -1,5 +1,5 @@
 var config       = require('../config');
-if(!config.tasks.css) return;
+if(!config.tasks.purecss) return;
 
 var gulp         = require('gulp');
 var browserSync  = require('browser-sync');
@@ -9,19 +9,19 @@ var autoprefixer = require('gulp-autoprefixer');
 var path         = require('path');
 
 var paths = {
-  src: path.join(config.root.src, config.tasks.css.src, '/**/*.{' + config.tasks.css.extensions + '}'),
-  dest: path.join(config.root.dest, config.tasks.css.dest)
+  src: path.join(config.root.src, config.tasks.purecss.src, '/**/*.{' + config.tasks.purecss.extensions + '}'),
+  dest: path.join(config.root.dest, config.tasks.purecss.dest)
 };
 
-var cssTask = function () {
+var purecss = function () {
   console.log(paths.src);
   console.log(paths.dest);
   return gulp.src(paths.src)
     .on('error', handleErrors)
-    .pipe(autoprefixer(config.tasks.css.autoprefixer))
+    .pipe(autoprefixer(config.tasks.purecss.autoprefixer))
     .pipe(gulp.dest(paths.dest))
     .pipe(browserSync.stream())
 };
 
-gulp.task('css', cssTask);
-module.exports = cssTask;
+gulp.task('purecss', purecss);
+module.exports = purecss;
