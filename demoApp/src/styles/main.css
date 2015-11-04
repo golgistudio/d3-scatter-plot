@@ -98,6 +98,11 @@ h1 {
 * Slide Out Menu
 *
 *************************/
+.optionSelected {
+    background: #75dd5a;
+}
+
+
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
 .menu, .menu-bar {
     position: fixed;

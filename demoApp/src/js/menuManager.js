@@ -22,6 +22,7 @@ function addMenuEventHandlers(pageManager) {
     addTopMenuEventHandlers();
 
     document.getElementById("addPointButton").addEventListener("click", function(event) {
+        updateSelected(["removePointButton", "changePointButton", "resetPointsButton"], "addPointButton");
         var experiment = pageManager.getActiveExperiment();
         var data = null;
 
@@ -38,6 +39,7 @@ function addMenuEventHandlers(pageManager) {
     });
 
     document.getElementById("removePointButton").addEventListener("click", function(event) {
+        updateSelected(["addPointButton", "changePointButton", "resetPointsButton"], "removePointButton");
         var experiment = pageManager.getActiveExperiment();
         var data = null;
 
@@ -54,6 +56,7 @@ function addMenuEventHandlers(pageManager) {
     });
 
     document.getElementById("changePointButton").addEventListener("click", function(event) {
+        updateSelected(["addPointButton", "removePointButton", "resetPointsButton"], "changePointButton");
         var experiment = pageManager.getActiveExperiment();
         var data = null;
 
@@ -70,6 +73,7 @@ function addMenuEventHandlers(pageManager) {
     });
 
     document.getElementById("resetPointsButton").addEventListener("click", function(event) {
+        updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
         var experiment = pageManager.getActiveExperiment();
         var data = null;
 
@@ -86,18 +90,21 @@ function addMenuEventHandlers(pageManager) {
 
     document.getElementById("circleSymbol").addEventListener("click", function(event) {
 
+        updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
         pageManager.setSymbol("dot", pageManager, "Congruent", "chart1");
         event.stopPropagation();
     });
 
     document.getElementById("triangleSymbol").addEventListener("click", function(event) {
 
+        updateSelected(["iconSymbol", "circleSymbol"], "triangleSymbol");
         pageManager.setSymbol("triangle", pageManager, "Congruent", "chart1");
         event.stopPropagation();
     });
 
     document.getElementById("iconSymbol").addEventListener("click", function(event) {
 
+        updateSelected(["triangleSymbol", "circleSymbol"], "iconSymbol");
         pageManager.setSymbol("icon", pageManager, "Congruent", "chart1");
         event.stopPropagation();
     });
@@ -107,24 +114,18 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("blueColor").addEventListener("click", function(event) {
 
+        updateSelected(["pinkColor"], "blueColor");
         pageManager.setSymbolColor("blue", pageManager, "Incongruent", "chart1");
         event.stopPropagation();
     });
 
-    /**
-     *  update of the incongruent plot
-     */
-    document.getElementById("pinkColor").addEventListener("click", function(event) {
-
-        pageManager.setSymbolColor("purple", pageManager, "Incongruent", "chart1");
-        event.stopPropagation();
-    });
 
     /**
      *  update of the incongruent plot
      */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
 
+        updateSelected(["blueColor"], "pinkColor");
         pageManager.setSymbolColor("purple", pageManager, "Incongruent", "chart1");
         event.stopPropagation();
     });
@@ -134,6 +135,7 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("scatter").addEventListener("click", function(event) {
 
+        updateSelected(["barChart"], "scatter");
         var experiment = pageManager.getActiveExperiment();
         var chartDiv = null;
 
@@ -152,6 +154,9 @@ function addMenuEventHandlers(pageManager) {
      *  update of the Difference plot
      */
     document.getElementById("barChart").addEventListener("click", function(event) {
+
+        updateSelected(["scatter"], "barChart");
+        document.getElementById("expB").classList.toggle( "optionSelected" );
 
         var experiment = pageManager.getActiveExperiment();
         var chartDiv = null;
@@ -174,6 +179,7 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("expA").addEventListener("click", function(event) {
 
+        updateSelected(["expB"], "expA");
         pageManager.switchExperiment("expA", pageManager);
         event.stopPropagation();
     });
@@ -183,10 +189,42 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("expB").addEventListener("click", function(event) {
 
+        updateSelected(["expA"], "expB");
         pageManager.switchExperiment("expB", pageManager);
+
         event.stopPropagation();
     });
+
+    initializeSelectedMenus();
+
 }
+
+/**
+ *
+ */
+function initializeSelectedMenus() {
+    updateSelected(["expB"], "expA");
+    updateSelected(["scatter"], "barChart");
+    updateSelected(["pinkColor"], "blueColor");
+    updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
+    updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
+}
+
+/**
+ *
+ * @param selected
+ */
+function updateSelected(unselected, selected) {
+
+    var length = unselected.length;
+
+    for (var iii = 0; iii < length; iii++){
+        document.getElementById(unselected[iii]).classList.remove( "optionSelected" );
+    }
+
+    document.getElementById(selected).classList.toggle( "optionSelected" );
+}
+
 
 /**
  *
