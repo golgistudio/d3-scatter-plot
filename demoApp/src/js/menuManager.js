@@ -324,8 +324,6 @@ function addMenuEventHandlers(pageManager) {
                 pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv)
                 break;
         }
-
-    ;
         event.stopPropagation();
 
 
