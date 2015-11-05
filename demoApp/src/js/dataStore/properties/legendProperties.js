@@ -22,9 +22,9 @@ function LegendProperties () {
     this.boxHeight= 20;
     this.boxClassName= "legendBox";
     this.itemClassName= "legendItems";
-    //this.legendSymbolClassName= "legendSymbol";
-    //this.textYIncrement= 3;
-    //this.font_size= 12;
+    this.legendSymbolClassName= "legendSymbol";
+    this.hoverSizeFactor = 150;
+    this.sizeFactor = 70;
     this.offset= 20;
     this.symbolWidth= 8;
     this.symbolHeight= 8;

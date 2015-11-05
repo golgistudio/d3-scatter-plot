@@ -61,7 +61,7 @@ function addLegendItems(legendCollection, legendData, properties) {
         .enter()
         .append("path")
         .attr("d", d3.svg.symbol().type("diamond"))
-        .attr("class", properties.symbolClassName)
+        .attr("class", properties.legendSymbolClassName)
         .attr("width", properties.symbolWidth)
         .attr("height", properties.symbolHeight)
         .attr("transform", function(d, i) {
@@ -73,6 +73,39 @@ function addLegendItems(legendCollection, legendData, properties) {
         })
         .on("click", function(d) {
             legendItemClickedHandler(d);
+        })
+        .on("mouseover", function (d) {
+
+            var symbol = d3.svg.symbol().type('diamond');
+            var currentFillColor = d3.select(this).style("fill");
+            var transitionColor = d3.rgb(currentFillColor).darker();
+            var hoverSize = d3.select(this).size() * properties.hoverSizeFactor;
+            d3.select(this)
+                .style("fill", transitionColor)
+                .attr('d', symbol.size(hoverSize));
+        })
+        .on("mouseout", function (d) {
+            var symbol = d3.svg.symbol().type('diamond');
+            var hoverSize = d3.select(this).size() * properties.sizeFactor;
+            d3.select(this)
+                .style("fill", d.color)
+                .attr('d', symbol.size(hoverSize));
+        })
+        .on("touchstart", function (d){
+            var symbol = d3.svg.symbol().type('diamond');
+            var currentFillColor = d3.select(this).style("fill");
+            var transitionColor = d3.rgb(currentFillColor).darker();
+            var hoverSize = d3.select(this).size() * properties.hoverSizeFactor;
+            d3.select(this)
+                .style("fill", transitionColor)
+                .attr('d', symbol.size(hoverSize));
+        })
+        .on("touchend", function (d) {
+            var symbol = d3.svg.symbol().type('diamond');
+            var hoverSize = d3.select(this).size() * properties.sizeFactor;
+            d3.select(this)
+                .style("fill", d.color)
+                .attr('d', symbol.size(hoverSize));
         });
 }
 
@@ -93,7 +126,7 @@ function drawLegend(svg, width, height, properties, legendData) {
 
     var count = legendData.length;
 
-    var height = count * properties.height;
+    height = count * properties.height;
     var boxHeight = count * properties.boxHeight;
 
     var legend = svg.selectAll("." + properties.legendClassName)
