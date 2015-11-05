@@ -58,6 +58,11 @@ h1 {
     color: black;
     stoke: #000;
     fill: black;
+    cursor: pointer;
+}
+
+.legendText:hover {
+    font-weight: bold;
 }
 
 .legendBox {
