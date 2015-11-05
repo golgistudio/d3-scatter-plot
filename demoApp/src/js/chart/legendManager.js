@@ -91,6 +91,11 @@ function drawLegend(svg, width, height, properties, legendData) {
 
     "use strict";
 
+    var count = legendData.length;
+
+    var height = count * properties.height;
+    var boxHeight = count * properties.boxHeight;
+
     var legend = svg.selectAll("." + properties.legendClassName)
         .data([true])
         .enter().append("g")
@@ -98,7 +103,7 @@ function drawLegend(svg, width, height, properties, legendData) {
         .attr("x", properties.x)
         .attr("y", properties.y)
         .attr("width", properties.width)
-        .attr("height", properties.height)
+        .attr("height", height)
         .style("fill", "white")
         .attr("transform", function(d, i) {
             return "translate(0," + i * properties.offset + ")";
@@ -109,7 +114,7 @@ function drawLegend(svg, width, height, properties, legendData) {
         .attr("x", properties.boxX)
         .attr("y", properties.boxY)
         .attr("width", properties.boxWidth)
-        .attr("height", properties.boxHeight);
+        .attr("height", boxHeight);
 
     var legendCollection = legend.selectAll("." + properties.itemClassName)
         .data([true])
