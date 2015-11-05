@@ -8,10 +8,10 @@
  */
 var experimentPlotProperties = [
     {
-        plotClassName: "incongruent",
-        xProp: "Participant",
-        yProp: "Incongruent",
-        name: "Incongruent",
+        plotClassName: "test",
+        xProp: "Subject",
+        yProp: "Test",
+        name: "Test",
         display: {
             width:        20,
             height:       20,
@@ -24,10 +24,10 @@ var experimentPlotProperties = [
     },
 
     {
-        plotClassName: "congruent",
-        xProp: "Participant",
-        yProp: "Congruent",
-        name: "Congruent",
+        plotClassName: "control",
+        xProp: "Subject",
+        yProp: "Control",
+        name: "Control",
         display: {
             radius:      10,
             fillColor:   "lightgreen",

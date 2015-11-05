@@ -56,7 +56,6 @@ h1 {
 
 .legendText {
     color: black;
-    stoke: #000;
     fill: black;
     cursor: pointer;
 }
@@ -250,7 +249,7 @@ h1 {
     }
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 700px) and (orientation:portrait)  {
 
     #chart1 {
         float: none;
@@ -262,7 +261,7 @@ h1 {
 @media screen and (max-height: 34em){
     .menu li,
     .menu-bar {
-        font-size:100%;
+        font-size:70%;
     }
 }
 @media screen and (max-height: 34em) and (max-width: 500px){

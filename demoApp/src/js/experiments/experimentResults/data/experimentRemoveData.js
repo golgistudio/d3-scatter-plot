@@ -7,73 +7,73 @@
  * @type {Array}
  */
 var experimentRemoveData = [{
-    "Participant": "P-100",
-    "Congruent": 12.079,
-    "Incongruent": 19.278,
+    "Subject": "P-100",
+    "Control": 12.079,
+    "Test": 19.278,
     "Difference": 7.199
 }, {
-    "Participant": "P-101",
-    "Congruent": 16.791,
-    "Incongruent": 18.741,
+    "Subject": "P-101",
+    "Control": 16.791,
+    "Test": 18.741,
     "Difference": 1.95
 },  {
-    "Participant": "P-104",
-    "Congruent": 12.238,
-    "Incongruent": 20.878,
+    "Subject": "P-104",
+    "Control": 12.238,
+    "Test": 20.878,
     "Difference": 8.64
 }, {
-    "Participant": "P-105",
-    "Congruent": 14.692,
-    "Incongruent": 24.572,
+    "Subject": "P-105",
+    "Control": 14.692,
+    "Test": 24.572,
     "Difference": 9.88
 }, {
-    "Participant": "P-106",
-    "Congruent": 8.987,
-    "Incongruent": 17.394,
+    "Subject": "P-106",
+    "Control": 8.987,
+    "Test": 17.394,
     "Difference": 8.407
 }, {
-    "Participant": "P-107",
-    "Congruent": 9.401,
-    "Incongruent": 20.762,
+    "Subject": "P-107",
+    "Control": 9.401,
+    "Test": 20.762,
     "Difference": 11.361
 },   {
-    "Participant": "P-110",
-    "Congruent": 15.073,
-    "Incongruent": 17.51,
+    "Subject": "P-110",
+    "Control": 15.073,
+    "Test": 17.51,
     "Difference": 2.437
 }, {
-    "Participant": "P-111",
-    "Congruent": 16.929,
-    "Incongruent": 20.33,
+    "Subject": "P-111",
+    "Control": 16.929,
+    "Test": 20.33,
     "Difference": 3.401
 }, {
-    "Participant": "P-112",
-    "Congruent": 12.13,
-    "Incongruent": 22.158,
+    "Subject": "P-112",
+    "Control": 12.13,
+    "Test": 22.158,
     "Difference": 10.028
 }, {
-    "Participant": "P-113",
-    "Congruent": 18.495,
-    "Incongruent": 25.139,
+    "Subject": "P-113",
+    "Control": 18.495,
+    "Test": 25.139,
     "Difference": 6.644
 },  {
-    "Participant": "P-116",
-    "Congruent": 12.369,
-    "Incongruent": 34.288,
+    "Subject": "P-116",
+    "Control": 12.369,
+    "Test": 34.288,
     "Difference": 21.919
 }, {
-    "Participant": "P-117",
-    "Congruent": 14.233,
-    "Incongruent": 17.96,
+    "Subject": "P-117",
+    "Control": 14.233,
+    "Test": 17.96,
     "Difference": 3.727
 }, {
-    "Participant": "P-118",
-    "Congruent": 19.71,
-    "Incongruent": 22.058,
+    "Subject": "P-118",
+    "Control": 19.71,
+    "Test": 22.058,
     "Difference": 2.348
 }, {
-    "Participant": "P-119",
-    "Congruent": 16.004,
-    "Incongruent": 21.157,
+    "Subject": "P-119",
+    "Control": 16.004,
+    "Test": 21.157,
     "Difference": 5.153
 }];

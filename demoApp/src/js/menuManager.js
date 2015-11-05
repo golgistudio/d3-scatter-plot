@@ -190,21 +190,51 @@ function addMenuEventHandlers(pageManager) {
     document.getElementById("circleSymbol").addEventListener("click", function(event) {
 
         updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
-        pageManager.setSymbol("dot", pageManager, "Congruent", "chart1");
+
+        var experiment = pageManager.getActiveExperiment();
+
+        switch(experiment) {
+            case "expA" :
+                pageManager.setSymbol("dot", pageManager, "Control", "chart1");
+                break;
+            case "expB" :
+                pageManager.setSymbol("dot", pageManager, "Congruent", "chart1");
+                break;
+        }
         event.stopPropagation();
     });
 
     document.getElementById("triangleSymbol").addEventListener("click", function(event) {
 
         updateSelected(["iconSymbol", "circleSymbol"], "triangleSymbol");
-        pageManager.setSymbol("triangle", pageManager, "Congruent", "chart1");
+
+        var experiment = pageManager.getActiveExperiment();
+
+        switch(experiment) {
+            case "expA" :
+                pageManager.setSymbol("triangle", pageManager, "Control", "chart1");
+                break;
+            case "expB" :
+                pageManager.setSymbol("triangle", pageManager, "Congruent", "chart1");
+                break;
+        }
         event.stopPropagation();
     });
 
     document.getElementById("iconSymbol").addEventListener("click", function(event) {
 
         updateSelected(["triangleSymbol", "circleSymbol"], "iconSymbol");
-        pageManager.setSymbol("icon", pageManager, "Congruent", "chart1");
+
+        var experiment = pageManager.getActiveExperiment();
+
+        switch(experiment) {
+            case "expA" :
+                pageManager.setSymbol("icon", pageManager, "Control", "chart1");
+                break;
+            case "expB" :
+                pageManager.setSymbol("icon", pageManager, "Congruent", "chart1");
+                break;
+        }
         event.stopPropagation();
     });
 
@@ -214,18 +244,39 @@ function addMenuEventHandlers(pageManager) {
     document.getElementById("blueColor").addEventListener("click", function(event) {
 
         updateSelected(["pinkColor"], "blueColor");
-        pageManager.setSymbolColor("blue", pageManager, "Incongruent", "chart1");
+
+        var experiment = pageManager.getActiveExperiment();
+
+        switch(experiment) {
+            case "expA" :
+                pageManager.setSymbolColor("blue", pageManager, "Test", "chart1");
+                break;
+            case "expB" :
+                pageManager.setSymbolColor("blue", pageManager, "Incongruent", "chart1");
+                break;
+        }
         event.stopPropagation();
     });
 
 
     /**
-     *  update of the incongruent plot
+     *  update
      */
     document.getElementById("pinkColor").addEventListener("click", function(event) {
 
         updateSelected(["blueColor"], "pinkColor");
-        pageManager.setSymbolColor("purple", pageManager, "Incongruent", "chart1");
+
+        var experiment = pageManager.getActiveExperiment();
+
+        switch(experiment) {
+            case "expA" :
+                pageManager.setSymbolColor("purple", pageManager, "Test", "chart1");
+                break;
+            case "expB" :
+                pageManager.setSymbolColor("purple", pageManager, "Incongruent", "chart1");
+                break;
+        }
+
         event.stopPropagation();
     });
 
@@ -239,13 +290,17 @@ function addMenuEventHandlers(pageManager) {
         var chartDiv = null;
 
         switch(experiment) {
-            case "expA" : chartDiv = "chart2";
+            case "expA" :
+                chartDiv = "chart2";
+                pageManager.setPlotStyle("scatter", pageManager, "Difference", chartDiv);
                 break;
-            case "expB" : chartDiv = "chart1";
+            case "expB" :
+                chartDiv = "chart1";
+                pageManager.setPlotStyle("scatter", pageManager, "Difference", chartDiv);
                 break;
         }
 
-        pageManager.setPlotStyle("scatter", pageManager, "Difference", chartDiv);
+
         event.stopPropagation();
     });
 
@@ -260,13 +315,17 @@ function addMenuEventHandlers(pageManager) {
         var chartDiv = null;
 
         switch(experiment) {
-            case "expA" : chartDiv = "chart2";
+            case "expA" :
+                chartDiv = "chart2";
+                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv)
                 break;
-            case "expB" : chartDiv = "chart1";
+            case "expB" :
+                chartDiv = "chart1";
+                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv)
                 break;
         }
 
-        pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv);
+    ;
         event.stopPropagation();
 
 
@@ -277,6 +336,7 @@ function addMenuEventHandlers(pageManager) {
      */
     document.getElementById("expA").addEventListener("click", function(event) {
 
+        initializeSelectedMenus();
         updateSelected(["expB"], "expA");
         pageManager.switchExperiment("expA", pageManager);
         event.stopPropagation();
@@ -286,7 +346,7 @@ function addMenuEventHandlers(pageManager) {
      *  Experment B
      */
     document.getElementById("expB").addEventListener("click", function(event) {
-
+        initializeSelectedMenus();
         updateSelected(["expA"], "expB");
         pageManager.switchExperiment("expB", pageManager);
 

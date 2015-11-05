@@ -49,13 +49,13 @@ function ExperimentManager() {
 
 
         var maxY = d3.max(data, function (d) {
-            return +d.Incongruent;
+            return +d.Test;
         });
 
         var xDomain = [];
         xDomain.push("");
         data.forEach(function (item) {
-            xDomain.push(item.Participant);
+            xDomain.push(item.Subject);
         });
         xDomain.push(" ");
 
@@ -74,9 +74,9 @@ function ExperimentManager() {
 
 
         var item = [];
-        item.Participant = d.Participant;
-        item.Incongruent = +d.Incongruent;
-        item.Congruent = +d.Congruent;
+        item.Subject = d.Subject;
+        item.Test = +d.Test;
+        item.Control = +d.Control;
         item.Difference = +d.Difference;
         return item;
     };
@@ -93,19 +93,19 @@ function ExperimentManager() {
 
         var content = d[plotPropIndex] + "<br/>" + "<br/>";
 
-        if (yProp === "Incongruent") {
+        if (yProp === "Test") {
             content = content + "* ";
         } else {
             content = content + "&nbsp;&nbsp;";
         }
-        content = content + "Incongruent: " + d.Incongruent + " secs";
+        content = content + "Test: " + d.Test + " secs";
 
-        if (yProp === "Congruent" ) {
+        if (yProp === "Control" ) {
             content = content + "<br/>* ";
         } else {
             content = content + "<br/>&nbsp;&nbsp;";
         }
-        content = content + "Congruent: " + d.Congruent + " secs";
+        content = content + "Control: " + d.Control + " secs";
 
         if (yProp === "Difference" ) {
             content = content + "<br/>* ";
@@ -123,9 +123,9 @@ function ExperimentManager() {
      */
     this.updateLabelProperties  = function(labelProperties) {
 
-        labelProperties.xAxisLabelProperties.labelText = "Participants";
+        labelProperties.xAxisLabelProperties.labelText = "Subjects";
         labelProperties.yAxisLabelProperties.labelText = "Time (seconds)";
-        labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment A";
+        labelProperties.titleProperties.labelText      = "Golgi Lab - Experiment A - Results";
     };
 
 }

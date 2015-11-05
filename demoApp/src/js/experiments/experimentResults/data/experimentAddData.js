@@ -6,144 +6,147 @@
  *
  * @type {Array}
  */
-var experimentAddData = [{
-    "Participant": "P-100",
-    "Congruent": 12.079,
-    "Incongruent": 19.278,
-    "Difference": 7.199
-}, {
-    "Participant": "P-101",
-    "Congruent": 16.791,
-    "Incongruent": 18.741,
-    "Difference": 1.95
-}, {
-    "Participant": "P-102",
-    "Congruent": 9.564,
-    "Incongruent": 21.214,
-    "Difference": 11.65
-}, {
-    "Participant": "P-103",
-    "Congruent": 8.63,
-    "Incongruent": 15.687,
-    "Difference": 7.057
-}, {
-    "Participant": "P-104",
-    "Congruent": 14.669,
-    "Incongruent": 22.803,
-    "Difference": 8.134
-}, {
-    "Participant": "P-105",
-    "Congruent": 12.238,
-    "Incongruent": 20.878,
-    "Difference": 8.64
-}, {
-    "Participant": "P-106",
-    "Congruent": 14.692,
-    "Incongruent": 24.572,
-    "Difference": 9.88
-}, {
-    "Participant": "P-107",
-    "Congruent": 8.987,
-    "Incongruent": 17.394,
-    "Difference": 8.407
-}, {
-    "Participant": "P-108",
-    "Congruent": 9.401,
-    "Incongruent": 20.762,
-    "Difference": 11.361
-}, {
-    "Participant": "P-109",
-    "Congruent": 14.48,
-    "Incongruent": 26.282,
-    "Difference": 11.802
-}, {
-    "Participant": "P-110",
-    "Congruent": 22.328,
-    "Incongruent": 24.524,
-    "Difference": 2.196
-}, {
-    "Participant": "P-111",
-    "Congruent": 15.298,
-    "Incongruent": 18.644,
-    "Difference": 3.346
-}, {
-    "Participant": "P-112",
-    "Congruent": 15.073,
-    "Incongruent": 17.51,
-    "Difference": 2.437
-}, {
-    "Participant": "P-113",
-    "Congruent": 16.929,
-    "Incongruent": 20.33,
-    "Difference": 3.401
-}, {
-    "Participant": "P-114",
-    "Congruent": 18.2,
-    "Incongruent": 35.255,
-    "Difference": 17.055
-}, {
-    "Participant": "P-115",
-    "Congruent": 12.13,
-    "Incongruent": 22.158,
-    "Difference": 10.028
-}, {
-    "Participant": "P-116",
-    "Congruent": 18.495,
-    "Incongruent": 25.139,
-    "Difference": 6.644
-}, {
-    "Participant": "P-117",
-    "Congruent": 10.639,
-    "Incongruent": 20.429,
-    "Difference": 9.79
-}, {
-    "Participant": "P-118",
-    "Congruent": 11.344,
-    "Incongruent": 17.425,
-    "Difference": 6.081
-}, {
-    "Participant": "P-119",
-    "Congruent": 12.369,
-    "Incongruent": 34.288,
-    "Difference": 21.919
-}, {
-    "Participant": "P-120",
-    "Congruent": 12.944,
-    "Incongruent": 23.894,
-    "Difference": 10.95
-}, {
-    "Participant": "P-121",
-    "Congruent": 14.233,
-    "Incongruent": 17.96,
-    "Difference": 3.727
-}, {
-    "Participant": "P-122",
-    "Congruent": 19.71,
-    "Incongruent": 22.058,
-    "Difference": 2.348
-}, {
-    "Participant": "P-123",
-    "Congruent": 16.004,
-    "Incongruent": 21.157,
-    "Difference": 5.153
-},{
-        "Participant": "P-124",
-        "Congruent": 23.944,
-        "Incongruent": 58.894,
-        "Difference": 13.95
+var experimentAddData = [
+    {
+        "Subjects": "P-100",
+        "Control":     12.079,
+        "Test":        19.278,
+        "Difference":  7.199
     }, {
-        "Participant": "P-125",
-        "Congruent": 24.233,
-        "Incongruent": 55.96,
-        "Difference": 6.727
+        "Subjects": "P-101",
+        "Control":     16.791,
+        "Test":        18.741,
+        "Difference":  1.95
     }, {
-        "Participant": "P-126",
-        "Congruent": 29.71,
-        "Incongruent": 22.058,
-        "Difference": 5.348
+        "Subjects": "P-102",
+        "Control":     9.564,
+        "Test":        21.214,
+        "Difference":  11.65
     }, {
-        "Participant": "P-127",
-        "Congruent": 26.004,
-        "Incongruent": 60.157,
-        "Difference": 8.153
-    }];
+        "Subjects": "P-103",
+        "Control":     8.63,
+        "Test":        15.687,
+        "Difference":  7.057
+    }, {
+        "Subjects": "P-104",
+        "Control":     14.669,
+        "Test":        22.803,
+        "Difference":  8.134
+    }, {
+        "Subjects": "P-105",
+        "Control":     12.238,
+        "Test":        20.878,
+        "Difference":  8.64
+    }, {
+        "Subjects": "P-106",
+        "Control":     14.692,
+        "Test":        24.572,
+        "Difference":  9.88
+    }, {
+        "Subjects": "P-107",
+        "Control":     8.987,
+        "Test":        17.394,
+        "Difference":  8.407
+    }, {
+        "Subjects": "P-108",
+        "Control":     9.401,
+        "Test":        20.762,
+        "Difference":  11.361
+    }, {
+        "Subjects": "P-109",
+        "Control":     14.48,
+        "Test":        26.282,
+        "Difference":  11.802
+    }, {
+        "Subjects": "P-110",
+        "Control":     22.328,
+        "Test":        24.524,
+        "Difference":  2.196
+    }, {
+        "Subjects": "P-111",
+        "Control":     15.298,
+        "Test":        18.644,
+        "Difference":  3.346
+    }, {
+        "Subjects": "P-112",
+        "Control":     15.073,
+        "Test":        17.51,
+        "Difference":  2.437
+    }, {
+        "Subjects": "P-113",
+        "Control":     16.929,
+        "Test":        20.33,
+        "Difference":  3.401
+    }, {
+        "Subjects": "P-114",
+        "Control":     18.2,
+        "Test":        35.255,
+        "Difference":  17.055
+    }, {
+        "Subjects": "P-115",
+        "Control":     12.13,
+        "Test":        22.158,
+        "Difference":  10.028
+    }, {
+        "Subjects": "P-116",
+        "Control":     18.495,
+        "Test":        25.139,
+        "Difference":  6.644
+    }, {
+        "Subjects": "P-117",
+        "Control":     10.639,
+        "Test":        20.429,
+        "Difference":  9.79
+    }, {
+        "Subjects": "P-118",
+        "Control":     11.344,
+        "Test":        17.425,
+        "Difference":  6.081
+    }, {
+        "Subjects": "P-119",
+        "Control":     12.369,
+        "Test":        34.288,
+        "Difference":  21.919
+    }, {
+        "Subjects": "P-120",
+        "Control":     12.944,
+        "Test":        23.894,
+        "Difference":  10.95
+    }, {
+        "Subjects": "P-121",
+        "Control":     14.233,
+        "Test":        17.96,
+        "Difference":  3.727
+    }, {
+        "Subjects": "P-122",
+        "Control":     19.71,
+        "Test":        22.058,
+        "Difference":  2.348
+    }, {
+        "Subjects": "P-123",
+        "Control":     16.004,
+        "Test":        21.157,
+        "Difference":  5.153
+    },
+    {
+        "Subjects": "P-124",
+        "Control":     23.944,
+        "Test":        58.894,
+        "Difference":  13.95
+    }, {
+        "Subjects": "P-125",
+        "Control":     24.233,
+        "Test":        55.96,
+        "Difference":  6.727
+    }, {
+        "Subjects": "P-126",
+        "Control":     29.71,
+        "Test":        22.058,
+        "Difference":  5.348
+    }, {
+        "Subjects": "P-127",
+        "Control":     26.004,
+        "Test":        60.157,
+        "Difference":  8.153
+    }
+];

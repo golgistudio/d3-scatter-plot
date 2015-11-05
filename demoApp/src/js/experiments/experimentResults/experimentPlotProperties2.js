@@ -10,7 +10,7 @@ var experimentPlotProperties2 = [
 
     {
         plotClassName: "difference",
-        xProp: "Participant",
+        xProp: "Subject",
         yProp: "Difference",
         name: "Difference",
         display : {

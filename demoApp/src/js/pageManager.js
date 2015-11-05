@@ -48,6 +48,12 @@ var pageManager = {
 
         this._currentExperiment = "expA";
 
+        if (window.innerWidth <= 700 && window.matchMedia("(orientation: portrait)").matches) {
+            this._chartWidthFactor = 1;
+        } else {
+            this._chartWidthFactor = 2;
+        }
+
         var expInfoCollection = this.getExperimentInfo();
 
         for (var i=0; i < expInfoCollection.length; i++) {
@@ -119,7 +125,7 @@ var pageManager = {
     resize: function() {
         "use strict";
 
-        if (window.innerWidth <= 700) {
+        if (window.innerWidth <= 700 && window.matchMedia("(orientation: portrait)").matches) {
             this._chartWidthFactor = 1;
         } else {
             this._chartWidthFactor = 2;
