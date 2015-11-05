@@ -5,8 +5,8 @@ node_js:
 before_script:
   # http://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-GUI-(e.g.-a-Web-browser)
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start - 
-   npm install -g gulp
+  - sh -e /etc/init.d/xvfb start
+  - npm run gulp jshint
 
 after_script:
-   npm run gulp jshint
+
