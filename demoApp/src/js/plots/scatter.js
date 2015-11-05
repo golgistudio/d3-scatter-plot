@@ -79,7 +79,7 @@ function ScatterPlot() {
                 plot = addIconSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) ;
                 break;
             case "font":
-                plot = addFontAwesomeSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+                plot = addFontAwesomeSymbol(uuid,plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
         }
         return plot;
