@@ -40,10 +40,7 @@ function BarChart() {
         return svg.selectAll("." + plotClassName)
             .data(data);
     }
-
-
-
-
+    
     /**
      *
      * @param plot

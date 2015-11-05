@@ -5,6 +5,8 @@
 
 
 /*global d3:false */
+/*global dataStoreManager:false */
+/*global dataStoreNames:false */
 /*jshint unused:true */
 /*exported addFontAwesomeSymbol, updateFontAwesomeSymbols, zoomFontAwesomeSymbol */
 
