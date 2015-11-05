@@ -18,5 +18,7 @@ function TransitionProperties () {
     this.hoverDelayTime= 10;
     this.hoverTransitionDuration= 1000;
     this.hoverEaseType= "elastic";
+    this.dropLineClassName = "drop-line";
+    this.dropLineStrokeColor = "orange";
 }
 

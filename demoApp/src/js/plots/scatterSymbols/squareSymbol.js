@@ -19,8 +19,43 @@
  * @param transitionProperties
  * @returns {*}
  */
-function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) {
+function addSquareSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
+
+    /**
+     *
+     * @param d
+     * @param plotProp
+     * @param transitionProperties
+     * @param parentSVG
+     */
+    function dropLinesToAxes(d, plotProp, transitionProperties, parentSVG) {
+        var startY = scales.yScale(d[plotProp.yProp]);
+        var endY = scales.yScale(0);
+        var startX = scales.xScale(d[plotProp.xProp]);
+        var endX = 0;
+
+        var lines = [{x1: startX, x2: endX, y1: startY, y2: startY},
+            {x1: startX, x2: startX, y1: startY, y2: endY}];
+
+        parentSVG.selectAll("." + transitionProperties.dropLineClassName)
+            .data(lines).enter()
+            .append("line")
+            .attr("class", transitionProperties.dropLineClassName)
+            .attr("x1", function(ddd){
+                return ddd.x1;
+            })
+            .attr("x2", function(ddd){
+                return ddd.x2;
+            })
+            .attr("y1", function(ddd){
+                return ddd.y1;
+            })
+            .attr("y2", function(ddd){
+                return ddd.y2;
+            })
+            .style("stroke", transitionProperties.dropLineStrokeColor);
+    }
 
     /**
      *
@@ -29,12 +64,14 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
      */
     function handleHoverStart(d, that) {
 
-        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
-
         var currentFillColor = d3.select(that).style("fill");
         var hoverFillColor   = d3.rgb(currentFillColor).darker();
         var hoverWidth       = plotProp.display.width * transitionProperties.sizeFactor;
         var hoverHeight      = plotProp.display.height * transitionProperties.sizeFactor;
+
+        toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
+
+        dropLinesToAxes(d, plotProp, transitionProperties, parentSVG);
 
         d3.select(that).transition()
             .delay(transitionProperties.hoverDelayTime)
@@ -63,6 +100,8 @@ function addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties) 
             .attr("width", plotProp.display.width)
             .attr("height", plotProp.display.height)
             .ease(transitionProperties.hoverEaseType);
+
+        parentSVG.selectAll(".drop-line").data([]).exit().remove();
 
     }
 

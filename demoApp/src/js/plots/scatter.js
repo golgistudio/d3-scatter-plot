@@ -37,7 +37,7 @@ function ScatterPlot() {
 
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
-        addSymbols(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        addSymbols(plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
 
     }
 
@@ -63,23 +63,23 @@ function ScatterPlot() {
      * @param transitionProperties
      * @returns {*}
      */
-    function addSymbols(plot, plotProp, scales, toolTip, transitionProperties) {
+    function addSymbols(plot,  parentSVG, plotProp, scales, toolTip, transitionProperties) {
 
         switch (plotProp.display.symbol) {
             case "triangle":
-                plot = addTriangleSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = addTriangleSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "dot" :
-                plot = addDotSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = addDotSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "square":
-                plot = addSquareSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = addSquareSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "icon":
-                plot = addIconSymbol(plot, plotProp, scales, toolTip, transitionProperties) ;
+                plot = addIconSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties) ;
                 break;
             case "font":
-                plot = addFontAwesomeSymbol(plot, plotProp, scales, toolTip, transitionProperties);
+                plot = addFontAwesomeSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
         }
         return plot;
