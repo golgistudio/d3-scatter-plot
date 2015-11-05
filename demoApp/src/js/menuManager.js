@@ -355,4 +355,9 @@ function addMenuEventHandlers(pageManager) {
 
 }
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = addMenuEventHandlers;
+else
+    window.addMenuEventHandlers = addMenuEventHandlers;
+
 

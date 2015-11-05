@@ -142,4 +142,7 @@ var PlotManager = function() {
 
 };
 
-module.exports = PlotManager;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = PlotManager;
+else
+    window.PlotManager = PlotManager;

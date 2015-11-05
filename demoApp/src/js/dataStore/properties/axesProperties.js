@@ -40,5 +40,9 @@ function AxesProperties() {
     this.yBorderOuterTickSize   = 0;
 
 }
-module.exports = AxesProperties;
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = AxesProperties;
+else
+    window.AxesProperties = AxesProperties;
 

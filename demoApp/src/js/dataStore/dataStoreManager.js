@@ -66,4 +66,8 @@ var dataStoreManager = (function () {
 
 })();
 
-module.exports = dataStoreManager;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = dataStoreManager;
+else
+    window.dataStoreManager = dataStoreManager;
+

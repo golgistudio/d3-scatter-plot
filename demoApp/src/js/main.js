@@ -36,6 +36,8 @@
 // Connected data
 // http://jsfiddle.net/JVAdams/bTHk2/2/
 
+//http://jsfiddle.net/qy5ohw0x/5/
+
 /*global addMenuEventHandlers:false */
 /*global pageManager:false */
 /*global document:false */
@@ -46,8 +48,8 @@
 function main() {
     "use strict";
 
-    addMenuEventHandlers(pageManager);
-    pageManager.init();
+    window.addMenuEventHandlers(window.pageManager);
+    window.pageManager.init();
 }
 
 //############################

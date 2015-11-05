@@ -400,3 +400,8 @@ var pageManager = {
         return expInfoCollection;
     }
 };
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+    module.exports = pageManager;
+else
+    window.pageManager = pageManager;
