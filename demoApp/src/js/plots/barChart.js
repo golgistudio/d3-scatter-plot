@@ -5,6 +5,8 @@
 
 
 /*global d3:false */
+/*global dataStoreManager:false */
+/*global dataStoreNames:false */
 /*exported BarChart */
 
 /**
@@ -23,7 +25,7 @@ function BarChart() {
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
         updateElements(plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
-        addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        addElements(parameters.uuid,plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
         removeElements(plot,  parameters.transitionProperties);
 
     }
@@ -40,7 +42,7 @@ function BarChart() {
         return svg.selectAll("." + plotClassName)
             .data(data);
     }
-    
+
     /**
      *
      * @param plot
@@ -50,7 +52,7 @@ function BarChart() {
      * @param transitionProperties
      * @returns {*}
      */
-    function addElements(plot, plotProp, scales, toolTip, transitionProperties) {
+    function addElements( uuid, plot, plotProp, scales, toolTip, transitionProperties) {
         /**
          *
          * @param d
@@ -64,6 +66,8 @@ function BarChart() {
             var hoverFillColor   = d3.rgb(currentFillColor).darker();
             var hoverWidth       = plotProp.display.width * transitionProperties.sizeFactor;
 
+            var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
+
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
@@ -71,7 +75,7 @@ function BarChart() {
                 .style("fill", hoverFillColor)
                 .attr("width", hoverWidth)
                 .attr("height", function () {
-                    return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
+                    return Math.abs(axes.scales.yScale(d[plotProp.yProp]) - axes.scales.yScale(0));
                 })
                 .ease(transitionProperties.hoverEaseType);
 
@@ -84,6 +88,8 @@ function BarChart() {
          */
         function handleHoverEnd(d, that) {
 
+            var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
+
             toolTip.hide();
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
@@ -92,7 +98,7 @@ function BarChart() {
                 .style("fill", plotProp.display.fillColor)
                 .attr("width", plotProp.display.width)
                 .attr("height", function (d) {
-                    return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
+                    return Math.abs(axes.scales.yScale(d[plotProp.yProp]) - axes.scales.yScale(0));
                 })
                 .ease(transitionProperties.hoverEaseType);
 
@@ -151,7 +157,7 @@ function BarChart() {
 
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
-        addElements(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        addElements(parameters.uuid, plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
 
     }
 
