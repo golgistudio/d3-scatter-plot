@@ -39,6 +39,7 @@ var pageManager = {
     _chartCollection: [],
     _currentExperiment: null,
     _chartWidthFactor: 2,
+    _chartHeightFactor:1,
 
     init: function () {
         "use strict";
@@ -118,8 +119,14 @@ var pageManager = {
     resize: function() {
         "use strict";
 
+        if (window.innerWidth <= 700) {
+            this._chartWidthFactor = 1;
+        } else {
+            this._chartWidthFactor = 2;
+        }
+
         var params = {
-            "height" : window.innerHeight,
+            "height" : window.innerHeight / this._chartHeightFactor,
             "width" : window.innerWidth/this._chartWidthFactor
         };
 

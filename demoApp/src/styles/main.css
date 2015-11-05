@@ -216,37 +216,53 @@ h1 {
 }
 
 @media all and (max-width: 500px) {
-    .container{
-        margin-top:100px;
+    #chartContainer {
+        margin-top: 100px;
     }
-    .menu{
-        height:5em;
-        width:100%;
+
+    .menu {
+        height: 5em;
+        width: 100%;
     }
-    .menu li{
-        display:inline-block;
-        float:left;
+
+    .menu li {
+        display: inline-block;
+        float: left;
     }
-    .menu-bar li a{
-        width:100%;
+
+    .menu-bar li a {
+        width: 100%;
     }
-    .menu-bar{
-        width:100%;
-        left:0;
-        height:0;
+
+    .menu-bar {
+        width: 100%;
+        left: 0;
+        height: 0;
     }
-    .open{
-        width:100%;
-        height:auto;
+
+    .open {
+        width: 100%;
+        height: auto;
     }
-    .para{
-        padding-left:5px;
+
+    .para {
+        padding-left: 5px;
+    }
+}
+
+@media all and (max-width: 700px) {
+
+    #chart1 {
+        float: none;
+    }
+    #chart2 {
+        float: none;
     }
 }
 @media screen and (max-height: 34em){
     .menu li,
     .menu-bar {
-        font-size:70%;
+        font-size:100%;
     }
 }
 @media screen and (max-height: 34em) and (max-width: 500px){
