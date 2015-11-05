@@ -18,7 +18,7 @@
  * @param transitionProperties
  * @returns {XMLList|*}
  */
-function addFontAwesomeSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
+function addFontAwesomeSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
     "use strict";
 
     /**
@@ -28,10 +28,13 @@ function addFontAwesomeSymbol(plot, parentSVG, plotProp, scales, toolTip, transi
      * @param transitionProperties
      * @param parentSVG
      */
-    function dropLinesToAxes(d, plotProp, transitionProperties, parentSVG) {
-        var startY = scales.yScale(d[plotProp.yProp]);
-        var endY = scales.yScale(0);
-        var startX = scales.xScale(d[plotProp.xProp]);
+    function dropLinesToAxes(uuid, d, plotProp, transitionProperties, parentSVG) {
+
+        var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
+
+        var startY = axes.scales.yScale(d[plotProp.yProp]);
+        var endY = axes.scales.yScale(0);
+        var startX = axes.scales.xScale(d[plotProp.xProp]);
         var endX = 0;
 
         var lines = [{x1: startX, x2: endX, y1: startY, y2: startY},
@@ -71,7 +74,7 @@ function addFontAwesomeSymbol(plot, parentSVG, plotProp, scales, toolTip, transi
 
         toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
-        dropLinesToAxes(d, plotProp, transitionProperties, parentSVG);
+        dropLinesToAxes(uuid, d, plotProp, transitionProperties, parentSVG);
 
         d3.select(id).transition()
             .delay(transitionProperties.hoverDelayTime)

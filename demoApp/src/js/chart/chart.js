@@ -99,6 +99,7 @@ function Chart(dataManager, uuid, containerId) {
         var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
 
         var plotParams = {
+            "uuid": _uuid,
             "data" : _data,
             "plotProperties" : plotProps,
             "svg": _chartComponents.chartBody,
@@ -212,6 +213,7 @@ function Chart(dataManager, uuid, containerId) {
         _axesManager.drawAxes(_chartComponents.svg);
 
         var plotParams = {
+            "uuid": _uuid,
             "data" : _data,
             "plotProperties" : plotProps,
             "svg": _chartComponents.chartBody,
@@ -291,6 +293,7 @@ function Chart(dataManager, uuid, containerId) {
         svg.call(zoomListener);
 
         var plotParams = {
+            "uuid": _uuid,
             "data" : _data,
             "plotProperties" : plotProps,
             "svg": _chartComponents.chartBody,
@@ -317,6 +320,7 @@ function Chart(dataManager, uuid, containerId) {
         });
 
         var plotParams = {
+            "uuid": _uuid,
             "data" : _data,
             "plotProperties" : plotProps,
             "svg": _chartComponents.chartBody,

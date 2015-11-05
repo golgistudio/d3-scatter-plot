@@ -54,6 +54,7 @@ var PlotManager = function() {
 
         drawParams.plotProperties.forEach(function (configItem) {
             var params = {
+                "uuid":                 drawParams.uuid,
                 "data":                 drawParams.data,
                 "svg":                  drawParams.svg,
                 "plotProp":             configItem,
@@ -76,6 +77,7 @@ var PlotManager = function() {
         drawParams.plotProperties.forEach(function (configItem) {
             if (configItem.name === drawParams.plotName) {
                 var params = {
+                    "uuid":                 drawParams.uuid,
                     "data":                 drawParams.data,
                     "svg":                  drawParams.svg,
                     "plotProp":             configItem,
@@ -97,6 +99,7 @@ var PlotManager = function() {
 
         updateParams.plotProperties.forEach(function (itemProperties) {
             var params = {
+                "uuid":                 updateParams.uuid,
                 "data":                 updateParams.data,
                 "svg":                  updateParams.svg,
                 "plotProp":             itemProperties,

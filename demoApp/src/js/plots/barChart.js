@@ -20,7 +20,6 @@ function BarChart() {
      */
     function updatePlot(parameters) {
 
-
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
         updateElements(plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);

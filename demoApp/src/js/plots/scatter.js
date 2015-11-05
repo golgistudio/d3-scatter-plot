@@ -37,7 +37,7 @@ function ScatterPlot() {
 
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
-        addSymbols(plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        addSymbols(parameters.uuid, plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
 
     }
 
@@ -63,20 +63,20 @@ function ScatterPlot() {
      * @param transitionProperties
      * @returns {*}
      */
-    function addSymbols(plot,  parentSVG, plotProp, scales, toolTip, transitionProperties) {
+    function addSymbols(uuid, plot,  parentSVG, plotProp, scales, toolTip, transitionProperties) {
 
         switch (plotProp.display.symbol) {
             case "triangle":
-                plot = addTriangleSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+                plot = addTriangleSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "dot" :
-                plot = addDotSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+                plot = addDotSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "square":
-                plot = addSquareSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+                plot = addSquareSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "icon":
-                plot = addIconSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties) ;
+                plot = addIconSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) ;
                 break;
             case "font":
                 plot = addFontAwesomeSymbol(plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
@@ -132,8 +132,8 @@ function ScatterPlot() {
 
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
-        updateSymbols(plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
-        addSymbols(plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        updateSymbols( plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
+        addSymbols(parameters.uuid, plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
         removeSymbols(plot,  parameters.transitionProperties);
 
     }
