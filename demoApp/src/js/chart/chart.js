@@ -81,7 +81,8 @@ function Chart(dataManager, uuid, containerId) {
             var legendDataItem = {
                 "name" : configItem.name,
                 "plotClassName" : configItem.plotClassName,
-                "color" : configItem.display.fillColor
+                "color" : configItem.display.fillColor,
+                "active" : true
             };
 
             legendData.push(legendDataItem);
@@ -232,7 +233,8 @@ function Chart(dataManager, uuid, containerId) {
             var legendDataItem = {
                 "name" : item.name,
                 "plotClassName" : item.plotClassName,
-                "color" : item.display.fillColor
+                "color" : item.display.fillColor,
+                "active" : true
             };
             legendData.push(legendDataItem);
         });
@@ -338,7 +340,8 @@ function Chart(dataManager, uuid, containerId) {
             var legendDataItem = {
                 "name" : item.name,
                 "plotClassName" : item.plotClassName,
-                "color" : item.display.fillColor
+                "color" : item.display.fillColor,
+                "active" : true
             };
             legendData.push(legendDataItem);
         });
