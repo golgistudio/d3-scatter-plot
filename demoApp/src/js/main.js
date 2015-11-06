@@ -42,19 +42,20 @@
 /*global pageManager:false */
 /*global document:false */
 
+/*global module:false */
+/*global require:false */
 
 
+if (typeof require !== 'undefined') {
+    var pageManager          = require('./pageManager.js');
+    var addMenuEventHandlers = require('./menuManager.js');
+}
 
 //############################
 //
 //
 //############################
 document.addEventListener('DOMContentLoaded', function(){
-
-    if (typeof require !== 'undefined') {
-        var pageManager          = require('./pageManager.js');
-        var addMenuEventHandlers = require('./menuManager.js');
-    }
 
     /**
      *
@@ -65,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function(){
         addMenuEventHandlers(pageManager);
         pageManager.init();
     }
-
 
     main();
 });

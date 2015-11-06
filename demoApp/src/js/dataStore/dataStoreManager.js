@@ -5,6 +5,8 @@
 /*global module:false */
 /*jshint bitwise: false*/
 
+/*global module:false */
+
 /**
  *
  * @type {{getInstance}}

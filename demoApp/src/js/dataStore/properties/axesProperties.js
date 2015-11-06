@@ -4,6 +4,8 @@
 
 /*global module:false */
 
+/*global module:false */
+
 /**
  *
  * @constructor

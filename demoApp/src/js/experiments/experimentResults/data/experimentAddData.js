@@ -1,7 +1,7 @@
 /**
  * @file
  */
-
+/*global module:false */
 /**
  *
  * @type {Array}

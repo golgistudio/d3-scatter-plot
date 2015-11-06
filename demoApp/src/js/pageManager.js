@@ -31,6 +31,9 @@
 /*global experimentBPlotProperties2:false */
 /*global ExperimentBManager2:false */
 
+/*global module:false */
+/*global require:false */
+
 if (typeof require !== 'undefined') {
 
     var dataStoreManager    = require('./dataStore/dataStoreManager.js');

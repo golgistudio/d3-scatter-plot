@@ -2,6 +2,9 @@
  * @file
  */
 
+
+/*global module:false */
+
 /**
  *
  * @constructor

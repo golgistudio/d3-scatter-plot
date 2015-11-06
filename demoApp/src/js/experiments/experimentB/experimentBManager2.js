@@ -7,6 +7,7 @@
 
 
 /*global d3:false */
+/*global module:false */
 
 /**
  *

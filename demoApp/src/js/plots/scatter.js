@@ -26,9 +26,6 @@
 
 if (typeof require !== 'undefined') {
 
-    var dataStoreNames = require('../dataStore/dataStoreNames.js');
-    var dataStoreManager = require('../dataStore/dataStoreManager.js');
-
     var triangleSymbol          = require('./scatterSymbols/triangleSymbol.js');
 
     var addTriangleSymbol = triangleSymbol.addTriangleSymbol;

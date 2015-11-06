@@ -6,6 +6,9 @@
 
 /*global dataStoreNames:false */
 
+/*global require:false */
+/*global module:false */
+
 if (typeof require !== 'undefined') {
     var dataStoreNames          = require('../dataStore/dataStoreNames.js');
 }

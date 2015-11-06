@@ -12,6 +12,9 @@
 /*global experimentOriginalData:false */
 /*global experimentBOriginalData:false */
 
+/*global module:false */
+/*global require:false */
+
 if (typeof require !== 'undefined') {
     var experimentBAddData    = require('./experiments/experimentB/data/experimentBAddData.js');
     var experimentBRemoveData    = require('./experiments/experimentB/data/experimentBRemoveData.js');

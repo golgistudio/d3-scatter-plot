@@ -3,6 +3,7 @@
  */
 
 
+/*global module:false */
 
 /**
  *

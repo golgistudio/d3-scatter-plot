@@ -8,6 +8,9 @@
 /*jshint unused:true */
 /*exported addDotSymbol, updateDotSymbols, zoomDotSymbol */
 
+/*global module:false */
+/*global require:false */
+
 if (typeof require !== 'undefined') {
     var dataStoreNames = require('../../dataStore/dataStoreNames.js');
     var dataStoreManager = require('../../dataStore/dataStoreManager.js');

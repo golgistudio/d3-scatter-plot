@@ -2,6 +2,7 @@
  * @file
  */
 
+/*global module:false */
 
 /**
  *

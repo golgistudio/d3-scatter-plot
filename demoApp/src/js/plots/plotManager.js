@@ -1,7 +1,8 @@
 /**
  * @file
  */
-
+/*global module:false */
+/*global require:false */
 /*global ScatterPlot:false */
 /*global BarChart:false */
 /*global module:false */
@@ -147,7 +148,6 @@ var PlotManager = function() {
 
 };
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = PlotManager;
-else
-    window.PlotManager = PlotManager;
+}

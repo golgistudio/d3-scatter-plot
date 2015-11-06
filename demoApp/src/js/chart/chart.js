@@ -12,6 +12,9 @@
 /*global drawLegend:false */
 /*global updateLegend:false */
 
+/*global require:false */
+/*global module:false */
+
 if (typeof require !== 'undefined') {
     var dataStoreNames          = require('../dataStore/dataStoreNames.js');
     var AxesManager          = require('./axesManager.js');
@@ -23,7 +26,6 @@ if (typeof require !== 'undefined') {
 
     var drawLegend = legendManager.drawLegend;
     var updateLegend = legendManager.updateLegend;
-
 }
 
 /**
@@ -170,7 +172,7 @@ function Chart(dataManager, uuid, containerId) {
             .append("g")
             .attr("transform", "translate(" + chartProps.margin.left + "," + chartProps.margin.top + ")");
 
-        var clip = svg.append("defs").append("svg:clipPath")
+        svg.append("defs").append("svg:clipPath")
             .attr("id", "clip")
             .append("svg:rect")
             .attr("id", "clip-rect")
@@ -184,7 +186,7 @@ function Chart(dataManager, uuid, containerId) {
             .call(zoomListener)
             .on("click", stopped, true);
 
-        var rect = chartBody.append('svg:rect')
+        chartBody.append('svg:rect')
             .attr('width', chartProps.width)
             .attr('height', chartProps.height)
             .attr('fill', 'white');

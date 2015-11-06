@@ -2,6 +2,8 @@
  * @file
  */
 
+/*global module:false */
+
 /**
  *
  * chart  (retrieved by uuid)

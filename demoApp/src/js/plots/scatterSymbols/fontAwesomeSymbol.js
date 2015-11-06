@@ -10,6 +10,9 @@
 /*jshint unused:true */
 /*exported addFontAwesomeSymbol, updateFontAwesomeSymbols, zoomFontAwesomeSymbol */
 
+/*global module:false */
+/*global require:false */
+
 if (typeof require !== 'undefined') {
     var dataStoreNames = require('../../dataStore/dataStoreNames.js');
     var dataStoreManager = require('../../dataStore/dataStoreManager.js');
