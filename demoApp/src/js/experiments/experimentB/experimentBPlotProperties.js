@@ -60,6 +60,10 @@ var experimentBPlotProperties = [
         }
     }];
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = experimentBPlotProperties;
+}
+
 
 
 

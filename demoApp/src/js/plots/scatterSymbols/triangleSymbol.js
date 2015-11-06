@@ -9,6 +9,11 @@
 /*jshint unused:false */
 /*exported addTriangleSymbol, updateTriangleSymbols, zoomTriangleSymbol */
 
+if (typeof require !== 'undefined') {
+    var dataStoreNames = require('../../dataStore/dataStoreNames.js');
+    var dataStoreManager = require('../../dataStore/dataStoreManager.js');
+}
+
 /**
  *
  * @param plot
@@ -222,4 +227,12 @@ function zoomTriangleSymbol(plot, plotProp, scales) {
         .attr("transform", function (d) {
             return "translate(" + scales.xScale(d[plotProp.xProp]) + "," + scales.yScale(d[plotProp.yProp]) + ")";
         });
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  {
+        addTriangleSymbol: addTriangleSymbol,
+        updateTriangleSymbols: updateTriangleSymbols,
+        zoomTriangleSymbol: zoomTriangleSymbol
+    };
 }

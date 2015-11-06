@@ -6,6 +6,10 @@
 
 /*global dataStoreNames:false */
 
+if (typeof require !== 'undefined') {
+    var dataStoreNames          = require('../dataStore/dataStoreNames.js');
+}
+
 /**
  *
  * @param uuid
@@ -199,4 +203,8 @@ function AxesManager(uuid, dataStoreManager) {
         }
     };
 
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  AxesManager;
 }

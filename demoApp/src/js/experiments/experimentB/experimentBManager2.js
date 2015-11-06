@@ -57,9 +57,10 @@ function ExperimentBManager2() {
 
         var xDomain = [];
         xDomain.push("");
-        data.forEach(function (item) {
+        for (var key in data) {
+            var item = data[key];
             xDomain.push(item.Participant);
-        });
+        }
         xDomain.push(" ");
 
         var yDomain = [0, maxY + 5];
@@ -130,4 +131,8 @@ function ExperimentBManager2() {
         labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment B";
     };
 
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = ExperimentBManager2;
 }

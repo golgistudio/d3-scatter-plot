@@ -129,3 +129,7 @@ var experimentBDifferentTimesData = [{
     "Incongruent": 65.157,
     "Difference": 5.153
 }];
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = experimentBDifferentTimesData;
+}

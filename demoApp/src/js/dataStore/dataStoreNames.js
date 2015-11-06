@@ -30,3 +30,7 @@ var dataStoreNames = {
     zoomScaleFactors: "zoomScaleFactors",
     domains: "domains"
 };
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = dataStoreNames;
+}

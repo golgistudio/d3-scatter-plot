@@ -21,3 +21,7 @@ function ChartProperties() {
     this.widthMargin= 35;
     this.containerId= "";
 }
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = ChartProperties;
+}

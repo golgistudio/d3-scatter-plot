@@ -22,3 +22,7 @@ function TransitionProperties () {
     this.dropLineStrokeColor = "orange";
 }
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = TransitionProperties;
+}
+

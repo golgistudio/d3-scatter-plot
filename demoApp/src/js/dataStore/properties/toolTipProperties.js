@@ -17,3 +17,7 @@ function ToolTipProperties() {
     this.leftOffset  =  20;
     this.topOffset  = 28;
 }
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = ToolTipProperties;
+}

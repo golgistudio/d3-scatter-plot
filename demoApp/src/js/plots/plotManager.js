@@ -6,6 +6,11 @@
 /*global BarChart:false */
 /*global module:false */
 
+if (typeof require !== 'undefined') {
+    var ScatterPlot          = require('./scatter.js');
+    var BarChart          = require('./barChart.js');
+}
+
 /**
  *
  * @constructor

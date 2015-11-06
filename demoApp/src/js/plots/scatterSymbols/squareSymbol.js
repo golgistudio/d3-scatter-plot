@@ -12,6 +12,11 @@
 /*jshint unused:true */
 /*exported addSquareSymbol, updateSquareSymbols, zoomSquareSymbol */
 
+if (typeof require !== 'undefined') {
+    var dataStoreNames = require('../../dataStore/dataStoreNames.js');
+    var dataStoreManager = require('../../dataStore/dataStoreManager.js');
+}
+
 /**
  *
  * @param plot
@@ -211,5 +216,13 @@ function zoomSquareSymbol(plot, plotProp, scales) {
         return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
     });
 
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  {
+        addSquareSymbol: addSquareSymbol,
+        updateSquareSymbols: updateSquareSymbols,
+        zoomSquareSymbol: zoomSquareSymbol
+    };
 }
 

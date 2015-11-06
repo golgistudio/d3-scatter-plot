@@ -192,3 +192,11 @@ function updateLegend(svg, properties, legendData) {
 
 }
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  {
+        updateLegend: updateLegend,
+        removeLegendItems: removeLegendItems,
+        drawLegend: drawLegend
+    };
+}
+

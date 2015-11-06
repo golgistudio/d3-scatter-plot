@@ -47,4 +47,8 @@ function drawChartLabels (svg, labelProps, width, height, margin) {
     drawLabel(svg, labelProps.yAxisLabelProperties);
 }
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  drawChartLabels;
+}
+
 

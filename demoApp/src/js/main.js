@@ -42,14 +42,19 @@
 /*global pageManager:false */
 /*global document:false */
 
+if (typeof require !== 'undefined') {
+    var pageManager          = require('./pageManager.js');
+    var addMenuEventHandlers = require('./menuManager.js');
+}
+
 /**
  *
  */
 function main() {
     "use strict";
 
-    window.addMenuEventHandlers(window.pageManager);
-    window.pageManager.init();
+    addMenuEventHandlers(pageManager);
+    pageManager.init();
 }
 
 //############################

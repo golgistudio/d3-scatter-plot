@@ -8,6 +8,11 @@
 /*jshint unused:true */
 /*exported addDotSymbol, updateDotSymbols, zoomDotSymbol */
 
+if (typeof require !== 'undefined') {
+    var dataStoreNames = require('../../dataStore/dataStoreNames.js');
+    var dataStoreManager = require('../../dataStore/dataStoreManager.js');
+}
+
 /**
  *
  * @param plot
@@ -206,5 +211,13 @@ function zoomDotSymbol(plot, plotProp, scales) {
             }).attr('cx', function (d) {
                 return scales.xScale(d[plotProp.xProp]);
         });
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  {
+        addDotSymbol: addDotSymbol,
+        updateDotSymbols: updateDotSymbols,
+        zoomDotSymbol: zoomDotSymbol
+    };
 }
 

@@ -12,7 +12,17 @@
 /*global experimentOriginalData:false */
 /*global experimentBOriginalData:false */
 
+if (typeof require !== 'undefined') {
+    var experimentBAddData    = require('./experiments/experimentB/data/experimentBAddData.js');
+    var experimentBRemoveData    = require('./experiments/experimentB/data/experimentBRemoveData.js');
+    var experimentBDifferentTimesData    = require('./experiments/experimentB/data/experimentBDifferentTimesData.js');
+    var experimentBOriginalData    = require('./experiments/experimentB/data/experimentBOriginalData.js');
 
+    var experimentAddData    = require('./experiments/experimentResults/data/experimentAddData.js');
+    var experimentRemoveData    = require('./experiments/experimentResults/data/experimentRemoveData.js');
+    var experimentDifferentTimesData    = require('./experiments/experimentResults/data/experimentDifferentTimesData.js');
+    var experimentOriginalData    = require('./experiments/experimentResults/data/experimentOriginalData.js');
+}
 
 /**
  *
@@ -355,9 +365,9 @@ function addMenuEventHandlers(pageManager) {
 
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = addMenuEventHandlers;
-else
-    window.addMenuEventHandlers = addMenuEventHandlers;
+}
+
 
 

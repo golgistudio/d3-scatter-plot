@@ -9,6 +9,11 @@
 /*global dataStoreNames:false */
 /*exported BarChart */
 
+if (typeof require !== 'undefined') {
+    var dataStoreNames = require('../dataStore/dataStoreNames.js');
+    var dataStoreManager = require('../dataStore/dataStoreManager.js');
+}
+
 /**
  *
  * @constructor
@@ -278,4 +283,8 @@ function BarChart() {
 
         }
     };
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = BarChart;
 }

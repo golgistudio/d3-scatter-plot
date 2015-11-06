@@ -9,6 +9,11 @@
 /*jshint unused:true */
 /*exported addIconSymbol, updateIconSymbols, zoomIconSymbol */
 
+if (typeof require !== 'undefined') {
+    var dataStoreNames = require('../../dataStore/dataStoreNames.js');
+    var dataStoreManager = require('../../dataStore/dataStoreManager.js');
+}
+
 /**
  *
  * @param plot
@@ -200,5 +205,13 @@ function zoomIconSymbol(plot, plotProp, scales) {
             return scales.yScale(d[plotProp.yProp]);
         });
 
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  {
+        addIconSymbol: addIconSymbol,
+        updateIconSymbols: updateIconSymbols,
+        zoomIconSymbol: zoomIconSymbol
+    };
 }
 

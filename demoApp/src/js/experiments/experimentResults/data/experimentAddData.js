@@ -150,3 +150,7 @@ var experimentAddData = [
         "Difference":  8.153
     }
 ];
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = experimentAddData;
+}

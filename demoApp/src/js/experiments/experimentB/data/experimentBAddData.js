@@ -163,3 +163,7 @@ var experimentBAddData = [{
     "Incongruent": 60.157,
     "Difference":  8.153
 }];
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = experimentBAddData;
+}

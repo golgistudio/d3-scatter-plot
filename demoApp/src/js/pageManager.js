@@ -16,10 +16,12 @@
 /*global ToolTipProperties:false */
 /*global TransitionProperties:false */
 
-/*global experimentPlotProperties:false */
+
 /*global Chart:false */
+
 /*global ExperimentManager:false */
 /*global experimentOriginalData:false */
+/*global experimentPlotProperties:false */
 /*global experimentPlotProperties2:false */
 /*global ExperimentManager2:false */
 
@@ -28,6 +30,32 @@
 /*global experimentBOriginalData:false */
 /*global experimentBPlotProperties2:false */
 /*global ExperimentBManager2:false */
+
+if (typeof require !== 'undefined') {
+
+    var dataStoreManager    = require('./dataStore/dataStoreManager.js');
+    var dataStoreNames    = require('./dataStore/dataStoreNames.js');
+    var AxesProperties    = require('./dataStore/properties/axesProperties.js');
+    var ChartProperties    = require('./dataStore/properties/chartProperties.js');
+    var LabelProperties    = require('./dataStore/properties/labelProperties.js');
+    var LegendProperties    = require('./dataStore/properties/legendProperties.js');
+    var ToolTipProperties    = require('./dataStore/properties/toolTipProperties.js');
+    var TransitionProperties    = require('./dataStore/properties/transitionProperties.js');
+
+    var Chart    = require('./chart/chart.js');
+
+    var ExperimentManager    = require('./experiments/experimentResults/experimentManager.js');
+    var experimentOriginalData    = require('./experiments/experimentResults/data/experimentOriginalData.js');
+    var experimentPlotProperties    = require('./experiments/experimentResults/experimentPlotProperties.js');
+    var experimentPlotProperties2    = require('./experiments/experimentResults/experimentPlotProperties2.js');
+    var ExperimentManager2    = require('./experiments/experimentResults/experimentManager2.js');
+
+    var ExperimentBManager    = require('./experiments/experimentB/experimentBManager.js');
+    var experimentBOriginalData    = require('./experiments/experimentB/data/experimentBOriginalData.js');
+    var experimentBPlotProperties    = require('./experiments/experimentB/experimentBPlotProperties.js');
+    var experimentBPlotProperties2    = require('./experiments/experimentB/experimentBPlotProperties2.js');
+    var ExperimentBManager2    = require('./experiments/experimentB/experimentBManager2.js');
+}
 
 /**
  *
@@ -401,7 +429,7 @@ var pageManager = {
     }
 };
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = pageManager;
-else
-    window.pageManager = pageManager;
+}
+

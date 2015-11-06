@@ -55,3 +55,7 @@ function ToolTipManager() {
             .style("opacity", 0);
     };
 }
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = ToolTipManager;
+}

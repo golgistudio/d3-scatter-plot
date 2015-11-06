@@ -12,6 +12,20 @@
 /*global drawLegend:false */
 /*global updateLegend:false */
 
+if (typeof require !== 'undefined') {
+    var dataStoreNames          = require('../dataStore/dataStoreNames.js');
+    var AxesManager          = require('./axesManager.js');
+    var ToolTipManager          = require('./toolTipManager.js');
+    var PlotManager          = require('../plots/plotManager.js');
+
+    var drawChartLabels          = require('./labels.js');
+    var legendManager          = require('./legendManager.js');
+
+    var drawLegend = legendManager.drawLegend;
+    var updateLegend = legendManager.updateLegend;
+
+}
+
 /**
  *
  * @param dataManager
@@ -348,4 +362,8 @@ function Chart(dataManager, uuid, containerId) {
 
         updateLegend(_chartComponents.svg, legendProps, legendData);
     }
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports =  Chart;
 }

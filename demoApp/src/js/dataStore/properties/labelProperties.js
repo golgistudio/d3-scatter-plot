@@ -39,6 +39,10 @@ function LabelProperties () {
         };
 }
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = LabelProperties;
+}
+
 
 
 

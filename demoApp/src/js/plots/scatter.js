@@ -20,6 +20,47 @@
 /*global updateIconSymbols:false */
 /*global updateFontAwesomeSymbols:false */
 
+/*global module: true */
+/*global require: false*/
+
+
+if (typeof require !== 'undefined') {
+
+    var dataStoreNames = require('../dataStore/dataStoreNames.js');
+    var dataStoreManager = require('../dataStore/dataStoreManager.js');
+
+    var triangleSymbol          = require('./scatterSymbols/triangleSymbol.js');
+
+    var addTriangleSymbol = triangleSymbol.addTriangleSymbol;
+    var zoomTriangleSymbol = triangleSymbol.zoomTriangleSymbol;
+    var updateTriangleSymbols = triangleSymbol.updateTriangleSymbols;
+
+    var dotSymbol          = require('./scatterSymbols/dotSymbol.js');
+
+    var addDotSymbol = dotSymbol.addDotSymbol;
+    var zoomDotSymbol = dotSymbol.zoomDotSymbol;
+    var updateDotSymbols = dotSymbol.updateDotSymbols;
+
+    var squareSymbol          = require('./scatterSymbols/squareSymbol.js');
+
+    var addSquareSymbol = squareSymbol.addSquareSymbol;
+    var zoomSquareSymbol = squareSymbol.zoomSquareSymbol;
+    var updateSquareSymbols = squareSymbol.updateSquareSymbols;
+
+    var iconSymbol          = require('./scatterSymbols/iconSymbol.js');
+
+    var addIconSymbol = iconSymbol.addIconSymbol;
+    var zoomIconSymbol = iconSymbol.zoomIconSymbol;
+    var updateIconSymbols = iconSymbol.updateIconSymbols;
+
+    var fontAwesomeSymbol          = require('./scatterSymbols/fontAwesomeSymbol.js');
+
+    var addFontAwesomeSymbol = fontAwesomeSymbol.addFontAwesomeSymbol;
+    var zoomFontAwesomeSymbol = fontAwesomeSymbol.zoomFontAwesomeSymbol;
+    var updateFontAwesomeSymbols = fontAwesomeSymbol.updateFontAwesomeSymbols;
+
+}
+
 
 /**
  *
@@ -203,6 +244,10 @@ function ScatterPlot() {
     };
 
 
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = ScatterPlot;
 }
 
 

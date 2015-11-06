@@ -54,9 +54,12 @@ function ExperimentManager() {
 
         var xDomain = [];
         xDomain.push("");
-        data.forEach(function (item) {
+
+        for (var key in data) {
+            var item = data[key];
             xDomain.push(item.Subject);
-        });
+            console.log(item.Subject);
+        }
         xDomain.push(" ");
 
         var yDomain = [0, maxY + 5];
@@ -128,4 +131,8 @@ function ExperimentManager() {
         labelProperties.titleProperties.labelText      = "Golgi Lab - Experiment A - Results";
     };
 
+}
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = ExperimentManager;
 }
