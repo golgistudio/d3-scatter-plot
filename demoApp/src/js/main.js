@@ -42,25 +42,30 @@
 /*global pageManager:false */
 /*global document:false */
 
-if (typeof require !== 'undefined') {
-    var pageManager          = require('./pageManager.js');
-    var addMenuEventHandlers = require('./menuManager.js');
-}
 
-/**
- *
- */
-function main() {
-    "use strict";
 
-    addMenuEventHandlers(pageManager);
-    pageManager.init();
-}
 
 //############################
 //
 //
 //############################
 document.addEventListener('DOMContentLoaded', function(){
+
+    if (typeof require !== 'undefined') {
+        var pageManager          = require('./pageManager.js');
+        var addMenuEventHandlers = require('./menuManager.js');
+    }
+
+    /**
+     *
+     */
+    function main() {
+        "use strict";
+
+        addMenuEventHandlers(pageManager);
+        pageManager.init();
+    }
+
+
     main();
 });
