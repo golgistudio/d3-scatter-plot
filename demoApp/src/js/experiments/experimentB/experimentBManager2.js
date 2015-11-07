@@ -13,7 +13,7 @@
  *
  * @constructor
  */
-function ExperimentBManager2() {
+export function ExperimentBManager2() {
     "use strict";
 
     /**
@@ -132,8 +132,4 @@ function ExperimentBManager2() {
         labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment B";
     };
 
-}
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = ExperimentBManager2;
 }

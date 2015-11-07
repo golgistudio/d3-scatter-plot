@@ -1,4 +1,3 @@
-
 /**
  * @file
  */
@@ -10,16 +9,16 @@
 /*global dataStoreNames:false */
 /*exported BarChart */
 
-if (typeof require !== 'undefined') {
-    var dataStoreNames = require('../dataStore/dataStoreNames.js');
-    var dataStoreManager = require('../dataStore/dataStoreManager.js');
-}
+
+import {dataStoreNames} from '../dataStore/dataStoreNames.js';
+import {dataStoreManager} from '../dataStore/dataStoreManager.js';
+
 
 /**
  *
  * @constructor
  */
-function BarChart() {
+export function BarChart() {
     "use strict";
 
     /**
@@ -30,9 +29,9 @@ function BarChart() {
 
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
-        updateElements(plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
-        addElements(parameters.uuid,plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
-        removeElements(plot,  parameters.transitionProperties);
+        updateElements(plot, parameters.data, parameters.scales, parameters.plotProp, parameters.transitionProperties);
+        addElements(parameters.uuid, plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        removeElements(plot, parameters.transitionProperties);
 
     }
 
@@ -58,7 +57,7 @@ function BarChart() {
      * @param transitionProperties
      * @returns {*}
      */
-    function addElements( uuid, plot, plotProp, scales, toolTip, transitionProperties) {
+    function addElements(uuid, plot, plotProp, scales, toolTip, transitionProperties) {
         /**
          *
          * @param d
@@ -151,7 +150,6 @@ function BarChart() {
         return plot;
 
 
-
     }
 
 
@@ -159,7 +157,7 @@ function BarChart() {
      *
      * @param parameters
      */
-    function renderPlot (parameters) {
+    function renderPlot(parameters) {
 
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
@@ -177,19 +175,19 @@ function BarChart() {
      * @param transitionProperties
      * @returns {*}
      */
-    function updateElements( svg, data, scales, plotProp, transitionProperties) {
+    function updateElements(svg, data, scales, plotProp, transitionProperties) {
 
         svg.transition()  // Transition from old to new
             .duration(transitionProperties.startDurationTime)  // Length of animation
-            .each("start", function() {  // Start animation
+            .each("start", function () {  // Start animation
                 var currentFillColor = d3.select(this).style("fill");
-                var transitionColor = d3.rgb(currentFillColor).brighter();
+                var transitionColor  = d3.rgb(currentFillColor).brighter();
                 d3.select(this)  // 'this' means the current element
                     .style("fill", transitionColor)  // Change color
                     .attr("width", plotProp.display.width * transitionProperties.sizeFactor)
                     .attr("height", plotProp.display.height * transitionProperties.sizeFactor);
             })
-            .delay(function(d, i) {
+            .delay(function (d, i) {
                 return i / data.length * transitionProperties.delayAdjustment;  // Dynamic delay (i.e. each item delays a little longer)
             })
             .ease(transitionProperties.easeType)  // Transition easing - default 'variable' (i.e. has acceleration), also: 'circle', 'elastic', 'bounce', 'linear'
@@ -202,7 +200,7 @@ function BarChart() {
             .attr("y", function (d) {
                 return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
             })
-            .each("end", function() {  // End animation
+            .each("end", function () {  // End animation
                 d3.select(this)  // 'this' means the current element
                     .transition()
                     .duration(transitionProperties.endDurationTime)
@@ -223,20 +221,18 @@ function BarChart() {
     }
 
 
-
-
     function zoomElements(plot, plotProp, scales) {
 
 
         plot.selectAll('rect.' + plotProp.plotClassName).attr("height", function (d) {
-            return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-        })
-        .attr("x", function (d) {
+                return Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
+            })
+            .attr("x", function (d) {
                 return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
-        })
-        .attr("y", function (d) {
+            })
+            .attr("y", function (d) {
                 return scales.yScale(0) - Math.abs(scales.yScale(d[plotProp.yProp]) - scales.yScale(0));
-        });
+            });
     }
 
     /**
@@ -249,13 +245,12 @@ function BarChart() {
     }
 
 
-
     /**
      *
      * @param svg
      * @param transitionProperties
      */
-    function removeElements( svg,  transitionProperties) {
+    function removeElements(svg, transitionProperties) {
 
         svg = svg.exit();
         svg.style('fill', transitionProperties.exitColor);
@@ -284,8 +279,4 @@ function BarChart() {
 
         }
     };
-}
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = BarChart;
 }

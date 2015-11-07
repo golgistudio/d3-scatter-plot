@@ -11,7 +11,7 @@
  *
  * @type {{getInstance}}
  */
-var dataStoreManager = (function () {
+export var dataStoreManager = (function () {
 
     "use strict";
 
@@ -68,7 +68,5 @@ var dataStoreManager = (function () {
 
 })();
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = dataStoreManager;
-}
+
 

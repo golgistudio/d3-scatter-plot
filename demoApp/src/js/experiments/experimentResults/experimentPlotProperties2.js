@@ -7,7 +7,7 @@
  *
  * @type {Array}
  */
-var experimentPlotProperties2 = [
+export var experimentPlotProperties2 = [
 
     {
         plotClassName: "difference",
@@ -30,9 +30,7 @@ var experimentPlotProperties2 = [
         }
     }];
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = experimentPlotProperties2;
-}
+
 
 
 

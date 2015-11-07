@@ -7,7 +7,7 @@
  *
  * @constructor
  */
-function ToolTipProperties() {
+export function ToolTipProperties() {
     "uses strict";
 
     this.containerId  = "";
@@ -19,6 +19,4 @@ function ToolTipProperties() {
     this.topOffset  = 28;
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = ToolTipProperties;
-}
+

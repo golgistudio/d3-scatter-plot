@@ -8,7 +8,7 @@
  *
  * @type {Array}
  */
-var experimentPlotProperties = [
+export var experimentPlotProperties = [
     {
         plotClassName: "test",
         xProp: "Subject",
@@ -42,9 +42,6 @@ var experimentPlotProperties = [
 
 ];
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = experimentPlotProperties;
-}
 
 
 

@@ -11,7 +11,7 @@
  *
  * @constructor
  */
-function ToolTipManager() {
+export function ToolTipManager() {
     "use strict";
 
     var _toolTip= null,
@@ -59,6 +59,3 @@ function ToolTipManager() {
     };
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = ToolTipManager;
-}

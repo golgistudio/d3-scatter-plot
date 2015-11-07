@@ -34,37 +34,37 @@
 /*global module:false */
 /*global require:false */
 
-if (typeof require !== 'undefined') {
 
-    var dataStoreManager    = require('./dataStore/dataStoreManager.js');
-    var dataStoreNames    = require('./dataStore/dataStoreNames.js');
-    var AxesProperties    = require('./dataStore/properties/axesProperties.js');
-    var ChartProperties    = require('./dataStore/properties/chartProperties.js');
-    var LabelProperties    = require('./dataStore/properties/labelProperties.js');
-    var LegendProperties    = require('./dataStore/properties/legendProperties.js');
-    var ToolTipProperties    = require('./dataStore/properties/toolTipProperties.js');
-    var TransitionProperties    = require('./dataStore/properties/transitionProperties.js');
 
-    var Chart    = require('./chart/chart.js');
+import {dataStoreManager} from './dataStore/dataStoreManager.js';
+    import {dataStoreNames} from './dataStore/dataStoreNames.js';
+        import {AxesProperties} from './dataStore/properties/axesProperties.js';
+            import {ChartProperties} from './dataStore/properties/chartProperties.js';
+                import {LabelProperties} from './dataStore/properties/labelProperties.js';
+                    import {LegendProperties} from './dataStore/properties/legendProperties.js';
+import {ToolTipProperties } from './dataStore/properties/toolTipProperties.js';
+import {TransitionProperties} from './dataStore/properties/transitionProperties.js';
 
-    var ExperimentManager    = require('./experiments/experimentResults/experimentManager.js');
-    var experimentOriginalData    = require('./experiments/experimentResults/data/experimentOriginalData.js');
-    var experimentPlotProperties    = require('./experiments/experimentResults/experimentPlotProperties.js');
-    var experimentPlotProperties2    = require('./experiments/experimentResults/experimentPlotProperties2.js');
-    var ExperimentManager2    = require('./experiments/experimentResults/experimentManager2.js');
+import {Chart} from './chart/chart.js';
 
-    var ExperimentBManager    = require('./experiments/experimentB/experimentBManager.js');
-    var experimentBOriginalData    = require('./experiments/experimentB/data/experimentBOriginalData.js');
-    var experimentBPlotProperties    = require('./experiments/experimentB/experimentBPlotProperties.js');
-    var experimentBPlotProperties2    = require('./experiments/experimentB/experimentBPlotProperties2.js');
-    var ExperimentBManager2    = require('./experiments/experimentB/experimentBManager2.js');
-}
+import {ExperimentManager} from './experiments/experimentResults/experimentManager.js';
+import {experimentOriginalData} from './experiments/experimentResults/data/experimentOriginalData.js';
+import {experimentPlotProperties} from './experiments/experimentResults/experimentPlotProperties.js';
+import {experimentPlotProperties2} from './experiments/experimentResults/experimentPlotProperties2.js';
+import {ExperimentManager2} from './experiments/experimentResults/experimentManager2.js';
+
+import {ExperimentBManager} from './experiments/experimentB/experimentBManager.js';
+import {experimentBOriginalData} from './experiments/experimentB/data/experimentBOriginalData.js';
+import {experimentBPlotProperties} from './experiments/experimentB/experimentBPlotProperties.js';
+import {experimentBPlotProperties2} from './experiments/experimentB/experimentBPlotProperties2.js';
+import {ExperimentBManager2} from './experiments/experimentB/experimentBManager2.js';
+
 
 /**
  *
  * @type {{_dataStoreManager: null, _chartCollection: Array, _currentExperiment: null, _chartWidthFactor: number, init: Function, createChart: Function, getActiveExperiment: Function, resize: Function, updatePoints: Function, setSymbol: Function, setSymbolColor: Function, setPlotStyle: Function, switchExperiment: Function, getExperimentInfo: Function}}
  */
-var pageManager = {
+export var pageManager = {
 
     _dataStoreManager : null,
     _chartCollection: [],
@@ -432,7 +432,5 @@ var pageManager = {
     }
 };
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = pageManager;
-}
+
 

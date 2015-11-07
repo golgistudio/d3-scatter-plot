@@ -21,51 +21,26 @@
 /*global updateFontAwesomeSymbols:false */
 
 /*global module: true */
-/*global require: false*/
+/*global rquire: false*/
 
-
-if (typeof require !== 'undefined') {
-
-    var triangleSymbol          = require('./scatterSymbols/triangleSymbol.js');
-
-    var addTriangleSymbol = triangleSymbol.addTriangleSymbol;
-    var zoomTriangleSymbol = triangleSymbol.zoomTriangleSymbol;
-    var updateTriangleSymbols = triangleSymbol.updateTriangleSymbols;
-
-    var dotSymbol          = require('./scatterSymbols/dotSymbol.js');
-
-    var addDotSymbol = dotSymbol.addDotSymbol;
-    var zoomDotSymbol = dotSymbol.zoomDotSymbol;
-    var updateDotSymbols = dotSymbol.updateDotSymbols;
-
-    var squareSymbol          = require('./scatterSymbols/squareSymbol.js');
-
-    var addSquareSymbol = squareSymbol.addSquareSymbol;
-    var zoomSquareSymbol = squareSymbol.zoomSquareSymbol;
-    var updateSquareSymbols = squareSymbol.updateSquareSymbols;
-
-    var iconSymbol          = require('./scatterSymbols/iconSymbol.js');
-
-    var addIconSymbol = iconSymbol.addIconSymbol;
-    var zoomIconSymbol = iconSymbol.zoomIconSymbol;
-    var updateIconSymbols = iconSymbol.updateIconSymbols;
-
-    var fontAwesomeSymbol          = require('./scatterSymbols/fontAwesomeSymbol.js');
-
-    var addFontAwesomeSymbol = fontAwesomeSymbol.addFontAwesomeSymbol;
-    var zoomFontAwesomeSymbol = fontAwesomeSymbol.zoomFontAwesomeSymbol;
-    var updateFontAwesomeSymbols = fontAwesomeSymbol.updateFontAwesomeSymbols;
-
-}
-
+import {TriangleSymbol} from './scatterSymbols/triangleSymbol.js';
+import {DotSymbol} from './scatterSymbols/dotSymbol.js';
+import {SquareSymbol} from './scatterSymbols/squareSymbol.js';
+import {IconSymbol} from './scatterSymbols/iconSymbol.js';
+import {FontAwesomeSymbol} from './scatterSymbols/fontAwesomeSymbol.js';
 
 /**
  *
  * @constructor
  */
-function ScatterPlot() {
+export function ScatterPlot() {
     "use strict";
 
+    var _triangleSymbol = null;
+    var _dotSymbol = null;
+    var _squareSymbol = null;
+    var _iconSymbol = null;
+    var _fontAwesomeSymbol = null;
 
     /**
      *
@@ -105,19 +80,35 @@ function ScatterPlot() {
 
         switch (plotProp.display.symbol) {
             case "triangle":
-                plot = addTriangleSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+
+                if (_triangleSymbol === null) {
+                    _triangleSymbol = new TriangleSymbol();
+                }
+                plot = _triangleSymbol.addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "dot" :
-                plot = addDotSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+                if (_dotSymbol === null) {
+                    _dotSymbol = new DotSymbol();
+                }
+                plot = _dotSymbol.addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "square":
-                plot = addSquareSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+                if (_squareSymbol === null) {
+                    _squareSymbol = new SquareSymbol();
+                }
+                plot = _squareSymbol.addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
             case "icon":
-                plot = addIconSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) ;
+                if (_iconSymbol === null) {
+                    _iconSymbol = new IconSymbol();
+                }
+                plot = _iconSymbol. addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) ;
                 break;
             case "font":
-                plot = addFontAwesomeSymbol(uuid,plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
+                if (_fontAwesomeSymbol === null) {
+                    _fontAwesomeSymbol = new FontAwesomeSymbol();
+                }
+                plot = _fontAwesomeSymbol.addSymbol(uuid,plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
                 break;
         }
         return plot;
@@ -134,19 +125,19 @@ function ScatterPlot() {
 
         switch (plotProp.display.symbol) {
             case "triangle":
-                plot = zoomTriangleSymbol(plot, plotProp, scales);
+                plot = _triangleSymbol.zoomSymbol(plot, plotProp, scales);
                 break;
             case "dot" :
-                plot = zoomDotSymbol(plot, plotProp, scales);
+                plot = _dotSymbol.zoomSymbol(plot, plotProp, scales);
                 break;
             case "square":
-                plot = zoomSquareSymbol(plot, plotProp, scales);
+                plot = _squareSymbol.zoomSymbol(plot, plotProp, scales);
                 break;
             case "icon":
-                plot = zoomIconSymbol(plot, plotProp, scales) ;
+                plot = _iconSymbol.zoomSymbol(plot, plotProp, scales) ;
                 break;
             case "font":
-                plot = zoomFontAwesomeSymbol(plot, plotProp, scales);
+                plot = _fontAwesomeSymbol.zoomSymbol(plot, plotProp, scales);
                 break;
         }
         return plot;
@@ -203,19 +194,19 @@ function ScatterPlot() {
 
         switch (plotProp.display.symbol) {
             case "triangle":
-                svg = updateTriangleSymbols(svg, plotProp, scales, data, transitionProperties);
+                svg = _triangleSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
                 break;
             case "dot" :
-                svg = updateDotSymbols(svg, plotProp, scales, data, transitionProperties);
+                svg = _dotSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
                 break;
             case "square":
-                svg = updateSquareSymbols(svg, plotProp, scales, data, transitionProperties);
+                svg = _squareSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
                 break;
             case "icon":
-                svg = updateIconSymbols(svg, plotProp, scales, data, transitionProperties) ;
+                svg = _iconSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties) ;
                 break;
             case "font":
-                svg = updateFontAwesomeSymbols(svg, plotProp, scales, data, transitionProperties);
+                svg = _fontAwesomeSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
                 break;
         }
 
@@ -243,9 +234,6 @@ function ScatterPlot() {
 
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = ScatterPlot;
-}
 
 
 

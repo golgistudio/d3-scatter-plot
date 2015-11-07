@@ -20,7 +20,7 @@
  *
  * @type {{axes: string, chart: string, labels: string, legend: string, toolTip: string, transition: string, experiment: string, axesValues: string, zoomScaleFactors: string, domains: string}}
  */
-var dataStoreNames = {
+export var dataStoreNames = {
     axes: "axes",
     chart: "chart",
     labels: "labels",
@@ -33,6 +33,3 @@ var dataStoreNames = {
     domains: "domains"
 };
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = dataStoreNames;
-}

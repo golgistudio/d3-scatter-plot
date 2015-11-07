@@ -6,7 +6,7 @@
  *
  * @type {Array}
  */
-var experimentRemoveData = [{
+export var experimentRemoveData = [{
     "Subject": "P-100",
     "Control": 12.079,
     "Test": 19.278,
@@ -78,6 +78,3 @@ var experimentRemoveData = [{
     "Difference": 5.153
 }];
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = experimentRemoveData;
-}

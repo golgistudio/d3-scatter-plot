@@ -9,7 +9,7 @@
  *
  * @constructor
  */
-function ChartProperties() {
+export function ChartProperties() {
     "uses strict";
 
     this.margin= {
@@ -25,6 +25,3 @@ function ChartProperties() {
     this.containerId= "";
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = ChartProperties;
-}

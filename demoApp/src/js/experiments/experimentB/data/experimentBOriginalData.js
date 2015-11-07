@@ -7,7 +7,7 @@
  *
  * @type {Array}
  */
-var experimentBOriginalData = [{
+export var experimentBOriginalData = [{
     "Participant": "P-100",
     "Congruent": 12.079,
     "Incongruent": 19.278,

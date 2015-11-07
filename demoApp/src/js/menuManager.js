@@ -15,20 +15,20 @@
 /*global module:false */
 /*global require:false */
 
-if (typeof require !== 'undefined') {
-    var experimentBAddData    = require('./experiments/experimentB/data/experimentBAddData.js');
-    var experimentBRemoveData    = require('./experiments/experimentB/data/experimentBRemoveData.js');
-    var experimentBDifferentTimesData    = require('./experiments/experimentB/data/experimentBDifferentTimesData.js');
-    var experimentBOriginalData    = require('./experiments/experimentB/data/experimentBOriginalData.js');
+import {experimentBAddData} from './experiments/experimentB/data/experimentBAddData.js';
+import {experimentBRemoveData} from './experiments/experimentB/data/experimentBRemoveData.js';
+import {experimentBDifferentTimesData} from './experiments/experimentB/data/experimentBDifferentTimesData.js';
+import {experimentBOriginalData} from './experiments/experimentB/data/experimentBOriginalData.js';
 
-    var experimentAddData    = require('./experiments/experimentResults/data/experimentAddData.js');
-    var experimentRemoveData    = require('./experiments/experimentResults/data/experimentRemoveData.js');
-    var experimentDifferentTimesData    = require('./experiments/experimentResults/data/experimentDifferentTimesData.js');
-    var experimentOriginalData    = require('./experiments/experimentResults/data/experimentOriginalData.js');
-}
+import {experimentAddData} from './experiments/experimentResults/data/experimentAddData.js';
+import {experimentRemoveData} from './experiments/experimentResults/data/experimentRemoveData.js';
+import {experimentDifferentTimesData} from './experiments/experimentResults/data/experimentDifferentTimesData.js';
+import {experimentOriginalData} from './experiments/experimentResults/data/experimentOriginalData.js';
+
 
 /**
  *
+ * @param unselected
  * @param selected
  */
 function updateSelected(unselected, selected) {
@@ -128,7 +128,7 @@ function addTopMenuEventHandlers() {
  *
  * @param pageManager
  */
-function addMenuEventHandlers(pageManager) {
+export function addMenuEventHandlers(pageManager) {
     "use strict";
 
     addTopMenuEventHandlers();
@@ -330,11 +330,11 @@ function addMenuEventHandlers(pageManager) {
         switch(experiment) {
             case "expA" :
                 chartDiv = "chart2";
-                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv)
+                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv);
                 break;
             case "expB" :
                 chartDiv = "chart1";
-                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv)
+                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv);
                 break;
         }
         event.stopPropagation();
@@ -368,9 +368,7 @@ function addMenuEventHandlers(pageManager) {
 
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = addMenuEventHandlers;
-}
+
 
 
 

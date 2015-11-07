@@ -10,7 +10,7 @@
  *
  * @constructor
  */
-function ExperimentManager() {
+export function ExperimentManager() {
     "use strict";
     /**
      *
@@ -59,7 +59,6 @@ function ExperimentManager() {
         for (var key in data) {
             var item = data[key];
             xDomain.push(item.Subject);
-            console.log(item.Subject);
         }
         xDomain.push(" ");
 
@@ -134,6 +133,3 @@ function ExperimentManager() {
 
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = ExperimentManager;
-}

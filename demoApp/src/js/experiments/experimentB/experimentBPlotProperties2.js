@@ -7,7 +7,7 @@
  *
  * @type {Array}
  */
-var experimentBPlotProperties2 = [
+export var experimentBPlotProperties2 = [
     {
         plotClassName: "incongruent",
         xProp: "Participant",
@@ -60,9 +60,7 @@ var experimentBPlotProperties2 = [
         }
     }];
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = experimentBPlotProperties2;
-}
+
 
 
 

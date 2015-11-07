@@ -9,9 +9,8 @@
 /*global require:false */
 /*global module:false */
 
-if (typeof require !== 'undefined') {
-    var dataStoreNames          = require('../dataStore/dataStoreNames.js');
-}
+import  {dataStoreNames} from '../dataStore/dataStoreNames.js';
+
 
 /**
  *
@@ -19,7 +18,7 @@ if (typeof require !== 'undefined') {
  * @param dataStoreManager
  * @constructor
  */
-function AxesManager(uuid, dataStoreManager) {
+export function AxesManager(uuid, dataStoreManager) {
     "use strict";
 
     var _uuid = uuid;
@@ -133,7 +132,6 @@ function AxesManager(uuid, dataStoreManager) {
      */
     this.drawAxes = function  (svg) {
 
-
         var axesProperties = _dataStoreManager.getData(_uuid, dataStoreNames.axes);
         var chartProperties = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
         var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
@@ -206,8 +204,4 @@ function AxesManager(uuid, dataStoreManager) {
         }
     };
 
-}
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports =  AxesManager;
 }

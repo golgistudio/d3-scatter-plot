@@ -15,18 +15,13 @@
 /*global require:false */
 /*global module:false */
 
-if (typeof require !== 'undefined') {
-    var dataStoreNames          = require('../dataStore/dataStoreNames.js');
-    var AxesManager          = require('./axesManager.js');
-    var ToolTipManager          = require('./toolTipManager.js');
-    var PlotManager          = require('../plots/plotManager.js');
+import {dataStoreNames} from '../dataStore/dataStoreNames.js';
+import {AxesManager} from './axesManager.js';
+import {ToolTipManager} from './toolTipManager.js';
+import {PlotManager} from '../plots/plotManager.js';
 
-    var drawChartLabels          = require('./labels.js');
-    var legendManager          = require('./legendManager.js');
-
-    var drawLegend = legendManager.drawLegend;
-    var updateLegend = legendManager.updateLegend;
-}
+import {LabelManager} from './labelManager.js';
+import {LegendManager} from './legendManager.js';
 
 /**
  *
@@ -35,7 +30,7 @@ if (typeof require !== 'undefined') {
  * @param containerId
  * @constructor
  */
-function Chart(dataManager, uuid, containerId) {
+export function Chart(dataManager, uuid, containerId) {
     "use strict";
 
     var _dataStoreManager =  dataManager;
@@ -47,6 +42,8 @@ function Chart(dataManager, uuid, containerId) {
     var _plotManager = null;
     var _toolTipManager = null;
     var _experiment =  null;
+    var _legendManager = null;
+    var _labelManager = null;
     var _data = null;
 
     var _chartComponents = null;
@@ -78,6 +75,8 @@ function Chart(dataManager, uuid, containerId) {
         _plotManager = new PlotManager();
         _toolTipManager = new ToolTipManager();
         _toolTipManager.create(_dataStoreManager.getData(_uuid, dataStoreNames.toolTip));
+        _legendManager = new LegendManager();
+        _labelManager = new LabelManager();
 
         var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
         var chartProps = _dataStoreManager.getData(_uuid, dataStoreNames.chart);
@@ -109,7 +108,7 @@ function Chart(dataManager, uuid, containerId) {
         initializeChartSize(chartProps);
         _dataStoreManager.setData(_uuid, dataStoreNames.chart, chartProps);
 
-        _axesManager.createAxes(_experiment._dataDomains, chartProps.width, chartProps.height);
+        _axesManager.createAxes();
         _chartComponents  = initializeChart(_data, _experiment, chartProps, _that, _axesManager);
         _axesManager.drawAxes(_chartComponents.svg);
 
@@ -125,9 +124,9 @@ function Chart(dataManager, uuid, containerId) {
             "transitionProperties" : transitionProps
         };
         _plotManager.plotManagerInterface("draw", plotParams);
-        drawChartLabels(_chartComponents.svg, labelProps, chartProps.width, chartProps.height, chartProps.margin);
+        _labelManager.drawChartLabels(_chartComponents.svg, labelProps, chartProps.width, chartProps.height, chartProps.margin);
 
-        drawLegend(_chartComponents.svg, chartProps.width, chartProps.height, legendProps, legendData);
+        _legendManager.drawLegend(_chartComponents.svg, chartProps.width, chartProps.height, legendProps, legendData);
 
     }
 
@@ -240,7 +239,7 @@ function Chart(dataManager, uuid, containerId) {
         };
         _plotManager.plotManagerInterface("draw", plotParams);
 
-        drawChartLabels(_chartComponents.svg, labelProps, chartProps.width , chartProps.height , chartProps.margin);
+        _labelManager.drawChartLabels(_chartComponents.svg, labelProps, chartProps.width , chartProps.height , chartProps.margin);
 
         var legendData = [];
 
@@ -362,10 +361,7 @@ function Chart(dataManager, uuid, containerId) {
             legendData.push(legendDataItem);
         });
 
-        updateLegend(_chartComponents.svg, legendProps, legendData);
+        _legendManager.updateLegend(_chartComponents.svg, legendProps, legendData);
     }
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports =  Chart;
-}

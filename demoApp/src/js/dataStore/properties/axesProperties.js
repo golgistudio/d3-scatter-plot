@@ -10,7 +10,7 @@
  *
  * @constructor
  */
-function AxesProperties() {
+export function AxesProperties() {
     "uses strict";
     this.yPosition = 6;
     this.xPosition = 6;
@@ -41,10 +41,6 @@ function AxesProperties() {
     this.yBorderInnerTickSize   = 0;
     this.yBorderOuterTickSize   = 0;
 
-}
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = AxesProperties;
 }
 
 

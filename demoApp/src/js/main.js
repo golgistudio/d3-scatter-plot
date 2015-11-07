@@ -45,11 +45,9 @@
 /*global module:false */
 /*global require:false */
 
+import {pageManager} from './pageManager.js';
+import {addMenuEventHandlers} from './menuManager.js';
 
-if (typeof require !== 'undefined') {
-    var pageManager          = require('./pageManager.js');
-    var addMenuEventHandlers = require('./menuManager.js');
-}
 
 //############################
 //

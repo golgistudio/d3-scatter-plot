@@ -7,16 +7,16 @@
 /*global BarChart:false */
 /*global module:false */
 
-if (typeof require !== 'undefined') {
-    var ScatterPlot          = require('./scatter.js');
-    var BarChart          = require('./barChart.js');
-}
+
+import {ScatterPlot} from './scatter.js';
+import {BarChart} from './barChart.js';
+
 
 /**
  *
  * @constructor
  */
-var PlotManager = function() {
+export var PlotManager = function() {
 
     "use strict";
 
@@ -148,6 +148,3 @@ var PlotManager = function() {
 
 };
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = PlotManager;
-}

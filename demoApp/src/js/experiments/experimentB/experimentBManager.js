@@ -11,7 +11,7 @@
  *
  * @constructor
  */
-function ExperimentBManager() {
+export function ExperimentBManager() {
     "use strict";
 
     /**
@@ -132,6 +132,3 @@ function ExperimentBManager() {
 
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = ExperimentBManager;
-}

@@ -8,7 +8,7 @@
  *
  * @constructor
  */
-function LegendProperties () {
+export function LegendProperties () {
     "uses strict";
 
     this.legendClassName= "legend";
@@ -32,9 +32,6 @@ function LegendProperties () {
 
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = LegendProperties;
-}
 
 
 

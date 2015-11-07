@@ -7,7 +7,7 @@
  *
  * @constructor
  */
-function TransitionProperties () {
+export function TransitionProperties () {
     "uses strict";
     this.startDurationTime = 1000;
     this.delayAdjustment = 500;
@@ -21,9 +21,5 @@ function TransitionProperties () {
     this.hoverEaseType= "elastic";
     this.dropLineClassName = "drop-line";
     this.dropLineStrokeColor = "orange";
-}
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = TransitionProperties;
 }
 

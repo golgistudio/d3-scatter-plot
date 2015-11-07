@@ -7,7 +7,7 @@
  *
  * @constructor
  */
-function LabelProperties () {
+export function LabelProperties () {
     "uses strict";
 
     this.titleProperties      = {
@@ -40,9 +40,6 @@ function LabelProperties () {
         };
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = LabelProperties;
-}
 
 
 

@@ -8,7 +8,7 @@
  *
  * @type {Array}
  */
-var experimentBAddData = [{
+export var experimentBAddData = [{
     "Participant": "P-100",
     "Congruent":   12.079,
     "Incongruent": 19.278,
@@ -164,7 +164,3 @@ var experimentBAddData = [{
     "Incongruent": 60.157,
     "Difference":  8.153
 }];
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = experimentBAddData;
-}
