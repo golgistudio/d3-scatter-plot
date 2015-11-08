@@ -1,3 +1,6 @@
+// If your code is written in es6, use the 'npm run doc' command instead.
+//
+
 var config       = require('../config');
 if(!config.tasks.jsdoc) return;
 

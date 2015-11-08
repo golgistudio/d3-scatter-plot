@@ -17,7 +17,8 @@
     "demo": "gulp production && gulp server",
     "gulp": "gulp",
     "development": "gulp",
-    "test": "gulp production && karma start --single-run"
+    "test": "gulp production && karma start --single-run",
+    "doc": "jsdoc -c ./jsdoc.config.js"
   },
   "dependencies": {},
   "devDependencies": {
@@ -38,7 +39,6 @@
     "gulp-iconfont": "^4.0.2",
     "gulp-if": "~1.2.5",
     "gulp-imagemin": "^2.3.0",
-    "gulp-jsdoc": "^0.1.5",
     "gulp-jshint": "^1.12.0",
     "gulp-minify-css": "^1.2.0",
     "gulp-notify": "^2.2.0",
@@ -55,6 +55,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.3",
+    "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
     "jshint-stylish": "^2.0.1",
     "karma": "0.13.2",
     "karma-chrome-launcher": "^0.2.0",

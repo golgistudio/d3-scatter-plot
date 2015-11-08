@@ -13,13 +13,6 @@
       }
     },
 
-    "bundle": {
-      "start": "js/main.js",
-      "dest": "js",
-      "bundleFileName": "bundle.js",
-      "extensions": ["js", "jsx"]
-    },
-
     "js": {
       "src": "js",
       "dest": "js",
@@ -30,15 +23,9 @@
       "extensions": ["js"]
     },
 
-    "copyjs": {
-      "src": "js",
-      "dest": "js",
-      "extensions": ["js", "jsx"]
-    },
-
     "jshint": {
       "src": "js",
-      "props": ".jshintrc",
+      "props": "./js/.jshintrc",
       "extensions": ["js", "jsx"]
     },
 
