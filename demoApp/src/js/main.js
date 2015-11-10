@@ -53,7 +53,7 @@ import {addMenuEventHandlers} from './menuManager.js';
 //
 //
 //############################
-document.addEventListener('DOMContentLoaded', function(){
+window.onload =  function(){
 
     /**
      *
@@ -66,4 +66,4 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     main();
-});
+};

@@ -6,7 +6,7 @@
     "node": "0.12.2",
     "npm": "2.7.4"
   },
-  "homepage": "http://golgistudio.com/d3-scatter-plot/",
+  "homepage": "http://golgistudio.github.io/d3-scatter-plot/",
   "repository": {
     "type": "git",
     "url": "https://github.com/golgistudio/d3-scatter-plot.git"
