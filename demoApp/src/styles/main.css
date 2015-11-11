@@ -124,7 +124,8 @@ h1 {
     overflow:hidden;
     box-shadow: 2px 0 18px rgba(0, 0, 0, 0.26);
 }
-.menu li a{
+
+.menu li a {
     display: block;
     text-indent: -500em;
     height: 5em;
@@ -145,7 +146,7 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    font-size: 1.4em;
+    font-size: 2.0em;
 }
 .menu li a.search:before {
     content: "\f110";
@@ -195,6 +196,7 @@ h1 {
     font-family:verdana;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     transition: background 0.1s ease-in-out;
+    font-size: 1.10em;
 }
 .menu-bar li:first-child a{
     height:5em;
@@ -251,7 +253,7 @@ h1 {
     }
 }
 
-@media all and (max-width: 700px) and (orientation:portrait)  {
+@media all and (orientation:portrait)  {
 
     #chart1 {
         float: none;

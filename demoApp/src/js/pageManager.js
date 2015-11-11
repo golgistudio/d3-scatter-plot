@@ -37,11 +37,11 @@
 
 
 import {dataStoreManager} from './dataStore/dataStoreManager.js';
-    import {dataStoreNames} from './dataStore/dataStoreNames.js';
-        import {AxesProperties} from './dataStore/properties/axesProperties.js';
-            import {ChartProperties} from './dataStore/properties/chartProperties.js';
-                import {LabelProperties} from './dataStore/properties/labelProperties.js';
-                    import {LegendProperties} from './dataStore/properties/legendProperties.js';
+import {dataStoreNames} from './dataStore/dataStoreNames.js';
+import {AxesProperties} from './dataStore/properties/axesProperties.js';
+import {ChartProperties} from './dataStore/properties/chartProperties.js';
+import {LabelProperties} from './dataStore/properties/labelProperties.js';
+import {LegendProperties} from './dataStore/properties/legendProperties.js';
 import {ToolTipProperties } from './dataStore/properties/toolTipProperties.js';
 import {TransitionProperties} from './dataStore/properties/transitionProperties.js';
 
@@ -62,15 +62,34 @@ import {ExperimentBManager2} from './experiments/experimentB/experimentBManager2
 
 /**
  *
- * @type {{_dataStoreManager: null, _chartCollection: Array, _currentExperiment: null, _chartWidthFactor: number, init: Function, createChart: Function, getActiveExperiment: Function, resize: Function, updatePoints: Function, setSymbol: Function, setSymbolColor: Function, setPlotStyle: Function, switchExperiment: Function, getExperimentInfo: Function}}
+ * @type {{_dataStoreManager: null, _chartCollection: Array, _currentExperiment: null, getDimensions: pageManager.getDimensions, init: pageManager.init, createChart: pageManager.createChart, getActiveExperiment: pageManager.getActiveExperiment, resize: pageManager.resize, updatePoints: pageManager.updatePoints, updatePlotSymbol: pageManager.updatePlotSymbol, setSymbol: pageManager.setSymbol, setSymbolColor: pageManager.setSymbolColor, setPlotStyle: pageManager.setPlotStyle, switchExperiment: pageManager.switchExperiment, getExperimentInfo: pageManager.getExperimentInfo}}
  */
 export var pageManager = {
 
     _dataStoreManager : null,
     _chartCollection: [],
     _currentExperiment: null,
-    _chartWidthFactor: 2,
-    _chartHeightFactor:1,
+
+    updateDimensions: function(chartProps) {
+        "use strict";
+
+        var chartWidthFactor = 1;
+        var chartHeightFactor = 1;
+
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            chartWidthFactor = 1;
+            chartHeightFactor = 2;
+        } else {
+            chartWidthFactor = 2;
+            chartHeightFactor = 1;
+        }
+
+        chartProps.height      = (window.innerHeight/chartHeightFactor) - chartProps.heightMargin;
+        chartProps.width       = (window.innerWidth /chartWidthFactor) - chartProps.widthMargin;
+
+        chartProps.width  = chartProps.width - chartProps.margin.left - chartProps.margin.right;
+        chartProps.height = chartProps.height - chartProps.margin.top - chartProps.margin.bottom;
+    },
 
     init: function () {
         "use strict";
@@ -79,19 +98,13 @@ export var pageManager = {
 
         this._currentExperiment = "expA";
 
-        if (window.innerWidth <= 700 && window.matchMedia("(orientation: portrait)").matches) {
-            this._chartWidthFactor = 1;
-        } else {
-            this._chartWidthFactor = 2;
-        }
-
         var expInfoCollection = this.getExperimentInfo();
 
         for (var i=0; i < expInfoCollection.length; i++) {
 
             var expInfo = expInfoCollection[i];
 
-            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties, this._chartWidthFactor);
+            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
             var chartItem = {
                 uuid: expInfo.uuid,
                 chart: chart,
@@ -106,7 +119,7 @@ export var pageManager = {
 
     },
 
-    createChart: function(divID, experiment, uuid, data, plotProps, chartWidthFactor) {
+    createChart: function(divID, experiment, uuid, data, plotProps) {
         "use strict";
 
         var axesProps = new AxesProperties();
@@ -116,8 +129,8 @@ export var pageManager = {
         var toolTipProps = new ToolTipProperties();
         var transitionProps = new TransitionProperties();
 
-        chartProps.height      = window.innerHeight - chartProps.heightMargin;
-        chartProps.width       = (window.innerWidth /chartWidthFactor) - chartProps.widthMargin;
+        this.updateDimensions(chartProps);
+
         chartProps.containerId = divID;
 
         toolTipProps.containerId = divID;
@@ -156,21 +169,16 @@ export var pageManager = {
     resize: function() {
         "use strict";
 
-        if (window.innerWidth <= 700 && window.matchMedia("(orientation: portrait)").matches) {
-            this._chartWidthFactor = 1;
-        } else {
-            this._chartWidthFactor = 2;
-        }
-
-        var params = {
-            "height" : window.innerHeight / this._chartHeightFactor,
-            "width" : window.innerWidth/this._chartWidthFactor
-        };
-
         var length = this._chartCollection.length;
 
         for (var i = 0; i < length; i++) {
-            this._chartCollection[i].chart.handleRequest("resize", params);
+
+            var uuid = this._chartCollection[i].uuid;
+            var chartProps = this._dataStoreManager.getData(uuid, dataStoreNames.chart);
+            this.updateDimensions(chartProps);
+            this._dataStoreManager.setData(uuid, dataStoreNames.chart, chartProps);
+
+            this._chartCollection[i].chart.handleRequest("resize", null);
         }
     },
 
@@ -357,13 +365,15 @@ export var pageManager = {
             }
         }
 
+        var sizeFactors = this.getDimensions();
+
         var expInfoCollection = this.getExperimentInfo();
 
         for (var jjj=0; jjj < expInfoCollection.length; jjj++) {
 
             var expInfo = expInfoCollection[jjj];
 
-            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties, this._chartWidthFactor);
+            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties, sizeFactors.chartWidthFactor);
             var item = {
                 uuid: expInfo.uuid,
                 chart: chart,

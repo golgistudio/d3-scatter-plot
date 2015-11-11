@@ -16,7 +16,7 @@
     "js": {
       "src": "js",
       "dest": "js",
-      "extractSharedJs": true,
+      "extractSharedJs": false,
       "entries": {
         "main": ["./main.js"]
       },

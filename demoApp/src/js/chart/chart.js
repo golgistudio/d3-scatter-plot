@@ -105,9 +105,6 @@ export function Chart(dataManager, uuid, containerId) {
 
         _dataStoreManager.setData(_uuid, dataStoreNames.experiment, plotProps);
 
-        initializeChartSize(chartProps);
-        _dataStoreManager.setData(_uuid, dataStoreNames.chart, chartProps);
-
         _axesManager.createAxes();
         _chartComponents  = initializeChart(_data, _experiment, chartProps, _that, _axesManager);
         _axesManager.drawAxes(_chartComponents.svg);
@@ -138,16 +135,6 @@ export function Chart(dataManager, uuid, containerId) {
         if (d3.event.defaultPrevented) {
             d3.event.stopPropagation();
         }
-    }
-
-    /**
-     *
-     * @param chartProps
-     */
-    function initializeChartSize (chartProps) {
-
-        chartProps.width  = chartProps.width - chartProps.margin.left - chartProps.margin.right;
-        chartProps.height = chartProps.height - chartProps.margin.top - chartProps.margin.bottom;
     }
 
 
@@ -215,13 +202,7 @@ export function Chart(dataManager, uuid, containerId) {
 
         d3.select("#" + _containerId).select("svg").remove();
 
-        chartProps.height = params.height - chartProps.heightMargin;
-        chartProps.width  = params.width - chartProps.widthMargin;
-
-        initializeChartSize(chartProps);
-        _dataStoreManager.setData(_uuid, dataStoreNames.chart, chartProps);
-
-        _axesManager.createAxes(_experiment._dataDomains, chartProps.width , chartProps.height);
+        _axesManager.createAxes();
 
         var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
 
@@ -254,7 +235,7 @@ export function Chart(dataManager, uuid, containerId) {
             legendData.push(legendDataItem);
         });
 
-        drawLegend(_chartComponents.svg, chartProps.width , chartProps.height, legendProps, legendData);
+        _legendManager.drawLegend(_chartComponents.svg, chartProps.width , chartProps.height, legendProps, legendData);
     }
 
     /**
