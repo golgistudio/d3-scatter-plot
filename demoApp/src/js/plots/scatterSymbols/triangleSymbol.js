@@ -10,12 +10,18 @@
 
 import {dataStoreNames} from '../../dataStore/dataStoreNames.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
+import {EventMediator} from '../../eventMediator.js';
 
 /**
  *
  * @constructor
  */
 export function TriangleSymbol() {
+
+    function clickedEventHandler(params) {
+        console.log("triangle: " + params);
+    }
+
     /**
      * @param plot
      * @param plotProp
@@ -148,7 +154,11 @@ export function TriangleSymbol() {
             })
             .on("touchend", function (d) {
                 handleHoverEnd(d, this);
+            }).on("click", function(d) {
+                EventMediator.getInstance().notify("clicked", "triangle", "P-106" );
             });
+
+        EventMediator.getInstance().register("clicked", "triangle", clickedEventHandler);
 
         return plot;
 

@@ -24,6 +24,8 @@ import {experimentAddData} from './experiments/experimentResults/data/experiment
 import {experimentRemoveData} from './experiments/experimentResults/data/experimentRemoveData.js';
 import {experimentDifferentTimesData} from './experiments/experimentResults/data/experimentDifferentTimesData.js';
 import {experimentOriginalData} from './experiments/experimentResults/data/experimentOriginalData.js';
+import {CommandManager} from './commandManager.js';
+import {PlotCommandFactory} from './plotCommandFactory.js';
 
 
 /**
@@ -51,14 +53,74 @@ function initializeSelectedMenus() {
     updateSelected(["pinkColor"], "blueColor");
     updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
     updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
+    updateSelected(["redo","unwind","rewind" ], "undo");
+    updateSelected(["fr"], "eng");
 }
-
 
 /**
  *
  */
 function addTopMenuEventHandlers() {
     "use strict";
+
+    /**
+     *
+     */
+    function closeAllMenus() {
+        document.getElementById("dataControl").classList.remove( "open" );
+        document.getElementById("symbolControl").classList.remove( "open" );
+        document.getElementById("colorControl").classList.remove( "open" );
+        document.getElementById("plotStyleControl").classList.remove( "open" );
+        document.getElementById("experimentControl").classList.remove( "open" );
+        document.getElementById("undo_redoControl").classList.remove( "open" );
+        document.getElementById("langControl").classList.remove( "open" );
+    }
+
+    /**
+     *
+     * @param id
+     */
+    function closeOtherMenus(id) {
+        if (id !== "dataControl") {
+            document.getElementById("dataControl").classList.remove( "open" );
+        }
+
+        if (id !== "symbolControl") {
+            document.getElementById("symbolControl").classList.remove( "open" );
+        }
+
+        if (id !== "colorControl") {
+            document.getElementById("colorControl").classList.remove( "open" );
+        }
+
+        if (id !== "plotStyleControl") {
+            document.getElementById("plotStyleControl").classList.remove( "open" );
+        }
+
+        if (id !== "experimentControl") {
+            document.getElementById("experimentControl").classList.remove( "open" );
+        }
+
+        if (id !== "undo_redo") {
+            document.getElementById("undo_redoControl").classList.remove( "open" );
+        }
+
+        if (id !== "language") {
+            document.getElementById("langControl").classList.remove( "open" );
+        }
+    }
+
+    /**
+     *
+     * @param event
+     */
+    function handleMenuEvent(event) {
+        var topMenuId =  event.target.id;
+        var menuId = topMenuId.replace(/Menu/g, "Control");
+        closeOtherMenus(menuId);
+        document.getElementById(menuId).classList.toggle( "open" );
+        event.stopPropagation();
+    }
 
     document.body.addEventListener("click", function(event){
         closeAllMenus();
@@ -84,43 +146,15 @@ function addTopMenuEventHandlers() {
         handleMenuEvent(event);
     });
 
-    function closeAllMenus() {
-        document.getElementById("dataControl").classList.remove( "open" );
-        document.getElementById("symbolControl").classList.remove( "open" );
-        document.getElementById("colorControl").classList.remove( "open" );
-        document.getElementById("plotStyleControl").classList.remove( "open" );
-        document.getElementById("experimentControl").classList.remove( "open" );
-    }
+    document.getElementById("undo_redoMenu").addEventListener("click", function(event){
+        handleMenuEvent(event);
+    });
 
-    function handleMenuEvent(event) {
-        var topMenuId =  event.target.id;
-        var menuId = topMenuId.replace(/Menu/g, "Control");
-        closeOtherMenus(menuId);
-        document.getElementById(menuId).classList.toggle( "open" );
-        event.stopPropagation();
-    }
+    document.getElementById("langMenu").addEventListener("click", function(event){
+        handleMenuEvent(event);
+    });
 
-    function closeOtherMenus(id) {
-        if (id !== "dataControl") {
-            document.getElementById("dataControl").classList.remove( "open" );
-        }
 
-        if (id !== "symbolControl") {
-            document.getElementById("symbolControl").classList.remove( "open" );
-        }
-
-        if (id !== "colorControl") {
-            document.getElementById("colorControl").classList.remove( "open" );
-        }
-
-        if (id !== "plotStyleControl") {
-            document.getElementById("plotStyleControl").classList.remove( "open" );
-        }
-
-        if (id !== "experimentControl") {
-            document.getElementById("experimentControl").classList.remove( "open" );
-        }
-    }
 
 }
 
@@ -132,6 +166,9 @@ export function addMenuEventHandlers(pageManager) {
     "use strict";
 
     addTopMenuEventHandlers();
+
+    var commandFactory = new PlotCommandFactory();
+    var commandManager = new CommandManager(commandFactory);
 
     document.getElementById("addPointButton").addEventListener("click", function(event) {
         updateSelected(["removePointButton", "changePointButton", "resetPointsButton"], "addPointButton");

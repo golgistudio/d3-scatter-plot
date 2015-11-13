@@ -11,12 +11,21 @@
 
 import {dataStoreNames} from '../../dataStore/dataStoreNames.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
+import {EventMediator} from '../../eventMediator.js';
 
 /**
  *
  * @constructor
  */
 export function DotSymbol() {
+
+
+    function clickedEventHandler(params) {
+        console.log("dot: " + params);
+    }
+
+
+
     /**
      *
      * @param plot
@@ -145,10 +154,15 @@ export function DotSymbol() {
             })
             .on("touchend", function (d) {
                 handleHoverEnd(d, this);
+            }).on("click", function(d) {
+                EventMediator.getInstance().notify("clicked", "dot", "P-103" );
             });
 
+        EventMediator.getInstance().register("clicked", "dot", clickedEventHandler);
+
+
         return plot;
-    }
+    };
 
 
     /**

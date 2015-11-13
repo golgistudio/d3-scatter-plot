@@ -29,6 +29,7 @@ import {SquareSymbol} from './scatterSymbols/squareSymbol.js';
 import {IconSymbol} from './scatterSymbols/iconSymbol.js';
 import {FontAwesomeSymbol} from './scatterSymbols/fontAwesomeSymbol.js';
 
+
 /**
  *
  * @constructor
@@ -66,6 +67,7 @@ export function ScatterPlot() {
         return svg.selectAll("." + plotClassName)
             .data(data);
     }
+
 
     /***
      *

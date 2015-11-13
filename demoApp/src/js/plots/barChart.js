@@ -12,6 +12,7 @@
 
 import {dataStoreNames} from '../dataStore/dataStoreNames.js';
 import {dataStoreManager} from '../dataStore/dataStoreManager.js';
+import {EventMediator} from '../eventMediator.js';
 
 
 /**
@@ -46,6 +47,10 @@ export function BarChart() {
 
         return svg.selectAll("." + plotClassName)
             .data(data);
+    }
+
+    function clickedEventHandler(params) {
+        console.log("barChart: " + params);
     }
 
     /**
@@ -145,11 +150,14 @@ export function BarChart() {
             })
             .on("touchend", function (d) {
                 handleHoverEnd(d, this);
+            })
+            .on("click", function(d) {
+                EventMediator.getInstance().notify("clicked", "barChart", "P-105" );
             });
 
+        EventMediator.getInstance().register("clicked", "barChart", clickedEventHandler);
+
         return plot;
-
-
     }
 
 
