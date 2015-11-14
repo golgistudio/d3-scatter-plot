@@ -114,6 +114,7 @@ export function FontAwesomeSymbol() {
                 .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.display.strokeColor)
                 .style("fill", plotProp.display.textFill)
+                .style("stroke-width", plotProp.display.strokeWidth)
                 .attr('font-size', plotProp.display.fontSize)
                 .ease(transitionProperties.hoverEaseType);
 

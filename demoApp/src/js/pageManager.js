@@ -75,6 +75,25 @@ export function PageManager() {
     var _currentExperiment = null;
     var _uuid =  null;
 
+    var _experiments = {
+
+        expA: {
+            experimentManager: ExperimentManager,
+            experimentManager2: ExperimentManager2,
+            experimentOriginalData: experimentOriginalData,
+            experimentPlotProperties: experimentPlotProperties,
+            experimentPlotProperties2: experimentPlotProperties2
+        },
+        expB: {
+            experimentManager: ExperimentBManager,
+            experimentManager2: ExperimentBManager2,
+            experimentOriginalData: experimentBOriginalData,
+            experimentPlotProperties: experimentBPlotProperties,
+            experimentPlotProperties2: experimentBPlotProperties2
+        }
+
+    };
+
 
     /**
      *
@@ -155,7 +174,7 @@ export function PageManager() {
     /**
      *
      */
-    this.resize = function() {
+     function resize() {
 
         var length = _chartCollection.length;
 
@@ -341,9 +360,6 @@ export function PageManager() {
      */
     this.switchExperiment = function(experimentName) {
 
-
-        _currentExperiment = experimentName;
-
         var length = _chartCollection.length;
 
         for (var iii = 0; iii < length; iii++) {
@@ -355,7 +371,9 @@ export function PageManager() {
             }
         }
 
-        var expInfoCollection = this.getExperimentInfo();
+        _currentExperiment = experimentName;
+
+        var expInfoCollection = getExperimentInfo();
 
         for (var jjj=0; jjj < expInfoCollection.length; jjj++) {
 
@@ -372,7 +390,8 @@ export function PageManager() {
 
         }
 
-        d3.select(window).on('resize', this.resize.bind(this));
+        d3.select(window).on('resize', resize.bind(this));
+
 
     };
 
@@ -380,7 +399,7 @@ export function PageManager() {
      *
      * @returns {Array}
      */
-    this.getExperimentInfo = function() {
+     function getExperimentInfo() {
 
         var expInfoCollection = [];
 
@@ -391,37 +410,37 @@ export function PageManager() {
             case "expA" :
                 expInfoItem1 = {
                     divId:      "chart1",
-                    properties: experimentPlotProperties,
-                    experiment: new ExperimentManager(),
+                    properties: _experiments.expA.experimentPlotProperties,
+                    experiment: new _experiments.expA.experimentManager(),
                     uuid:       _dataStoreManager.generateUUID(),
-                    data:       experimentOriginalData
+                    data:       _experiments.expA.experimentOriginalData
 
                 };
 
                 expInfoItem2 = {
                     divId:      "chart2",
-                    properties: experimentPlotProperties2,
-                    experiment: new ExperimentManager2(),
+                    properties: _experiments.expA.experimentPlotProperties2,
+                    experiment: new _experiments.expA.experimentManager2(),
                     uuid:       _dataStoreManager.generateUUID(),
-                    data:       experimentOriginalData
+                    data:       _experiments.expA.experimentOriginalData
                 };
                 break;
             case "expB" :
                 expInfoItem1 = {
                     divId:      "chart1",
-                    properties: experimentBPlotProperties,
-                    experiment: new ExperimentBManager(),
+                    properties: _experiments.expB.experimentPlotProperties,
+                    experiment: new _experiments.expB.experimentManager(),
                     uuid:       _dataStoreManager.generateUUID(),
-                    data:       experimentBOriginalData
+                    data:       _experiments.expB.experimentOriginalData
 
                 };
 
                 expInfoItem2 = {
                     divId:      "chart2",
-                    properties: experimentBPlotProperties2,
-                    experiment: new ExperimentBManager2(),
+                    properties: _experiments.expB.experimentPlotProperties2,
+                    experiment: new _experiments.expB.experimentManager2(),
                     uuid:       _dataStoreManager.generateUUID(),
-                    data:       experimentBOriginalData
+                    data:       _experiments.expB.experimentOriginalData
                 };
                 break;
         }
@@ -445,7 +464,7 @@ export function PageManager() {
 
         _currentExperiment = "expA";
 
-        var expInfoCollection = this.getExperimentInfo();
+        var expInfoCollection = getExperimentInfo();
 
         for (var i=0; i < expInfoCollection.length; i++) {
 
@@ -462,7 +481,7 @@ export function PageManager() {
 
         }
 
-        d3.select(window).on('resize', this.resize.bind(this));
+        d3.select(window).on('resize', resize.bind(this));
 
     };
 

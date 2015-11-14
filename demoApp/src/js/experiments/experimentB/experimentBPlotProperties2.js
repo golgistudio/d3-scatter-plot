@@ -16,7 +16,7 @@ export var experimentBPlotProperties2 = [
         display: {
             width:        20,
             height:       20,
-            fillColor:    "#c49c94",
+            fillColor:    "#17becf",
             strokeColor:  "black",
             symbol:       "square",
             plotRenderer: null,
@@ -58,7 +58,8 @@ export var experimentBPlotProperties2 = [
             width:        20,
             height:       20
         }
-    }];
+    }
+];
 
 
 
