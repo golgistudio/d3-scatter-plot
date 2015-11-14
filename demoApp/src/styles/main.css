@@ -172,6 +172,15 @@ h1 {
 .menu li a.heartBeat:before {
     content: "\f21e";
 }
+
+.menu li a.undo:before {
+    content: "\f0e2";
+}
+
+.menu li a.language:before {
+    content: "\f1ab";
+}
+
 .menu-bar li a:hover,
 .menu li a:hover {
     background: #267fdd;
