@@ -17,11 +17,14 @@ export var experimentPlotProperties = [
         display: {
             width:        20,
             height:       20,
-            fillColor:    "#1f77b4",
+            fillColor:    "#17becf",
             strokeColor:  "black",
             symbol:       "square",
             plotRenderer: null,
-            plotStyle:    "scatter"
+            plotStyle:    "scatter",
+            hoverColor:   "orange",
+            strokeWidth: 1,
+            strokeHoverWidth: 5
         }
     },
 
@@ -36,7 +39,10 @@ export var experimentPlotProperties = [
             symbol:      "dot",
             strokeColor: "black",
             plotRenderer: null,
-            plotStyle:    "scatter"
+            plotStyle:    "scatter",
+            hoverColor:   "orange",
+            strokeWidth: 1,
+            strokeHoverWidth: 5
         }
     }
 

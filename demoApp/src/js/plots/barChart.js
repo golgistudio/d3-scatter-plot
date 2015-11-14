@@ -12,7 +12,8 @@
 
 import {dataStoreNames} from '../dataStore/dataStoreNames.js';
 import {dataStoreManager} from '../dataStore/dataStoreManager.js';
-import {EventMediator} from '../eventMediator.js';
+import {EventMediator} from '../events/eventMediator.js';
+import {eventChannelNames} from '../events/eventChannelNames.js';
 
 
 /**
@@ -21,6 +22,9 @@ import {EventMediator} from '../eventMediator.js';
  */
 export function BarChart() {
     "use strict";
+
+    var _name = dataStoreManager.getInstance().generateUUID();
+    var _selector = null;
 
     /**
      *
@@ -45,16 +49,13 @@ export function BarChart() {
      */
     function setData(svg, data, plotClassName) {
 
-        return svg.selectAll("." + plotClassName)
-            .data(data);
+        return svg.selectAll("." + plotClassName).data(data);
     }
 
-    function clickedEventHandler(params) {
-        console.log("barChart: " + params);
-    }
 
     /**
      *
+     * @param uuid
      * @param plot
      * @param plotProp
      * @param scales
@@ -63,6 +64,38 @@ export function BarChart() {
      * @returns {*}
      */
     function addElements(uuid, plot, plotProp, scales, toolTip, transitionProperties) {
+
+        function hoverStartEventHandler(params) {
+
+            d3.selectAll(_selector).each(function(d) {
+
+                if (d[plotProp.xProp]  === params) {
+
+                    d3.select(this).style("stroke", plotProp.display.hoverColor)
+                        .style("fill", plotProp.display.hoverColor)
+                        .style("stroke-width", plotProp.display.strokeHoverWidth );
+                }
+
+            });
+
+        }
+
+        function hoverEndEventHandler(params) {
+
+            d3.selectAll(_selector).each(function(d) {
+
+                if (d[plotProp.xProp]  === params) {
+
+                    d3.select(this) .style("stroke", plotProp.display.strokeColor)
+                        .style("stroke-width", plotProp.display.strokeWidth )
+                        .style("fill", plotProp.display.fillColor);
+                }
+
+            });
+
+        }
+
+
         /**
          *
          * @param d
@@ -72,8 +105,8 @@ export function BarChart() {
 
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
 
-            var currentFillColor = d3.select(that).style("fill");
-            var hoverFillColor   = d3.rgb(currentFillColor).darker();
+           // var currentFillColor = d3.select(that).style("fill");
+           // var hoverFillColor   = d3.rgb(currentFillColor).darker();
             var hoverWidth       = plotProp.display.width * transitionProperties.sizeFactor;
 
             var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
@@ -81,13 +114,16 @@ export function BarChart() {
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", hoverFillColor)
-                .style("fill", hoverFillColor)
+                .style("stroke",  plotProp.display.strokeColor)
+                .style("fill", plotProp.display.hoverColor)
+                .style("stroke-width", plotProp.display.strokeHoverWidth )
                 .attr("width", hoverWidth)
                 .attr("height", function () {
                     return Math.abs(axes.scales.yScale(d[plotProp.yProp]) - axes.scales.yScale(0));
                 })
                 .ease(transitionProperties.hoverEaseType);
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverStart, _name, d[plotProp.xProp] );
 
         }
 
@@ -98,6 +134,8 @@ export function BarChart() {
          */
         function handleHoverEnd(d, that) {
 
+
+
             var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
 
             toolTip.hide();
@@ -106,11 +144,14 @@ export function BarChart() {
                 .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.display.strokeColor)
                 .style("fill", plotProp.display.fillColor)
+                .style("stroke-width", plotProp.display.strokeWidth )
                 .attr("width", plotProp.display.width)
                 .attr("height", function (d) {
                     return Math.abs(axes.scales.yScale(d[plotProp.yProp]) - axes.scales.yScale(0));
                 })
                 .ease(transitionProperties.hoverEaseType);
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverEnd, _name, d[plotProp.xProp] );
 
         }
 
@@ -150,12 +191,12 @@ export function BarChart() {
             })
             .on("touchend", function (d) {
                 handleHoverEnd(d, this);
-            })
-            .on("click", function(d) {
-                EventMediator.getInstance().notify("clicked", "barChart", "P-105" );
             });
 
-        EventMediator.getInstance().register("clicked", "barChart", clickedEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverStart, _name, hoverStartEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverEnd, _name, hoverEndEventHandler);
+
+        _selector = "rect." + plotProp.plotClassName;
 
         return plot;
     }

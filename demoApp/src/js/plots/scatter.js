@@ -34,14 +34,35 @@ import {FontAwesomeSymbol} from './scatterSymbols/fontAwesomeSymbol.js';
  *
  * @constructor
  */
-export function ScatterPlot() {
+export function ScatterPlot(symbol) {
     "use strict";
 
-    var _triangleSymbol = null;
-    var _dotSymbol = null;
-    var _squareSymbol = null;
-    var _iconSymbol = null;
-    var _fontAwesomeSymbol = null;
+
+    function getSymbolPlot(symbol) {
+
+        var newSymbol = null;
+
+        switch (symbol) {
+            case "triangle":
+                newSymbol = new TriangleSymbol();
+                break;
+            case "dot" :
+                newSymbol = new DotSymbol();
+                break;
+            case "square":
+                newSymbol = new SquareSymbol();
+                break;
+            case "icon":
+                newSymbol = new IconSymbol();
+                break;
+            case "font":
+                newSymbol = new FontAwesomeSymbol();
+                break;
+        }
+        return newSymbol;
+    }
+
+    var _symbol = getSymbolPlot(symbol);
 
     /**
      *
@@ -52,7 +73,6 @@ export function ScatterPlot() {
         var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
 
         addSymbols(parameters.uuid, plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
-
     }
 
     /**
@@ -80,39 +100,8 @@ export function ScatterPlot() {
      */
     function addSymbols(uuid, plot,  parentSVG, plotProp, scales, toolTip, transitionProperties) {
 
-        switch (plotProp.display.symbol) {
-            case "triangle":
+        plot = _symbol.addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
 
-                if (_triangleSymbol === null) {
-                    _triangleSymbol = new TriangleSymbol();
-                }
-                plot = _triangleSymbol.addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
-                break;
-            case "dot" :
-                if (_dotSymbol === null) {
-                    _dotSymbol = new DotSymbol();
-                }
-                plot = _dotSymbol.addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
-                break;
-            case "square":
-                if (_squareSymbol === null) {
-                    _squareSymbol = new SquareSymbol();
-                }
-                plot = _squareSymbol.addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
-                break;
-            case "icon":
-                if (_iconSymbol === null) {
-                    _iconSymbol = new IconSymbol();
-                }
-                plot = _iconSymbol. addSymbol(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) ;
-                break;
-            case "font":
-                if (_fontAwesomeSymbol === null) {
-                    _fontAwesomeSymbol = new FontAwesomeSymbol();
-                }
-                plot = _fontAwesomeSymbol.addSymbol(uuid,plot, parentSVG, plotProp, scales, toolTip, transitionProperties);
-                break;
-        }
         return plot;
     }
 
@@ -125,23 +114,7 @@ export function ScatterPlot() {
      */
     function zoomSymbols(plot, plotProp, scales) {
 
-        switch (plotProp.display.symbol) {
-            case "triangle":
-                plot = _triangleSymbol.zoomSymbol(plot, plotProp, scales);
-                break;
-            case "dot" :
-                plot = _dotSymbol.zoomSymbol(plot, plotProp, scales);
-                break;
-            case "square":
-                plot = _squareSymbol.zoomSymbol(plot, plotProp, scales);
-                break;
-            case "icon":
-                plot = _iconSymbol.zoomSymbol(plot, plotProp, scales) ;
-                break;
-            case "font":
-                plot = _fontAwesomeSymbol.zoomSymbol(plot, plotProp, scales);
-                break;
-        }
+        plot = _symbol.zoomSymbol(plot, plotProp, scales);
         return plot;
     }
 
@@ -194,24 +167,7 @@ export function ScatterPlot() {
 
     function updateSymbols(svg, data, scales, plotProp, transitionProperties) {
 
-        switch (plotProp.display.symbol) {
-            case "triangle":
-                svg = _triangleSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
-                break;
-            case "dot" :
-                svg = _dotSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
-                break;
-            case "square":
-                svg = _squareSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
-                break;
-            case "icon":
-                svg = _iconSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties) ;
-                break;
-            case "font":
-                svg = _fontAwesomeSymbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
-                break;
-        }
-
+        svg = _symbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
         return svg;
     }
 
@@ -232,7 +188,6 @@ export function ScatterPlot() {
 
         }
     };
-
 
 }
 

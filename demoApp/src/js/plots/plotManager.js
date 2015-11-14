@@ -28,7 +28,7 @@ export var PlotManager = function() {
     function getPlotRenderer(parameters) {
 
         if (parameters.plotStyle === "scatter") {
-            return new ScatterPlot();
+            return new ScatterPlot(parameters.symbol);
         } else if (parameters.plotStyle === "bar") {
             return new BarChart();
         }

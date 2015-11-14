@@ -89,7 +89,8 @@ export function Chart(dataManager, uuid, containerId) {
 
         plotProps.forEach(function (configItem) {
             var params = {
-                "plotStyle" : configItem.display.plotStyle
+                "plotStyle" : configItem.display.plotStyle,
+                "symbol": configItem.display.symbol
             };
             configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",params);
 
@@ -106,7 +107,7 @@ export function Chart(dataManager, uuid, containerId) {
         _dataStoreManager.setData(_uuid, dataStoreNames.experiment, plotProps);
 
         _axesManager.createAxes();
-        _chartComponents  = initializeChart(_data, _experiment, chartProps, _that, _axesManager);
+        _chartComponents = initializeChart(_data, _experiment, chartProps, _that, _axesManager);
         _axesManager.drawAxes(_chartComponents.svg);
 
         var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
@@ -148,7 +149,6 @@ export function Chart(dataManager, uuid, containerId) {
      * @returns {{svg: *, chartBody: *}}
      */
     function initializeChart (data, experiment, chartProps, that, axesManager) {
-
         var zoomListener = axesManager.createZoomListener(that, zoomHandler);
 
         var svg = d3.select("#" + _containerId).append("svg")
@@ -185,6 +185,7 @@ export function Chart(dataManager, uuid, containerId) {
             "svg" : svg,
             "chartBody" : chartBody
         };
+
     }
 
 
@@ -313,7 +314,11 @@ export function Chart(dataManager, uuid, containerId) {
 
         plotProps.forEach( function (configItem) {
             if (configItem.name === parameters.plotName) {
-                configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",{plotStyle: configItem.display.plotStyle});
+                var rendererParams = {
+                    plotStyle: configItem.display.plotStyle,
+                    symbol: configItem.display.symbol
+                };
+                configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",rendererParams);
             }
         });
 

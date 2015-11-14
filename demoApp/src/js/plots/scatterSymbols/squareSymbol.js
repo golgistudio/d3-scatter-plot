@@ -4,12 +4,13 @@
 
 /*global d3:false */
 /*global dataStoreManager:false */
-/*global dataStoreNames:false */
 /*jshint unused:true */
 /*exported addSquareSymbol, updateSquareSymbols, zoomSquareSymbol */
 
-import {dataStoreNames} from '../../dataStore/dataStoreNames.js';
+import {dropLinesToAxes} from './scatterSymbolUtils.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
+import {EventMediator} from '../../events/eventMediator.js';
+import {eventChannelNames} from '../../events/eventChannelNames.js';
 
 
 /**
@@ -17,6 +18,12 @@ import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
  * @constructor
  */
 export function SquareSymbol() {
+
+    "use strict";
+    var _name = dataStoreManager.getInstance().generateUUID();
+    var _selector = null;
+
+
     /**
      *
      * @param plot
@@ -27,44 +34,38 @@ export function SquareSymbol() {
      * @returns {*}
      */
     this.addSymbol = function(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
-        "use strict";
 
-        /**
-         *
-         * @param d
-         * @param plotProp
-         * @param transitionProperties
-         * @param parentSVG
-         */
-        function dropLinesToAxes(uuid, d, plotProp, transitionProperties, parentSVG) {
-            var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
+        function hoverStartEventHandler(params) {
 
-            var startY = axes.scales.yScale(d[plotProp.yProp]);
-            var endY   = axes.scales.yScale(0);
-            var startX = axes.scales.xScale(d[plotProp.xProp]);
-            var endX   = 0;
+            d3.selectAll(_selector).each(function(d) {
 
-            var lines = [{x1: startX, x2: endX, y1: startY, y2: startY},
-                {x1: startX, x2: startX, y1: startY, y2: endY}];
+                if (d[plotProp.xProp]  === params) {
+                    d3.select(this).style("stroke", plotProp.display.hoverColor)
+                        .style("fill", plotProp.display.hoverColor)
+                        .style("stroke-width", plotProp.display.strokeHoverWidth );
+                }
 
-            parentSVG.selectAll("." + transitionProperties.dropLineClassName)
-                .data(lines).enter()
-                .append("line")
-                .attr("class", transitionProperties.dropLineClassName)
-                .attr("x1", function (ddd) {
-                    return ddd.x1;
-                })
-                .attr("x2", function (ddd) {
-                    return ddd.x2;
-                })
-                .attr("y1", function (ddd) {
-                    return ddd.y1;
-                })
-                .attr("y2", function (ddd) {
-                    return ddd.y2;
-                })
-                .style("stroke", transitionProperties.dropLineStrokeColor);
+            });
+
         }
+
+        function hoverEndEventHandler(params) {
+
+            d3.selectAll(_selector).each(function(d) {
+
+                if (d[plotProp.xProp]  === params) {
+
+                    d3.select(this) .style("stroke", plotProp.display.strokeColor)
+                        .style("fill", plotProp.display.fillColor)
+                        .style("stroke-width", plotProp.display.strokeWidth );
+                }
+
+            });
+
+        }
+
+
+
 
         /**
          *
@@ -73,8 +74,6 @@ export function SquareSymbol() {
          */
         function handleHoverStart(d, that) {
 
-            var currentFillColor = d3.select(that).style("fill");
-            var hoverFillColor   = d3.rgb(currentFillColor).darker();
             var hoverWidth       = plotProp.display.width * transitionProperties.sizeFactor;
             var hoverHeight      = plotProp.display.height * transitionProperties.sizeFactor;
 
@@ -85,11 +84,14 @@ export function SquareSymbol() {
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", hoverFillColor)
-                .style("fill", hoverFillColor)
+                .style("stroke", plotProp.display.strokeColor)
+                .style("fill", plotProp.display.hoverColor)
+                .style("stroke-width", plotProp.display.strokeHoverWidth )
                 .attr("width", hoverWidth)
                 .attr("height", hoverHeight)
                 .ease(transitionProperties.hoverEaseType);
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverStart, _name, d[plotProp.xProp]  );
 
         }
 
@@ -101,16 +103,21 @@ export function SquareSymbol() {
         function handleHoverEnd(d, that) {
 
             toolTip.hide();
+
+
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.display.strokeColor)
                 .style("fill", plotProp.display.fillColor)
+                .style("stroke-width", plotProp.display.strokeWidth )
                 .attr("width", plotProp.display.width)
                 .attr("height", plotProp.display.height)
                 .ease(transitionProperties.hoverEaseType);
 
             parentSVG.selectAll(".drop-line").data([]).exit().remove();
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverEnd, _name, d[plotProp.xProp]  );
 
         }
 
@@ -123,7 +130,7 @@ export function SquareSymbol() {
                 return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
             })
             .attr("y", function (d) {
-                return scales.yScale(d[plotProp.yProp]);
+                return (scales.yScale(d[plotProp.yProp])- (plotProp.display.height / 2));
             });
 
         plot.style("opacity", "0")
@@ -151,8 +158,12 @@ export function SquareSymbol() {
                 handleHoverEnd(d, this);
             });
 
-        return plot;
+        EventMediator.getInstance().register(eventChannelNames.hoverStart, _name, hoverStartEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverEnd, _name, hoverEndEventHandler);
 
+        _selector = "rect." + plotProp.plotClassName;
+
+        return plot;
 
     };
 
@@ -166,7 +177,7 @@ export function SquareSymbol() {
      * @returns {*}
      */
     this.updateSymbol = function(svg, plotProp, scales, data, transitionProperties) {
-        "use strict";
+
 
 
         svg.transition()  // Transition from old to new
@@ -187,7 +198,7 @@ export function SquareSymbol() {
                 return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));
             })
             .attr("y", function (d) {
-                return scales.yScale(d[plotProp.yProp]);
+                return (scales.yScale(d[plotProp.yProp])- (plotProp.display.height / 2));
             })
             .each("end", function () {  // End animation
                 d3.select(this)  // 'this' means the current element
@@ -208,7 +219,7 @@ export function SquareSymbol() {
      * @param scales
      */
     this.zoomSymbol = function(plot, plotProp, scales) {
-        "use strict";
+
 
         plot.selectAll('rect.' + plotProp.plotClassName).attr('y', function (d) {
             return scales.yScale(d[plotProp.yProp]);

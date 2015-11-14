@@ -17,7 +17,7 @@ export var experimentBPlotProperties = [
         display: {
             width:        20,
             height:       20,
-            fillColor:    "#c49c94",
+            fillColor:    "#17becf",
             strokeColor:  "black",
             symbol:       "square",
             plotRenderer: null,

@@ -24,7 +24,7 @@ import {experimentAddData} from './experiments/experimentResults/data/experiment
 import {experimentRemoveData} from './experiments/experimentResults/data/experimentRemoveData.js';
 import {experimentDifferentTimesData} from './experiments/experimentResults/data/experimentDifferentTimesData.js';
 import {experimentOriginalData} from './experiments/experimentResults/data/experimentOriginalData.js';
-import {CommandManager} from './commandManager.js';
+import {CommandManager} from './commands/commandManager.js';
 import {PlotCommandFactory} from './plotCommandFactory.js';
 
 

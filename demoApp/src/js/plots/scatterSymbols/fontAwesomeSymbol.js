@@ -6,19 +6,26 @@
 
 /*global d3:false */
 /*global dataStoreManager:false */
-/*global dataStoreNames:false */
 /*jshint unused:true */
 /*exported addFontAwesomeSymbol, updateFontAwesomeSymbols, zoomFontAwesomeSymbol */
 
 
-import {dataStoreNames} from '../../dataStore/dataStoreNames.js';
+import {dropLinesToAxes} from './scatterSymbolUtils.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
+import {EventMediator} from '../../events/eventMediator.js';
+import {eventChannelNames} from '../../events/eventChannelNames.js';
 
 /**
  *
  * @constructor
  */
 export function FontAwesomeSymbol() {
+    "use strict";
+
+    var _name = dataStoreManager.getInstance().generateUUID();
+    var _selector = null;
+
+
     /**
      *
      * @param plot
@@ -29,45 +36,37 @@ export function FontAwesomeSymbol() {
      * @returns {XMLList|*}
      */
     this.addSymbol = function(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
-        "use strict";
 
-        /**
-         *
-         * @param d
-         * @param plotProp
-         * @param transitionProperties
-         * @param parentSVG
-         */
-        function dropLinesToAxes(uuid, d, plotProp, transitionProperties, parentSVG) {
+        function hoverStartEventHandler(params) {
 
-            var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
+            d3.selectAll(_selector).each(function(d) {
 
-            var startY = axes.scales.yScale(d[plotProp.yProp]);
-            var endY   = axes.scales.yScale(0);
-            var startX = axes.scales.xScale(d[plotProp.xProp]);
-            var endX   = 0;
+                if (d[plotProp.xProp]  === params) {
 
-            var lines = [{x1: startX, x2: endX, y1: startY, y2: startY},
-                {x1: startX, x2: startX, y1: startY, y2: endY}];
+                    d3.select(this).style("stroke", plotProp.display.hoverColor)
+                        .style("stroke-width", plotProp.display.strokeHoverWidth)
+                        .style("fill", plotProp.display.hoverColor);
+                }
 
-            parentSVG.selectAll("." + transitionProperties.dropLineClassName)
-                .data(lines).enter()
-                .append("line")
-                .attr("class", transitionProperties.dropLineClassName)
-                .attr("x1", function (ddd) {
-                    return ddd.x1;
-                })
-                .attr("x2", function (ddd) {
-                    return ddd.x2;
-                })
-                .attr("y1", function (ddd) {
-                    return ddd.y1;
-                })
-                .attr("y2", function (ddd) {
-                    return ddd.y2;
-                })
-                .style("stroke", transitionProperties.dropLineStrokeColor);
+            });
+
         }
+
+        function hoverEndEventHandler(params) {
+
+            d3.selectAll(_selector).each(function(d) {
+
+                if (d[plotProp.xProp]  === params) {
+
+                    d3.select(this) .style("stroke", plotProp.display.strokeColor)
+                        .style("stroke-width", plotProp.display.strokeWidth)
+                        .style("fill", plotProp.display.fillColor);
+                }
+
+            });
+
+        }
+
 
         /**
          *
@@ -76,13 +75,14 @@ export function FontAwesomeSymbol() {
          */
         function handleHoverStart(d, that) {
 
-            var currentFillColor = d3.select(that).style("fill");
-            var hoverFillColor   = d3.rgb(currentFillColor).darker();
+            //var currentFillColor = d3.select(that).style("fill");
+            //var hoverFillColor   = d3.rgb(currentFillColor).darker();
             var id               = "#" + d3.select(that).attr("id");
             var fontSize         = d3.select(id).attr("font-size");
             var fontVal          = +fontSize.replace(/em/g, '') * transitionProperties.sizeFactor + "em";
 
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
+
 
             dropLinesToAxes(uuid, d, plotProp, transitionProperties, parentSVG);
 
@@ -90,9 +90,12 @@ export function FontAwesomeSymbol() {
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.display.strokeColor)
-                .style("fill", hoverFillColor)
+                .style("fill", plotProp.display.hoverColor)
+                .style("stroke-width", plotProp.display.strokeHoverWidth)
                 .attr('font-size', fontVal)
                 .ease(transitionProperties.hoverEaseType);
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverStart, _name, d[plotProp.xProp] );
 
         }
 
@@ -115,6 +118,9 @@ export function FontAwesomeSymbol() {
                 .ease(transitionProperties.hoverEaseType);
 
             parentSVG.selectAll(".drop-line").data([]).exit().remove();
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverEnd, _name, d[plotProp.xProp]  );
+
         }
 
         var textPlot = plot.enter()
@@ -158,9 +164,12 @@ export function FontAwesomeSymbol() {
                 handleHoverEnd(d, this);
             });
 
+        EventMediator.getInstance().register(eventChannelNames.hoverStart, _name, hoverStartEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverEnd, _name, hoverEndEventHandler);
+
+        _selector = "text." + plotProp.plotClassName;
+
         return textPlot;
-
-
     };
 
 
@@ -174,7 +183,6 @@ export function FontAwesomeSymbol() {
      * @returns {*}
      */
     this.updateSymbol = function(svg, plotProp, scales, data, transitionProperties) {
-        "use strict";
 
 
         svg.transition()  // Transition from old to new
@@ -221,7 +229,6 @@ export function FontAwesomeSymbol() {
      * @param scales
      */
     this.zoomSymbol = function(plot, plotProp, scales) {
-        "use strict";
 
         plot.selectAll('text.' + plotProp.plotClassName).attr('y', function (d) {
             return scales.yScale(d[plotProp.yProp]);

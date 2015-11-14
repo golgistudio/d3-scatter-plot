@@ -4,13 +4,13 @@
 
 /*global d3:false */
 /*global dataStoreManager:false */
-/*global dataStoreNames:false */
 /*jshint unused:false */
 /*exported addTriangleSymbol, updateTriangleSymbols, zoomTriangleSymbol */
 
-import {dataStoreNames} from '../../dataStore/dataStoreNames.js';
+import {dropLinesToAxes} from './scatterSymbolUtils.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
-import {EventMediator} from '../../eventMediator.js';
+import {EventMediator} from '../../events/eventMediator.js';
+import {eventChannelNames} from '../../events/eventChannelNames.js';
 
 /**
  *
@@ -18,9 +18,9 @@ import {EventMediator} from '../../eventMediator.js';
  */
 export function TriangleSymbol() {
 
-    function clickedEventHandler(params) {
-        console.log("triangle: " + params);
-    }
+    "use strict";
+    var _name = dataStoreManager.getInstance().generateUUID();
+    var _selector = null;
 
     /**
      * @param plot
@@ -31,44 +31,38 @@ export function TriangleSymbol() {
      * @returns {*}
      */
     this.addSymbol = function(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
-        "use strict";
 
-        /**
-         *
-         * @param d
-         * @param plotProp
-         * @param transitionProperties
-         * @param parentSVG
-         */
-        function dropLinesToAxes(uuid, d, plotProp, transitionProperties, parentSVG) {
-            var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
+        function hoverStartEventHandler(params) {
 
-            var startY = axes.scales.yScale(d[plotProp.yProp]);
-            var endY   = axes.scales.yScale(0);
-            var startX = axes.scales.xScale(d[plotProp.xProp]);
-            var endX   = 0;
+            d3.selectAll(_selector).each(function(d) {
 
-            var lines = [{x1: startX, x2: endX, y1: startY, y2: startY},
-                {x1: startX, x2: startX, y1: startY, y2: endY}];
+                if (d[plotProp.xProp]  === params) {
 
-            parentSVG.selectAll("." + transitionProperties.dropLineClassName)
-                .data(lines).enter()
-                .append("line")
-                .attr("class", transitionProperties.dropLineClassName)
-                .attr("x1", function (ddd) {
-                    return ddd.x1;
-                })
-                .attr("x2", function (ddd) {
-                    return ddd.x2;
-                })
-                .attr("y1", function (ddd) {
-                    return ddd.y1;
-                })
-                .attr("y2", function (ddd) {
-                    return ddd.y2;
-                })
-                .style("stroke", transitionProperties.dropLineStrokeColor);
+                    d3.select(this).style("stroke", plotProp.display.hoverColor)
+                        .style("fill", plotProp.display.hoverColor)
+                        .style("stroke-width", plotProp.display.strokeHoverWidth );
+                }
+
+            });
+
         }
+
+        function hoverEndEventHandler(params) {
+
+            d3.selectAll(_selector).each(function(d) {
+
+                if (d[plotProp.xProp]  === params) {
+
+                    d3.select(this) .style("stroke", plotProp.display.strokeColor)
+                        .style("fill", plotProp.display.fillColor)
+                        .style("stroke-width", plotProp.display.strokeWidth );
+                }
+
+            });
+
+        }
+
+
 
         /**
          *
@@ -77,8 +71,6 @@ export function TriangleSymbol() {
          */
         function handleHoverStart(d, that) {
 
-            var currentFillColor = d3.select(that).style("fill");
-            var hoverFillColor   = d3.rgb(currentFillColor).darker();
 
             var hoverSize = plotProp.display.size * transitionProperties.sizeFactor;
 
@@ -90,9 +82,12 @@ export function TriangleSymbol() {
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.display.strokeColor)
-                .style("fill", hoverFillColor)
+                .style("fill", plotProp.display.hoverColor)
+                .style("stroke-width", plotProp.display.strokeHoverWidth )
                 .attr('d', symbol.size(hoverSize))
                 .ease(transitionProperties.hoverEaseType);
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverStart, _name, d[plotProp.xProp]  );
         }
 
         /**
@@ -105,15 +100,20 @@ export function TriangleSymbol() {
             var symbol = d3.svg.symbol().type('triangle-up');
 
             toolTip.hide();
+
+
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.display.strokeColor)
                 .style("fill", plotProp.display.fillColor)
+                .style("stroke-width", plotProp.display.strokeWidth )
                 .attr("d", symbol.size(plotProp.display.size))
                 .ease(transitionProperties.hoverEaseType);
 
             parentSVG.selectAll(".drop-line").data([]).exit().remove();
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverEnd, _name, d[plotProp.xProp]  );
         }
 
         var symbolType = 'triangle-up';
@@ -154,14 +154,14 @@ export function TriangleSymbol() {
             })
             .on("touchend", function (d) {
                 handleHoverEnd(d, this);
-            }).on("click", function(d) {
-                EventMediator.getInstance().notify("clicked", "triangle", "P-106" );
             });
 
-        EventMediator.getInstance().register("clicked", "triangle", clickedEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverStart, _name, hoverStartEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverEnd, _name, hoverEndEventHandler);
+
+        _selector = "path." + plotProp.plotClassName;
 
         return plot;
-
 
     };
 
@@ -176,7 +176,7 @@ export function TriangleSymbol() {
      * @returns {*}
      */
     this.updateSymbol = function(svg, plotProp, scales, data, transitionProperties) {
-        "use strict";
+
 
 
         // Update
@@ -230,7 +230,7 @@ export function TriangleSymbol() {
      * @param scales
      */
     this.zoomSymbol = function(plot, plotProp, scales) {
-        "use strict";
+
 
         plot.selectAll('path.' + plotProp.plotClassName).attr("x", function (d) {
                 return (scales.xScale(d[plotProp.xProp]) - (plotProp.display.width / 2));

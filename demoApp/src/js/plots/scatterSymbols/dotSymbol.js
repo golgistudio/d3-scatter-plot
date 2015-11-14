@@ -4,27 +4,24 @@
 
 /*global d3:false */
 /*global dataStoreManager:false */
-/*global dataStoreNames:false */
 /*jshint unused:true */
 /*exported addDotSymbol, updateDotSymbols, zoomDotSymbol */
 
 
-import {dataStoreNames} from '../../dataStore/dataStoreNames.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
-import {EventMediator} from '../../eventMediator.js';
+import {EventMediator} from '../../events/eventMediator.js';
+import {eventChannelNames} from '../../events/eventChannelNames.js';
+import {dropLinesToAxes} from './scatterSymbolUtils.js';
 
 /**
  *
  * @constructor
  */
 export function DotSymbol() {
+    "use strict";
 
-
-    function clickedEventHandler(params) {
-        console.log("dot: " + params);
-    }
-
-
+    var _name = dataStoreManager.getInstance().generateUUID();
+    var _selector = null;
 
     /**
      *
@@ -36,45 +33,38 @@ export function DotSymbol() {
      * @returns {*}
      */
     this.addSymbol = function(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
-        "use strict";
 
-        /**
-         *
-         * @param d
-         * @param plotProp
-         * @param transitionProperties
-         * @param parentSVG
-         */
-        function dropLinesToAxes(uuid, d, plotProp, transitionProperties, parentSVG) {
 
-            var axes = dataStoreManager.getInstance().getData(uuid, dataStoreNames.axesValues);
+        function hoverStartEventHandler(params) {
 
-            var startY = axes.scales.yScale(d[plotProp.yProp]);
-            var endY   = axes.scales.yScale(0);
-            var startX = axes.scales.xScale(d[plotProp.xProp]);
-            var endX   = 0;
+            d3.selectAll(_selector).each(function(d) {
 
-            var lines = [{x1: startX, x2: endX, y1: startY, y2: startY},
-                {x1: startX, x2: startX, y1: startY, y2: endY}];
+                if (d[plotProp.xProp]  === params) {
 
-            parentSVG.selectAll("." + transitionProperties.dropLineClassName)
-                .data(lines).enter()
-                .append("line")
-                .attr("class", transitionProperties.dropLineClassName)
-                .attr("x1", function (ddd) {
-                    return ddd.x1;
-                })
-                .attr("x2", function (ddd) {
-                    return ddd.x2;
-                })
-                .attr("y1", function (ddd) {
-                    return ddd.y1;
-                })
-                .attr("y2", function (ddd) {
-                    return ddd.y2;
-                })
-                .style("stroke", transitionProperties.dropLineStrokeColor);
+                    d3.select(this).style("stroke", plotProp.display.hoverColor)
+                        .style("stroke-width", plotProp.display.strokeHoverWidth )
+                        .style("fill", plotProp.display.hoverColor);
+                }
+
+            });
+
         }
+
+        function hoverEndEventHandler(params) {
+
+            d3.selectAll(_selector).each(function(d) {
+
+                if (d[plotProp.xProp]  === params) {
+
+                    d3.select(this) .style("stroke", plotProp.display.strokeColor)
+                        .style("fill", plotProp.display.fillColor)
+                        .style("stroke-width", plotProp.display.strokeWidth );
+                }
+
+            });
+
+        }
+
 
         /**
          *
@@ -83,8 +73,6 @@ export function DotSymbol() {
          */
         function handleHoverStart(d, that) {
 
-            var currentFillColor = d3.select(that).style("fill");
-            var hoverFillColor   = d3.rgb(currentFillColor).darker();
             var hoverSize        = plotProp.display.radius * transitionProperties.sizeFactor;
 
             toolTip.show(d, d3.event.pageX, d3.event.pageY, plotProp.xProp, plotProp.yProp);
@@ -94,10 +82,13 @@ export function DotSymbol() {
             d3.select(that).transition()
                 .delay(transitionProperties.hoverDelayTime)
                 .duration(transitionProperties.hoverTransitionDuration)
-                .style("stroke", hoverFillColor)
-                .style("fill", hoverFillColor)
+                .style("stroke", plotProp.display.strokeColor)
+                .style("stroke-width", plotProp.display.strokeHoverWidth )
+                .style("fill", plotProp.display.hoverColor)
                 .attr("r", hoverSize)
                 .ease("elastic");
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverStart, _name, d[plotProp.xProp]);
         }
 
         /**
@@ -114,10 +105,14 @@ export function DotSymbol() {
                 .duration(transitionProperties.hoverTransitionDuration)
                 .style("stroke", plotProp.display.strokeColor)
                 .style("fill", plotProp.display.fillColor)
+                .style("stroke-width", plotProp.display.strokeWidth )
+
                 .attr("r", plotProp.display.radius)
                 .ease(transitionProperties.hoverEaseType);
 
             parentSVG.selectAll(".drop-line").data([]).exit().remove();
+
+            EventMediator.getInstance().notify(eventChannelNames.hoverEnd, _name, d[plotProp.xProp]);
 
         }
 
@@ -154,12 +149,12 @@ export function DotSymbol() {
             })
             .on("touchend", function (d) {
                 handleHoverEnd(d, this);
-            }).on("click", function(d) {
-                EventMediator.getInstance().notify("clicked", "dot", "P-103" );
             });
 
-        EventMediator.getInstance().register("clicked", "dot", clickedEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverStart, _name, hoverStartEventHandler);
+        EventMediator.getInstance().register(eventChannelNames.hoverEnd, _name, hoverEndEventHandler);
 
+        _selector = "circle." + plotProp.plotClassName;
 
         return plot;
     };
@@ -175,7 +170,7 @@ export function DotSymbol() {
      * @returns {*}
      */
     this.updateSymbol = function(svg, plotProp, scales, data, transitionProperties) {
-        "use strict";
+
 
         var transitionSize = plotProp.display.radius * transitionProperties.sizeFactor;
 
@@ -222,7 +217,7 @@ export function DotSymbol() {
      * @param scales
      */
     this.zoomSymbol = function(plot, plotProp, scales) {
-        "use strict";
+
 
         plot.selectAll('circle.' + plotProp.plotClassName).attr('cy', function (d) {
             return scales.yScale(d[plotProp.yProp]);
@@ -230,7 +225,5 @@ export function DotSymbol() {
             return scales.xScale(d[plotProp.xProp]);
         });
     };
-
-
 }
 

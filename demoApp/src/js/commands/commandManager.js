@@ -21,13 +21,13 @@ export function CommandManager(commandFactory) {
     function undo() {
 
         var commandToRun =  undoList.pop();
-        commandToRun.undo(params);
+        //commandToRun.undo(params);
         redoList.push(commandToRun);
     }
 
     function redo() {
         var commandToRun =  redoList.pop();
-        commandToRun.execute(params);
+        //commandToRun.execute(params);
         undoList.push(commandToRun);
     }
 

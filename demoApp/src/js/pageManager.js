@@ -365,15 +365,13 @@ export var pageManager = {
             }
         }
 
-        var sizeFactors = this.getDimensions();
-
         var expInfoCollection = this.getExperimentInfo();
 
         for (var jjj=0; jjj < expInfoCollection.length; jjj++) {
 
             var expInfo = expInfoCollection[jjj];
 
-            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties, sizeFactors.chartWidthFactor);
+            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
             var item = {
                 uuid: expInfo.uuid,
                 chart: chart,

@@ -15,10 +15,10 @@ export var experimentPlotProperties2 = [
         yProp: "Difference",
         name: "Difference",
         display : {
-            radius:     10,
-            fillColor:  "orange",
+            radius:     5,
+            fillColor:  "#e377c2",
             textStroke: "black",
-            textFill:   "orange",
+            textFill:   "e377c2",
             symbol:     "font",
             fontSize:     "3em",
             unicode:      "\uf0e7",
@@ -26,7 +26,11 @@ export var experimentPlotProperties2 = [
             plotRenderer: null,
             plotStyle:    "bar",
             width:        15,
-            height:       15
+            height:       15,
+            hoverColor:   "orange",
+            strokeColor: "black",
+            strokeWidth: 1,
+            strokeHoverWidth: 5
         }
     }];
 
