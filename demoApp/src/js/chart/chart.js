@@ -318,6 +318,7 @@ export function Chart(dataManager, uuid, containerId) {
                     plotStyle: configItem.display.plotStyle,
                     symbol: configItem.display.symbol
                 };
+
                 configItem.display.plotRenderer = _plotManager.plotManagerInterface("getPlotRenderer",rendererParams);
             }
         });

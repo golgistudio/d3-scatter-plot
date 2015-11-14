@@ -12,22 +12,22 @@ export function CommandManager(commandFactory) {
     var undoList = [];
     var redoList = [];
 
-    function execute(name, params) {
-        var commandToRun = _commandFactory.getCommand(name, params);
-        commandToRun.execute(params);
+    function execute(name, oldParams, newParams) {
+        var commandToRun = _commandFactory.getCommand(name, oldParams, newParams);
+        commandToRun.execute();
         undoList.push(commandToRun);
     }
 
     function undo() {
 
         var commandToRun =  undoList.pop();
-        //commandToRun.undo(params);
+        commandToRun.undo();
         redoList.push(commandToRun);
     }
 
     function redo() {
         var commandToRun =  redoList.pop();
-        //commandToRun.execute(params);
+        commandToRun.execute();
         undoList.push(commandToRun);
     }
 
@@ -52,18 +52,23 @@ export function CommandManager(commandFactory) {
     /**
      *
      */
-    this.run = function(commandName, name, params) {
+    this.run = function(runName, commandName, oldParams, newParams) {
 
-        switch (commandName) {
+        switch (runName) {
             case "execute":
+                execute(commandName, oldParams, newParams);
                 break;
             case "undo":
+                undo();
                 break;
             case "redo":
+                redo();
                 break;
             case "unwind":
+                unwind();
                 break;
             case "rewind":
+                rewind();
                 break;
         }
     }

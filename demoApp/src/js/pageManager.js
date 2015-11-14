@@ -35,9 +35,12 @@
 /*global require:false */
 
 
+import {EventMediator} from './events/eventMediator.js';
+import {eventChannelNames} from './events/eventChannelNames.js';
 
 import {dataStoreManager} from './dataStore/dataStoreManager.js';
 import {dataStoreNames} from './dataStore/dataStoreNames.js';
+
 import {AxesProperties} from './dataStore/properties/axesProperties.js';
 import {ChartProperties} from './dataStore/properties/chartProperties.js';
 import {LabelProperties} from './dataStore/properties/labelProperties.js';
@@ -64,14 +67,20 @@ import {ExperimentBManager2} from './experiments/experimentB/experimentBManager2
  *
  * @type {{_dataStoreManager: null, _chartCollection: Array, _currentExperiment: null, getDimensions: pageManager.getDimensions, init: pageManager.init, createChart: pageManager.createChart, getActiveExperiment: pageManager.getActiveExperiment, resize: pageManager.resize, updatePoints: pageManager.updatePoints, updatePlotSymbol: pageManager.updatePlotSymbol, setSymbol: pageManager.setSymbol, setSymbolColor: pageManager.setSymbolColor, setPlotStyle: pageManager.setPlotStyle, switchExperiment: pageManager.switchExperiment, getExperimentInfo: pageManager.getExperimentInfo}}
  */
-export var pageManager = {
+export function PageManager() {
+    "use strict";
 
-    _dataStoreManager : null,
-    _chartCollection: [],
-    _currentExperiment: null,
+    var _dataStoreManager = dataStoreManager.getInstance();
+    var _chartCollection = [];
+    var _currentExperiment = null;
+    var _uuid =  null;
 
-    updateDimensions: function(chartProps) {
-        "use strict";
+
+    /**
+     *
+     * @param chartProps
+     */
+    function updateDimensions(chartProps) {
 
         var chartWidthFactor = 1;
         var chartHeightFactor = 1;
@@ -89,38 +98,20 @@ export var pageManager = {
 
         chartProps.width  = chartProps.width - chartProps.margin.left - chartProps.margin.right;
         chartProps.height = chartProps.height - chartProps.margin.top - chartProps.margin.bottom;
-    },
+    }
 
-    init: function () {
-        "use strict";
+    /**
+     *
+     * @param divID
+     * @param experiment
+     * @param uuid
+     * @param data
+     * @param plotProps
+     * @returns {Chart}
+     */
 
-        this._dataStoreManager = dataStoreManager.getInstance();
+    function createChart (divID, experiment, uuid, data, plotProps) {
 
-        this._currentExperiment = "expA";
-
-        var expInfoCollection = this.getExperimentInfo();
-
-        for (var i=0; i < expInfoCollection.length; i++) {
-
-            var expInfo = expInfoCollection[i];
-
-            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
-            var chartItem = {
-                uuid: expInfo.uuid,
-                chart: chart,
-                experiment: expInfo.experiment,
-                divId : expInfo.divId
-            };
-            this._chartCollection.push(chartItem);
-
-        }
-
-        d3.select(window).on('resize', this.resize.bind(this));
-
-    },
-
-    createChart: function(divID, experiment, uuid, data, plotProps) {
-        "use strict";
 
         var axesProps = new AxesProperties();
         var chartProps = new ChartProperties();
@@ -129,7 +120,7 @@ export var pageManager = {
         var toolTipProps = new ToolTipProperties();
         var transitionProps = new TransitionProperties();
 
-        this.updateDimensions(chartProps);
+        updateDimensions(chartProps);
 
         chartProps.containerId = divID;
 
@@ -140,17 +131,17 @@ export var pageManager = {
 
         experiment.updateLabelProperties(labelProps);
 
-        this._dataStoreManager.setData(uuid, dataStoreNames.zoomScaleFactors, experimentParams.zoomScaleFactors);
-        this._dataStoreManager.setData(uuid, dataStoreNames.domains, experimentParams.domains);
-        this._dataStoreManager.setData(uuid, dataStoreNames.axes, axesProps);
-        this._dataStoreManager.setData(uuid, dataStoreNames.chart, chartProps);
-        this._dataStoreManager.setData(uuid, dataStoreNames.labels, labelProps);
-        this._dataStoreManager.setData(uuid, dataStoreNames.legend, legendProps);
-        this._dataStoreManager.setData(uuid, dataStoreNames.toolTip, toolTipProps);
-        this._dataStoreManager.setData(uuid, dataStoreNames.transition, transitionProps);
-        this._dataStoreManager.setData(uuid, dataStoreNames.experiment, plotProps);
+        _dataStoreManager.setData(uuid, dataStoreNames.zoomScaleFactors, experimentParams.zoomScaleFactors);
+        _dataStoreManager.setData(uuid, dataStoreNames.domains, experimentParams.domains);
+        _dataStoreManager.setData(uuid, dataStoreNames.axes, axesProps);
+        _dataStoreManager.setData(uuid, dataStoreNames.chart, chartProps);
+        _dataStoreManager.setData(uuid, dataStoreNames.labels, labelProps);
+        _dataStoreManager.setData(uuid, dataStoreNames.legend, legendProps);
+        _dataStoreManager.setData(uuid, dataStoreNames.toolTip, toolTipProps);
+        _dataStoreManager.setData(uuid, dataStoreNames.transition, transitionProps);
+        _dataStoreManager.setData(uuid, dataStoreNames.experiment, plotProps);
 
-        var chart = new Chart(this._dataStoreManager, uuid, divID);
+        var chart = new Chart(_dataStoreManager, uuid, divID);
 
         var params = {
             experiment: experiment,
@@ -159,42 +150,44 @@ export var pageManager = {
         chart.handleRequest("create", params);
 
         return chart;
-    },
+    }
 
-    getActiveExperiment : function() {
-        "use strict";
-        return this._currentExperiment;
-    },
+    /**
+     *
+     */
+    this.resize = function() {
 
-    resize: function() {
-        "use strict";
-
-        var length = this._chartCollection.length;
+        var length = _chartCollection.length;
 
         for (var i = 0; i < length; i++) {
 
-            var uuid = this._chartCollection[i].uuid;
-            var chartProps = this._dataStoreManager.getData(uuid, dataStoreNames.chart);
-            this.updateDimensions(chartProps);
-            this._dataStoreManager.setData(uuid, dataStoreNames.chart, chartProps);
+            var uuid = _chartCollection[i].uuid;
+            var chartProps = _dataStoreManager.getData(uuid, dataStoreNames.chart);
+            updateDimensions(chartProps);
+            _dataStoreManager.setData(uuid, dataStoreNames.chart, chartProps);
 
-            this._chartCollection[i].chart.handleRequest("resize", null);
+            _chartCollection[i].chart.handleRequest("resize", null);
         }
-    },
+    };
 
-    updatePoints: function(data, pageControl) {
-        "use strict";
 
-        var length = this._chartCollection.length;
+    /**
+     *
+     * @param data
+     */
+    this.updatePoints =  function(data) {
+
+
+        var length = _chartCollection.length;
 
         for (var i = 0; i < length; i++) {
 
-            var chartItem = pageControl._chartCollection[i];
+            var chartItem = _chartCollection[i];
 
             var experimentParams = chartItem.experiment.init(data);
 
-            pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.zoomScaleFactors, experimentParams.zoomScaleFactors);
-            pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.domains, experimentParams.domains);
+            _dataStoreManager.setData(chartItem.uuid, dataStoreNames.zoomScaleFactors, experimentParams.zoomScaleFactors);
+            _dataStoreManager.setData(chartItem.uuid, dataStoreNames.domains, experimentParams.domains);
 
             var params = {
                 data : data,
@@ -203,15 +196,14 @@ export var pageManager = {
 
             chartItem.chart.handleRequest("update", params);
         }
-    },
+    };
 
     /**
      *
      * @param configItem
      * @param symbol
      */
-    updatePlotSymbol: function (configItem, symbol) {
-        "use strict";
+    function updatePlotSymbol(configItem, symbol) {
 
         configItem.display.symbol = symbol;
         switch (symbol) {
@@ -227,65 +219,65 @@ export var pageManager = {
                 configItem.display.radius = 5;
                 break;
         }
-    },
+    }
+
 
     /**
      *
-     * @param symbol
-     * @param pageControl
-     * @param plotName
-     * @param chartDiv
+     * @param params
      */
+    function setSymbol(params) {
 
-    setSymbol: function(symbol, pageControl, plotName, chartDiv) {
-        "use strict";
 
-        var length = this._chartCollection.length;
+        var length = _chartCollection.length;
 
         for (var i = 0; i < length; i++) {
 
-            var chartItem = pageControl._chartCollection[i];
+            var chartItem = _chartCollection[i];
 
-            if (chartItem.divId === chartDiv) {
+            if (chartItem.divId === params.chartDiv) {
 
-                var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
+                var plotProps = _dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
                 var len = plotProps.length;
 
                 for (var j = 0; j < len; j++) {
                     var configItem = plotProps[j];
-                    if (configItem.name === plotName) {
-                        this.updatePlotSymbol(configItem, symbol);
+                    if (configItem.name === params.plotName) {
+                        updatePlotSymbol(configItem, params.symbol);
                     }
                 }
-                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
+                _dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
-                var params = {
-                    "plotName": plotName
+                var updateParams = {
+                    "plotName": params.plotName
                 };
-                chartItem.chart.handleRequest("updatePlotStyle", params);
+                chartItem.chart.handleRequest("updatePlotStyle", updateParams);
             }
         }
-    },
+    }
+
+    function handleSymbolChangeRequest(params) {
+
+       setSymbol(params);
+    }
 
     /**
      *
      * @param color
-     * @param pageControl
      * @param plotName
      * @param chartDiv
      */
-    setSymbolColor: function(color, pageControl, plotName, chartDiv) {
-        "use strict";
+    this.setSymbolColor =  function(color, plotName, chartDiv) {
 
-        var length = this._chartCollection.length;
+        var length = _chartCollection.length;
 
         for (var i = 0; i < length; i++) {
 
-            var chartItem = pageControl._chartCollection[i];
+            var chartItem = _chartCollection[i];
 
             if (chartItem.divId === chartDiv) {
 
-                var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
+                var plotProps = _dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
                 var len = plotProps.length;
 
                 for (var j = 0; j < len; j++) {
@@ -295,7 +287,7 @@ export var pageManager = {
                     }
                 }
 
-                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
+                _dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
                 var params = {
                     "plotName": plotName
@@ -303,27 +295,26 @@ export var pageManager = {
                 chartItem.chart.handleRequest("updatePlotStyle", params);
             }
         }
-    },
+    };
 
     /**
      *
      * @param plotStyle
-     * @param pageControl
      * @param plotName
      * @param chartDiv
      */
-    setPlotStyle: function(plotStyle, pageControl, plotName, chartDiv) {
-        "use strict";
+     this.setPlotStyle = function(plotStyle,  plotName, chartDiv) {
 
-        var length = this._chartCollection.length;
+
+        var length = _chartCollection.length;
 
         for (var i = 0; i < length; i++) {
 
-            var chartItem = pageControl._chartCollection[i];
+            var chartItem = _chartCollection[i];
 
             if (chartItem.divId === chartDiv) {
 
-                var plotProps = pageControl._dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
+                var plotProps = _dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
 
                 var len = plotProps.length;
                 for (var j = 0; j < len; j++) {
@@ -333,7 +324,7 @@ export var pageManager = {
                     }
                 }
 
-                pageControl._dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
+                _dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
                 var params = {
                     "plotName": plotName
@@ -342,22 +333,21 @@ export var pageManager = {
             }
         }
 
-    },
+    };
 
     /**
      *
      * @param experimentName
-     * @param pageControl
      */
-    switchExperiment: function(experimentName, pageControl) {
-        "use strict";
+    this.switchExperiment = function(experimentName) {
 
-        this._currentExperiment = experimentName;
 
-        var length = this._chartCollection.length;
+        _currentExperiment = experimentName;
+
+        var length = _chartCollection.length;
 
         for (var iii = 0; iii < length; iii++) {
-            var chartItem = pageControl._chartCollection[iii];
+            var chartItem = _chartCollection[iii];
             var olddiv = document.getElementById(chartItem.divId);
 
             while (olddiv.firstChild) {
@@ -371,36 +361,39 @@ export var pageManager = {
 
             var expInfo = expInfoCollection[jjj];
 
-            var chart = this.createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
+            var chart = createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
             var item = {
                 uuid: expInfo.uuid,
                 chart: chart,
                 experiment: expInfo.experiment,
                 divId : expInfo.divId
             };
-            this._chartCollection.push(item);
+            _chartCollection.push(item);
 
         }
 
         d3.select(window).on('resize', this.resize.bind(this));
 
-    },
+    };
 
-    getExperimentInfo: function() {
-        "use strict";
+    /**
+     *
+     * @returns {Array}
+     */
+    this.getExperimentInfo = function() {
 
         var expInfoCollection = [];
 
         var expInfoItem1 = null;
         var expInfoItem2 = null;
 
-        switch (this._currentExperiment) {
+        switch (_currentExperiment) {
             case "expA" :
                 expInfoItem1 = {
                     divId:      "chart1",
                     properties: experimentPlotProperties,
                     experiment: new ExperimentManager(),
-                    uuid:       this._dataStoreManager.generateUUID(),
+                    uuid:       _dataStoreManager.generateUUID(),
                     data:       experimentOriginalData
 
                 };
@@ -409,7 +402,7 @@ export var pageManager = {
                     divId:      "chart2",
                     properties: experimentPlotProperties2,
                     experiment: new ExperimentManager2(),
-                    uuid:       this._dataStoreManager.generateUUID(),
+                    uuid:       _dataStoreManager.generateUUID(),
                     data:       experimentOriginalData
                 };
                 break;
@@ -418,7 +411,7 @@ export var pageManager = {
                     divId:      "chart1",
                     properties: experimentBPlotProperties,
                     experiment: new ExperimentBManager(),
-                    uuid:       this._dataStoreManager.generateUUID(),
+                    uuid:       _dataStoreManager.generateUUID(),
                     data:       experimentBOriginalData
 
                 };
@@ -427,7 +420,7 @@ export var pageManager = {
                     divId:      "chart2",
                     properties: experimentBPlotProperties2,
                     experiment: new ExperimentBManager2(),
-                    uuid:       this._dataStoreManager.generateUUID(),
+                    uuid:       _dataStoreManager.generateUUID(),
                     data:       experimentBOriginalData
                 };
                 break;
@@ -437,8 +430,43 @@ export var pageManager = {
         expInfoCollection.push(expInfoItem2);
 
         return expInfoCollection;
-    }
-};
+    };
+
+    /**
+     *
+     */
+    this.init =  function () {
+
+        _dataStoreManager = dataStoreManager.getInstance();
+
+        _uuid = _dataStoreManager.generateUUID();
+
+        EventMediator.getInstance().register(eventChannelNames.symbolChange, _uuid , handleSymbolChangeRequest);
+
+        _currentExperiment = "expA";
+
+        var expInfoCollection = this.getExperimentInfo();
+
+        for (var i=0; i < expInfoCollection.length; i++) {
+
+            var expInfo = expInfoCollection[i];
+
+            var chart = createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
+            var chartItem = {
+                uuid: expInfo.uuid,
+                chart: chart,
+                experiment: expInfo.experiment,
+                divId : expInfo.divId
+            };
+            _chartCollection.push(chartItem);
+
+        }
+
+        d3.select(window).on('resize', this.resize.bind(this));
+
+    };
+
+}
 
 
 

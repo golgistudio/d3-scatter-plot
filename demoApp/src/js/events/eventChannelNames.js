@@ -5,5 +5,6 @@
 
 export var eventChannelNames = {
     hoverStart: "hoverStart",
-    hoverEnd: "hoverEnd"
+    hoverEnd: "hoverEnd",
+    symbolChange: "symbolChange"
 };

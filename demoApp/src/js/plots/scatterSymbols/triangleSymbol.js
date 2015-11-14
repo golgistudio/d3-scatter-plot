@@ -131,7 +131,6 @@ export function TriangleSymbol() {
             });
 
         plot.style("opacity", "0")
-            .style('opacity', 1e-6)
             .transition()
             .style('fill', transitionProperties.enterColor)
             .style('opacity', 1)

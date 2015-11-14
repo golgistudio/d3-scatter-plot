@@ -91,6 +91,8 @@ export var PlotManager = function() {
                     "toolTip":              drawParams.toolTip,
                     "transitionProperties": drawParams.transitionProperties
                 };
+
+                console.log(configItem.display.symbol);
                 drawParams.svg.selectAll("." + configItem.plotClassName).data([]).exit().remove();
                 configItem.display.plotRenderer.plotInterface("render", params);
             }

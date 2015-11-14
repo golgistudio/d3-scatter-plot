@@ -25,7 +25,7 @@ import {experimentRemoveData} from './experiments/experimentResults/data/experim
 import {experimentDifferentTimesData} from './experiments/experimentResults/data/experimentDifferentTimesData.js';
 import {experimentOriginalData} from './experiments/experimentResults/data/experimentOriginalData.js';
 import {CommandManager} from './commands/commandManager.js';
-import {PlotCommandFactory} from './plotCommandFactory.js';
+import {PlotCommandFactory} from './commands/plotCommandFactory.js';
 
 
 /**
@@ -170,121 +170,151 @@ export function addMenuEventHandlers(pageManager) {
     var commandFactory = new PlotCommandFactory();
     var commandManager = new CommandManager(commandFactory);
 
+    var currentSelections = {
+        activeExperiment: "expA",
+        dataPoints: "reset",
+        symbol: "dot",
+        symbolColor: "blue",
+        plotStyle: "bar"
+    };
+
     document.getElementById("addPointButton").addEventListener("click", function(event) {
         updateSelected(["removePointButton", "changePointButton", "resetPointsButton"], "addPointButton");
-        var experiment = pageManager.getActiveExperiment();
+
         var data = null;
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" : data = experimentAddData;
                 break;
             case "expB" : data = experimentBAddData;
                 break;
 
         }
-        pageManager.updatePoints(data, pageManager);
+        pageManager.updatePoints(data);
+        currentSelections.dataPoints = data;
         event.stopPropagation();
 
     });
 
     document.getElementById("removePointButton").addEventListener("click", function(event) {
         updateSelected(["addPointButton", "changePointButton", "resetPointsButton"], "removePointButton");
-        var experiment = pageManager.getActiveExperiment();
+
         var data = null;
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" : data = experimentRemoveData;
                 break;
             case "expB" : data = experimentBRemoveData;
                 break;
 
         }
-        pageManager.updatePoints(data, pageManager);
+        pageManager.updatePoints(data);
+        currentSelections.dataPoints = data;
         event.stopPropagation();
 
     });
 
     document.getElementById("changePointButton").addEventListener("click", function(event) {
         updateSelected(["addPointButton", "removePointButton", "resetPointsButton"], "changePointButton");
-        var experiment = pageManager.getActiveExperiment();
+
         var data = null;
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" : data = experimentDifferentTimesData;
                 break;
             case "expB" : data = experimentBDifferentTimesData;
                 break;
 
         }
-        pageManager.updatePoints(data, pageManager);
+        pageManager.updatePoints(data);
+        currentSelections.dataPoints = data;
         event.stopPropagation();
 
     });
 
     document.getElementById("resetPointsButton").addEventListener("click", function(event) {
         updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
-        var experiment = pageManager.getActiveExperiment();
+
         var data = null;
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" : data = experimentOriginalData;
                 break;
             case "expB" : data = experimentBOriginalData;
                 break;
         }
 
-        pageManager.updatePoints(data, pageManager);
+        pageManager.updatePoints(data);
+        currentSelections.dataPoints = data;
         event.stopPropagation();
     });
 
-    document.getElementById("circleSymbol").addEventListener("click", function(event) {
+    function handleSymbolChange( pageManager, symbolName, oldSymbolName) {
 
-        updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
+        var newParams = {
+            symbol: symbolName,
+            chartDiv: "chart1"
+        };
 
-        var experiment = pageManager.getActiveExperiment();
+        var oldParams = {
+            symbol: oldSymbolName,
+            chartDiv: "chart1"
+        };
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" :
-                pageManager.setSymbol("dot", pageManager, "Control", "chart1");
+                newParams.plotName = "Control";
+                oldParams.plotName = "Control";
                 break;
             case "expB" :
-                pageManager.setSymbol("dot", pageManager, "Congruent", "chart1");
+                newParams.plotName = "Congruent";
+                oldParams.plotName = "Congruent";
                 break;
         }
+
+        commandManager.run("execute", "symbolChange", oldParams, newParams );
+    }
+
+    document.getElementById("circleSymbol").addEventListener("click", function(event) {
+
+        updateSelected(["triangleSymbol", "iconSymbol", "squareSymbol"], "circleSymbol");
+
+        var newSymbol = "dot";
+        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
+        currentSelections.symbol = newSymbol;
         event.stopPropagation();
     });
 
     document.getElementById("triangleSymbol").addEventListener("click", function(event) {
 
-        updateSelected(["iconSymbol", "circleSymbol"], "triangleSymbol");
+        updateSelected(["iconSymbol", "circleSymbol", "squareSymbol"], "triangleSymbol");
 
-        var experiment = pageManager.getActiveExperiment();
+        var newSymbol = "triangle";
+        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
 
-        switch(experiment) {
-            case "expA" :
-                pageManager.setSymbol("triangle", pageManager, "Control", "chart1");
-                break;
-            case "expB" :
-                pageManager.setSymbol("triangle", pageManager, "Congruent", "chart1");
-                break;
-        }
+        currentSelections.symbol = newSymbol;
         event.stopPropagation();
     });
 
     document.getElementById("iconSymbol").addEventListener("click", function(event) {
 
-        updateSelected(["triangleSymbol", "circleSymbol"], "iconSymbol");
+        updateSelected(["triangleSymbol", "circleSymbol", "squareSymbol"], "iconSymbol");
 
-        var experiment = pageManager.getActiveExperiment();
+        var newSymbol = "icon";
+        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
 
-        switch(experiment) {
-            case "expA" :
-                pageManager.setSymbol("icon", pageManager, "Control", "chart1");
-                break;
-            case "expB" :
-                pageManager.setSymbol("icon", pageManager, "Congruent", "chart1");
-                break;
-        }
+        currentSelections.symbol = newSymbol;
+        event.stopPropagation();
+    });
+
+    document.getElementById("squareSymbol").addEventListener("click", function(event) {
+
+        updateSelected(["triangleSymbol", "circleSymbol", "iconSymbol"], "squareSymbol");
+
+        var newSymbol = "square";
+        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
+
+        currentSelections.symbol = newSymbol;
         event.stopPropagation();
     });
 
@@ -295,16 +325,17 @@ export function addMenuEventHandlers(pageManager) {
 
         updateSelected(["pinkColor"], "blueColor");
 
-        var experiment = pageManager.getActiveExperiment();
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" :
-                pageManager.setSymbolColor("blue", pageManager, "Test", "chart1");
+                pageManager.setSymbolColor("blue", "Test", "chart1");
                 break;
             case "expB" :
-                pageManager.setSymbolColor("blue", pageManager, "Incongruent", "chart1");
+                pageManager.setSymbolColor("blue", "Incongruent", "chart1");
                 break;
         }
+
+        currentSelections.symbolColor = "blue";
         event.stopPropagation();
     });
 
@@ -316,17 +347,16 @@ export function addMenuEventHandlers(pageManager) {
 
         updateSelected(["blueColor"], "pinkColor");
 
-        var experiment = pageManager.getActiveExperiment();
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" :
-                pageManager.setSymbolColor("purple", pageManager, "Test", "chart1");
+                pageManager.setSymbolColor("purple",  "Test", "chart1");
                 break;
             case "expB" :
-                pageManager.setSymbolColor("purple", pageManager, "Incongruent", "chart1");
+                pageManager.setSymbolColor("purple",  "Incongruent", "chart1");
                 break;
         }
-
+        currentSelections.symbolColor = "purple";
         event.stopPropagation();
     });
 
@@ -336,21 +366,20 @@ export function addMenuEventHandlers(pageManager) {
     document.getElementById("scatter").addEventListener("click", function(event) {
 
         updateSelected(["barChart"], "scatter");
-        var experiment = pageManager.getActiveExperiment();
         var chartDiv = null;
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" :
                 chartDiv = "chart2";
-                pageManager.setPlotStyle("scatter", pageManager, "Difference", chartDiv);
+                pageManager.setPlotStyle("scatter",  "Difference", chartDiv);
                 break;
             case "expB" :
                 chartDiv = "chart1";
-                pageManager.setPlotStyle("scatter", pageManager, "Difference", chartDiv);
+                pageManager.setPlotStyle("scatter",  "Difference", chartDiv);
                 break;
         }
 
-
+        currentSelections.plotStyle = "scatter";
         event.stopPropagation();
     });
 
@@ -361,19 +390,19 @@ export function addMenuEventHandlers(pageManager) {
 
         updateSelected(["scatter"], "barChart");
 
-        var experiment = pageManager.getActiveExperiment();
         var chartDiv = null;
 
-        switch(experiment) {
+        switch(currentSelections.activeExperiment) {
             case "expA" :
                 chartDiv = "chart2";
-                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv);
+                pageManager.setPlotStyle("bar",  "Difference", chartDiv);
                 break;
             case "expB" :
                 chartDiv = "chart1";
-                pageManager.setPlotStyle("bar", pageManager, "Difference", chartDiv);
+                pageManager.setPlotStyle("bar",  "Difference", chartDiv);
                 break;
         }
+        currentSelections.plotStyle = "bar";
         event.stopPropagation();
 
 
@@ -386,7 +415,8 @@ export function addMenuEventHandlers(pageManager) {
 
         initializeSelectedMenus();
         updateSelected(["expB"], "expA");
-        pageManager.switchExperiment("expA", pageManager);
+        pageManager.switchExperiment("expA");
+        currentSelections.activeExperiment = "expA";
         event.stopPropagation();
     });
 
@@ -396,8 +426,36 @@ export function addMenuEventHandlers(pageManager) {
     document.getElementById("expB").addEventListener("click", function(event) {
         initializeSelectedMenus();
         updateSelected(["expA"], "expB");
-        pageManager.switchExperiment("expB", pageManager);
+        pageManager.switchExperiment("expB");
+        currentSelections.activeExperiment = "expB";
+        event.stopPropagation();
+    });
 
+    document.getElementById("undo").addEventListener("click", function(event) {
+
+        updateSelected(["redo", "unwind", "rewind"], "undo");
+        commandManager.run("undo");
+        event.stopPropagation();
+    });
+
+    document.getElementById("redo").addEventListener("click", function(event) {
+
+        updateSelected(["undo", "unwind", "rewind"], "redo");
+        commandManager.run("redo");
+        event.stopPropagation();
+    });
+
+    document.getElementById("unwind").addEventListener("click", function(event) {
+
+        updateSelected(["undo", "redo", "rewind"], "unwind");
+        commandManager.run("unwind");
+        event.stopPropagation();
+    });
+
+    document.getElementById("rewind").addEventListener("click", function(event) {
+
+        updateSelected(["undo", "unwind", "redo"], "rewind");
+        commandManager.run("rewind");
         event.stopPropagation();
     });
 

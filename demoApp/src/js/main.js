@@ -45,7 +45,7 @@
 /*global module:false */
 /*global require:false */
 
-import {pageManager} from './pageManager.js';
+import {PageManager} from './pageManager.js';
 import {addMenuEventHandlers} from './menuManager.js';
 
 
@@ -61,6 +61,7 @@ window.onload =  function(){
     function main() {
         "use strict";
 
+        var pageManager = new PageManager();
         addMenuEventHandlers(pageManager);
         pageManager.init();
     }
