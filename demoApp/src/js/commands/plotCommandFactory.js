@@ -2,44 +2,55 @@
  * Created by laurie on 11/12/15.
  */
 
-import {EventMediator} from '../events/eventMediator.js';
 import {eventChannelNames} from '../events/eventChannelNames.js';
 import {dataStoreManager} from '../dataStore/dataStoreManager.js';
 
-function Command(channelName, name, oldParams, newParams) {
-    "use strict";
+import {Command} from './command.js';
+import {commandNames} from './commandNames.js';
 
-    var _channelName = channelName;
-    var _name = name;
-    var _oldParams = oldParams;
-    var _newParams = newParams;
 
-    this.execute = function () {
-        EventMediator.getInstance().notify(_channelName, _name,_newParams );
-    };
-
-    this.undo = function() {
-        console.log("undo: " + _oldParams.symbol);
-        EventMediator.getInstance().notify(_channelName, _name, _oldParams );
-    };
-}
-
+/**
+ *
+ * @constructor
+ */
 export function PlotCommandFactory() {
     "use strict";
 
-  this.getCommand = function(name, oldParams, newParams) {
+    /**
+     *
+     * @param name
+     * @param oldParams
+     * @param newParams
+     * @returns {*}
+     */
+    this.getCommand = function (name, oldParams, newParams) {
 
-      var newCommand = null;
+        var newCommand = null;
 
-      var uuid = dataStoreManager.getInstance().generateUUID();
+        var uuid = dataStoreManager.getInstance().generateUUID();
 
-      switch(name) {
-          case "symbolChange" :
-              newCommand = new Command(eventChannelNames.symbolChange, uuid, oldParams, newParams);
-              break;
-      }
+        switch (name) {
+            case commandNames.symbolChange :
+                newCommand = new Command(eventChannelNames.symbolChange, uuid, oldParams, newParams);
+                break;
+            case commandNames.dataChange:
+                newCommand = new Command(eventChannelNames.dataChange, uuid, oldParams, newParams);
+                break;
+            case commandNames.plotStyleChange:
+                newCommand = new Command(eventChannelNames.plotStyleChange, uuid, oldParams, newParams);
+                break;
+            case commandNames.experimentChange:
+                newCommand = new Command(eventChannelNames.experimentChange, uuid, oldParams, newParams);
+                break;
+            case commandNames.languageChange:
+                newCommand = new Command(eventChannelNames.languageChange, uuid, oldParams, newParams);
+                break;
+            case commandNames.colorChange:
+                newCommand = new Command(eventChannelNames.colorChange, uuid, oldParams, newParams);
+                break;
+        }
 
-      return newCommand;
-  }
+        return newCommand;
+    }
 
 }

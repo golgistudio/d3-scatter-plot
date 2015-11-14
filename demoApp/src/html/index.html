@@ -3,105 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <title>D3 Scatter Plot</title>
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon" >
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet"/>
     <link href="styles/main.css" rel="stylesheet"/>
 </head>
 <body>
-<div>
-    <ul class="menu">
+<div id="bodyArea">
+    <div>
+        <ul class="menu">
 
-        <li title="Data"><a href="#" class="data" id="dataMenu">Data</a></li>
-        <li title="Symbol"><a href="#" class="search" id="symbolMenu">Symbol</a></li>
-        <li title="Color"><a href="#" class="pencil" id="colorMenu">Color</a></li>
-        <li title="Plot Style"><a href="#" class="industry" id="plotStyleMenu">Plot Style</a></li>
-        <li title="Experiment"><a href="#" class="heartBeat" id="experimentMenu">Experiment</a></li>
-        <li title="Undo & Redo"><a href="#" class="undo" id="undo_redoMenu">Undo & Redo</a></li>
-        <li title="Language"><a href="#" class="language" id="langMenu">Language</a></li>
-    </ul>
+            <li title="Data"><a href="#" class="data" id="dataMenu">Data</a></li>
+            <li title="Symbol"><a href="#" class="search" id="symbolMenu">Symbol</a></li>
+            <li title="Color"><a href="#" class="pencil" id="colorMenu">Color</a></li>
+            <li title="Plot Style"><a href="#" class="industry" id="plotStyleMenu">Plot Style</a></li>
+            <li title="Experiment"><a href="#" class="heartBeat" id="experimentMenu">Experiment</a></li>
+            <li title="Undo & Redo"><a href="#" class="undo" id="undo_redoMenu">Undo & Redo</a></li>
+            <li title="Language"><a href="#" class="language" id="langMenu">Language</a></li>
+        </ul>
 
-    <ul class="menu-bar" id="dataControl">
-        <li><a href="#">Data</a>
-        </li>
-        <li><a href="#" id="resetPointsButton">Reset</a>
-        </li>
-        <li><a href="#" id="addPointButton">Add</a>
-        </li>
-        <li><a href="#" id="removePointButton">Remove</a>
-        </li>
-        <li><a href="#" id="changePointButton">Change</a>
-        </li>
-    </ul>
-    <ul class="menu-bar" id="symbolControl">
-        <li><a href="#">Symbol</a>
-        </li>
-        <li><a href="#" id="circleSymbol">Circle</a>
-        </li>
-        <li><a href="#" id="triangleSymbol">Triangle</a>
-        </li>
-        <li><a href="#" id="iconSymbol">Icon</a>
-        </li>
-        <li><a href="#" id="squareSymbol">Square</a>
-        </li>
+        <ul class="menu-bar" id="dataControl">
+            <li><a href="#">Data</a>
+            </li>
+            <li><a href="#" id="resetPointsButton">Reset</a>
+            </li>
+            <li><a href="#" id="addPointButton">Add</a>
+            </li>
+            <li><a href="#" id="removePointButton">Remove</a>
+            </li>
+            <li><a href="#" id="changePointButton">Change</a>
+            </li>
+        </ul>
+        <ul class="menu-bar" id="symbolControl">
+            <li><a href="#">Symbol</a>
+            </li>
+            <li><a href="#" id="circleSymbol">Circle</a>
+            </li>
+            <li><a href="#" id="triangleSymbol">Triangle</a>
+            </li>
+            <li><a href="#" id="iconSymbol">Icon</a>
+            </li>
+            <li><a href="#" id="squareSymbol">Square</a>
+            </li>
 
-    </ul>
-    <ul class="menu-bar" id="colorControl">
-        <li><a href="#">Color</a>
-        </li>
-        <li><a href="#" id="blueColor">Blue</a>
-        </li>
-        <li><a href="#" id="pinkColor">Purple</a>
-        </li>
-    </ul>
+        </ul>
+        <ul class="menu-bar" id="colorControl">
+            <li><a href="#">Color</a>
+            </li>
+            <li><a href="#" id="blueColor">Blue</a>
+            </li>
+            <li><a href="#" id="pinkColor">Purple</a>
+            </li>
+        </ul>
 
-    <ul class="menu-bar" id="plotStyleControl">
-        <li><a href="#">Plot Style</a>
-        </li>
-        <li><a href="#" id="scatter">Scatter</a>
-        </li>
-        <li><a href="#" id="barChart">Bar Chart</a>
-        </li>
-    </ul>
+        <ul class="menu-bar" id="plotStyleControl">
+            <li><a href="#">Plot Style</a>
+            </li>
+            <li><a href="#" id="scatter">Scatter</a>
+            </li>
+            <li><a href="#" id="barChart">Bar Chart</a>
+            </li>
+        </ul>
 
-    <ul class="menu-bar" id="experimentControl">
-        <li><a href="#">Experiment</a>
-        </li>
-        <li><a href="#" id="expA">Experiment A</a>
-        </li>
-        <li><a href="#" id="expB">Experiment B</a>
-        </li>
-    </ul>
+        <ul class="menu-bar" id="experimentControl">
+            <li><a href="#">Experiment</a>
+            </li>
+            <li><a href="#" id="expA">Experiment A</a>
+            </li>
+            <li><a href="#" id="expB">Experiment B</a>
+            </li>
+        </ul>
 
-    <ul class="menu-bar" id="undo_redoControl">
-        <li><a href="#">Undo & Redo</a>
-        </li>
-        <li><a href="#" id="undo">Undo</a>
-        </li>
-        <li><a href="#" id="redo">Redo</a>
-        </li>
-        <li><a href="#" id="unwind">Unwind</a>
-        </li>
-        <li><a href="#" id="rewind">Rewind</a>
-        </li>
-    </ul>
+        <ul class="menu-bar" id="undo_redoControl">
+            <li><a href="#">Undo & Redo</a>
+            </li>
+            <li><a href="#" id="undo">Undo</a>
+            </li>
+            <li><a href="#" id="redo">Redo</a>
+            </li>
+            <li><a href="#" id="unwind">Unwind</a>
+            </li>
+            <li><a href="#" id="rewind">Rewind</a>
+            </li>
+        </ul>
 
-    <ul class="menu-bar" id="langControl">
-        <li><a href="#">Language</a>
-        </li>
-        <li><a href="#" id="eng">English</a>
-        </li>
-        <li><a href="#" id="fr">French</a>
-        </li>
-    </ul>
+        <ul class="menu-bar" id="langControl">
+            <li><a href="#">Language</a>
+            </li>
+            <li><a href="#" id="en">English</a>
+            </li>
+            <li><a href="#" id="fr">French</a>
+            </li>
+        </ul>
+
+    </div>
+    <div id="chartContainer">
+        <div id="chart1"></div>
+
+        <div id="chart2"></div>
+
+    </div>
+    <script async src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script async src="js/main.js"></script>
 
 </div>
-<div id="chartContainer">
-    <div id="chart1"></div>
-
-    <div id="chart2"></div>
-
-</div>
-<script async src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script async src="js/main.js"></script>
 </body>
 </html>

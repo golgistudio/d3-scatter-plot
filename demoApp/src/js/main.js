@@ -61,8 +61,8 @@ window.onload =  function(){
     function main() {
         "use strict";
 
+        addMenuEventHandlers();
         var pageManager = new PageManager();
-        addMenuEventHandlers(pageManager);
         pageManager.init();
     }
 

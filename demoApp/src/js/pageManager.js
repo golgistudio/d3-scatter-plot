@@ -65,7 +65,7 @@ import {ExperimentBManager2} from './experiments/experimentB/experimentBManager2
 
 /**
  *
- * @type {{_dataStoreManager: null, _chartCollection: Array, _currentExperiment: null, getDimensions: pageManager.getDimensions, init: pageManager.init, createChart: pageManager.createChart, getActiveExperiment: pageManager.getActiveExperiment, resize: pageManager.resize, updatePoints: pageManager.updatePoints, updatePlotSymbol: pageManager.updatePlotSymbol, setSymbol: pageManager.setSymbol, setSymbolColor: pageManager.setSymbolColor, setPlotStyle: pageManager.setPlotStyle, switchExperiment: pageManager.switchExperiment, getExperimentInfo: pageManager.getExperimentInfo}}
+ * @constructor
  */
 export function PageManager() {
     "use strict";
@@ -187,14 +187,14 @@ export function PageManager() {
 
             _chartCollection[i].chart.handleRequest("resize", null);
         }
-    };
+    }
 
 
     /**
      *
      * @param data
      */
-    this.updatePoints =  function(data) {
+    function handleDataChange(params) {
 
 
         var length = _chartCollection.length;
@@ -203,19 +203,19 @@ export function PageManager() {
 
             var chartItem = _chartCollection[i];
 
-            var experimentParams = chartItem.experiment.init(data);
+            var experimentParams = chartItem.experiment.init(params.data);
 
             _dataStoreManager.setData(chartItem.uuid, dataStoreNames.zoomScaleFactors, experimentParams.zoomScaleFactors);
             _dataStoreManager.setData(chartItem.uuid, dataStoreNames.domains, experimentParams.domains);
 
-            var params = {
-                data : data,
+            var plotParams = {
+                data : params.data,
                 experiment: chartItem.experiment
             };
 
-            chartItem.chart.handleRequest("update", params);
+            chartItem.chart.handleRequest("update", plotParams);
         }
-    };
+    }
 
     /**
      *
@@ -245,7 +245,7 @@ export function PageManager() {
      *
      * @param params
      */
-    function setSymbol(params) {
+    function handleSymbolChange(params) {
 
 
         var length = _chartCollection.length;
@@ -267,26 +267,19 @@ export function PageManager() {
                 }
                 _dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
-                var updateParams = {
+                var plotParams = {
                     "plotName": params.plotName
                 };
-                chartItem.chart.handleRequest("updatePlotStyle", updateParams);
+                chartItem.chart.handleRequest("updatePlotStyle", plotParams);
             }
         }
     }
 
-    function handleSymbolChangeRequest(params) {
-
-       setSymbol(params);
-    }
-
     /**
      *
-     * @param color
-     * @param plotName
-     * @param chartDiv
+     * @param params
      */
-    this.setSymbolColor =  function(color, plotName, chartDiv) {
+    function handleColorChange(params) {
 
         var length = _chartCollection.length;
 
@@ -294,35 +287,30 @@ export function PageManager() {
 
             var chartItem = _chartCollection[i];
 
-            if (chartItem.divId === chartDiv) {
+            if (chartItem.divId === params.chartDiv) {
 
                 var plotProps = _dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
                 var len = plotProps.length;
 
                 for (var j = 0; j < len; j++) {
                     var configItem = plotProps[j];
-                    if (configItem.name === plotName) {
-                        configItem.display.fillColor = color;
+                    if (configItem.name === params.plotName) {
+                        configItem.display.fillColor = params.color;
                     }
                 }
 
                 _dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
-                var params = {
-                    "plotName": plotName
+                var plotParams = {
+                    "plotName": params.plotName
                 };
-                chartItem.chart.handleRequest("updatePlotStyle", params);
+                chartItem.chart.handleRequest("updatePlotStyle", plotParams);
             }
         }
-    };
+    }
 
-    /**
-     *
-     * @param plotStyle
-     * @param plotName
-     * @param chartDiv
-     */
-     this.setPlotStyle = function(plotStyle,  plotName, chartDiv) {
+
+     function handlePlotStyleChange(params) {
 
 
         var length = _chartCollection.length;
@@ -331,34 +319,35 @@ export function PageManager() {
 
             var chartItem = _chartCollection[i];
 
-            if (chartItem.divId === chartDiv) {
+            if (chartItem.divId === params.chartDiv) {
 
                 var plotProps = _dataStoreManager.getData(chartItem.uuid, dataStoreNames.experiment);
 
                 var len = plotProps.length;
                 for (var j = 0; j < len; j++) {
                     var configItem = plotProps[j];
-                    if (configItem.name === plotName) {
-                        configItem.display.plotStyle = plotStyle;
+                    if (configItem.name === params.plotName) {
+                        configItem.display.plotStyle = params.plotStyle;
                     }
                 }
 
                 _dataStoreManager.setData(chartItem.uuid, dataStoreNames.experiment, plotProps);
 
-                var params = {
-                    "plotName": plotName
+                var plotParams = {
+                    "plotName": params.plotName
                 };
-                chartItem.chart.handleRequest("updatePlotStyle", params);
+                chartItem.chart.handleRequest("updatePlotStyle", plotParams);
             }
         }
 
-    };
+    }
+
 
     /**
      *
-     * @param experimentName
+     * @param params
      */
-    this.switchExperiment = function(experimentName) {
+    function handleExperimentChange(params) {
 
         var length = _chartCollection.length;
 
@@ -371,7 +360,7 @@ export function PageManager() {
             }
         }
 
-        _currentExperiment = experimentName;
+        _currentExperiment = params.experiment;
 
         var expInfoCollection = getExperimentInfo();
 
@@ -390,10 +379,13 @@ export function PageManager() {
 
         }
 
+        /* jshint validthis: true */
         d3.select(window).on('resize', resize.bind(this));
+    }
 
+    function handleLanguageChange(params) {
 
-    };
+    }
 
     /**
      *
@@ -449,7 +441,7 @@ export function PageManager() {
         expInfoCollection.push(expInfoItem2);
 
         return expInfoCollection;
-    };
+    }
 
     /**
      *
@@ -460,7 +452,12 @@ export function PageManager() {
 
         _uuid = _dataStoreManager.generateUUID();
 
-        EventMediator.getInstance().register(eventChannelNames.symbolChange, _uuid , handleSymbolChangeRequest);
+        EventMediator.getInstance().register(eventChannelNames.symbolChange, _uuid , handleSymbolChange);
+        EventMediator.getInstance().register(eventChannelNames.dataChange, _uuid , handleDataChange);
+        EventMediator.getInstance().register(eventChannelNames.plotStyleChange, _uuid , handlePlotStyleChange);
+        EventMediator.getInstance().register(eventChannelNames.experimentChange, _uuid , handleExperimentChange);
+        EventMediator.getInstance().register(eventChannelNames.colorChange, _uuid , handleColorChange);
+        EventMediator.getInstance().register(eventChannelNames.languageChange, _uuid , handleLanguageChange);
 
         _currentExperiment = "expA";
 
@@ -481,6 +478,7 @@ export function PageManager() {
 
         }
 
+        /* jshint validthis: true */
         d3.select(window).on('resize', resize.bind(this));
 
     };

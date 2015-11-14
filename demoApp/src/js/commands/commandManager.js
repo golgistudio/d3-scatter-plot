@@ -3,7 +3,11 @@
  */
 
 
-
+/**
+ *
+ * @param commandFactory
+ * @constructor
+ */
 export function CommandManager(commandFactory) {
     "use strict";
 
@@ -12,25 +16,45 @@ export function CommandManager(commandFactory) {
     var undoList = [];
     var redoList = [];
 
+    /**
+     *
+     * @param name
+     * @param oldParams
+     * @param newParams
+     */
     function execute(name, oldParams, newParams) {
         var commandToRun = _commandFactory.getCommand(name, oldParams, newParams);
         commandToRun.execute();
         undoList.push(commandToRun);
     }
 
+    /**
+     *
+     */
     function undo() {
 
         var commandToRun =  undoList.pop();
-        commandToRun.undo();
-        redoList.push(commandToRun);
+        if (commandToRun) {
+            commandToRun.undo();
+            redoList.push(commandToRun);
+        }
+
     }
 
+    /**
+     *
+     */
     function redo() {
         var commandToRun =  redoList.pop();
-        commandToRun.execute();
-        undoList.push(commandToRun);
+        if (commandToRun) {
+            commandToRun.execute();
+            undoList.push(commandToRun);
+        }
     }
 
+    /**
+     *
+     */
     function unwind() {
 
         var len = undoList.length;
@@ -41,6 +65,9 @@ export function CommandManager(commandFactory) {
 
     }
 
+    /**
+     *
+     */
     function rewind() {
         var len = redoList.length;
 

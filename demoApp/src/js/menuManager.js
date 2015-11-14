@@ -12,6 +12,7 @@
 /*global experimentOriginalData:false */
 /*global experimentBOriginalData:false */
 
+
 /*global module:false */
 /*global require:false */
 
@@ -26,54 +27,91 @@ import {experimentDifferentTimesData} from './experiments/experimentResults/data
 import {experimentOriginalData} from './experiments/experimentResults/data/experimentOriginalData.js';
 import {CommandManager} from './commands/commandManager.js';
 import {PlotCommandFactory} from './commands/plotCommandFactory.js';
-
+import {commandNames} from './commands/commandNames.js';
 
 /**
  *
- * @param unselected
- * @param selected
  */
-function updateSelected(unselected, selected) {
+export function addMenuEventHandlers() {
+    "use strict";
 
-    var length = unselected.length;
+    var commandFactory = new PlotCommandFactory();
+    var commandManager = new CommandManager(commandFactory);
 
-    for (var iii = 0; iii < length; iii++){
-        document.getElementById(unselected[iii]).classList.remove( "optionSelected" );
+    var currentSelections = {
+        activeExperiment: "expA",
+        dataPoints:       "reset",
+        symbol:           "dot",
+        symbolColor:      "blue",
+        plotStyle:        "bar",
+        undo:             "undo",
+        language:         "en"
+    };
+
+    var menuIds = {
+        symbols : ["triangleSymbol", "iconSymbol", "squareSymbol", "circleSymbol"],
+        topMenu: ["dataControl",
+            "symbolControl",
+            "colorControl",
+            "plotStyleControl",
+            "experimentControl",
+            "undo_redoControl",
+            "langControl"],
+        colors : ["blueColor", "pinkColor"],
+        data: ["removePointButton", "changePointButton", "resetPointsButton", "addPointButton"],
+        language: ["fr", "en"],
+        undo:["redo", "unwind", "rewind", "undo"],
+        experiment:["expB", "expB"],
+        plotStyle:["scatter", "barChart"]
+    };
+
+    var htmlTags = {
+        optionSelected : "optionSelected",
+        open: "open",
+        chart1Id : "chart1",
+        chart2Id: "chart2"
+    };
+
+
+    /**
+     *
+     * @param idList
+     * @param selected
+     */
+    function updateSelection(idList, selected) {
+
+        var length = idList.length;
+
+        for (var iii = 0; iii < length; iii++) {
+            if (idList[iii] === selected) {
+                document.getElementById(selected).classList.toggle(htmlTags.optionSelected);
+            } else {
+                document.getElementById(idList[iii]).classList.remove(htmlTags.optionSelected);
+            }
+        }
     }
 
-    document.getElementById(selected).classList.toggle( "optionSelected" );
-}
-
-/**
- *
- */
-function initializeSelectedMenus() {
-    updateSelected(["expB"], "expA");
-    updateSelected(["scatter"], "barChart");
-    updateSelected(["pinkColor"], "blueColor");
-    updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
-    updateSelected(["triangleSymbol", "iconSymbol"], "circleSymbol");
-    updateSelected(["redo","unwind","rewind" ], "undo");
-    updateSelected(["fr"], "eng");
-}
-
-/**
- *
- */
-function addTopMenuEventHandlers() {
-    "use strict";
+    /**
+     *
+     */
+    function initializeSelectedMenus() {
+        updateSelection(menuIds.experiment, "expA");
+        updateSelection(menuIds.plotStyle, "barChart");
+        updateSelection(menuIds.colors, "blueColor");
+        updateSelection(menuIds.data, "resetPointsButton");
+        updateSelection(menuIds.symbols, "circleSymbol");
+        updateSelection(menuIds.undo, "undo");
+        updateSelection(menuIds.language, "en");
+    }
 
     /**
      *
      */
     function closeAllMenus() {
-        document.getElementById("dataControl").classList.remove( "open" );
-        document.getElementById("symbolControl").classList.remove( "open" );
-        document.getElementById("colorControl").classList.remove( "open" );
-        document.getElementById("plotStyleControl").classList.remove( "open" );
-        document.getElementById("experimentControl").classList.remove( "open" );
-        document.getElementById("undo_redoControl").classList.remove( "open" );
-        document.getElementById("langControl").classList.remove( "open" );
+
+        menuIds.topMenu.forEach(function (item) {
+            document.getElementById(item).classList.remove(htmlTags.open);
+        });
     }
 
     /**
@@ -81,187 +119,132 @@ function addTopMenuEventHandlers() {
      * @param id
      */
     function closeOtherMenus(id) {
-        if (id !== "dataControl") {
-            document.getElementById("dataControl").classList.remove( "open" );
-        }
 
-        if (id !== "symbolControl") {
-            document.getElementById("symbolControl").classList.remove( "open" );
-        }
-
-        if (id !== "colorControl") {
-            document.getElementById("colorControl").classList.remove( "open" );
-        }
-
-        if (id !== "plotStyleControl") {
-            document.getElementById("plotStyleControl").classList.remove( "open" );
-        }
-
-        if (id !== "experimentControl") {
-            document.getElementById("experimentControl").classList.remove( "open" );
-        }
-
-        if (id !== "undo_redo") {
-            document.getElementById("undo_redoControl").classList.remove( "open" );
-        }
-
-        if (id !== "language") {
-            document.getElementById("langControl").classList.remove( "open" );
-        }
+        menuIds.topMenu.forEach(function (item) {
+            if (item === id) {
+                document.getElementById(item).classList.remove(htmlTags.open);
+            }
+        });
     }
 
     /**
      *
-     * @param event
+     * @param topMenuId
      */
-    function handleMenuEvent(event) {
-        var topMenuId =  event.target.id;
-        var menuId = topMenuId.replace(/Menu/g, "Control");
+    function handleTopMenuEvent(topMenuId) {
+        var menuId    = topMenuId.replace(/Menu/g, "Control");
         closeOtherMenus(menuId);
-        document.getElementById(menuId).classList.toggle( "open" );
+        document.getElementById(menuId).classList.toggle(htmlTags.open);
         event.stopPropagation();
     }
 
-    document.body.addEventListener("click", function(event){
-        closeAllMenus();
-        event.stopPropagation();
-    });
+    /**
+     *
+     * @param selectedId
+     */
+    function handleColorChange(selectedId) {
 
-    document.getElementById("dataMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
+        var selectionMap = {
+            "blueColor": "blue",
+            "pinkColor": "purple"
+        };
 
-    document.getElementById("symbolMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    document.getElementById("colorMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-    document.getElementById("plotStyleMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    document.getElementById("experimentMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    document.getElementById("undo_redoMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-    document.getElementById("langMenu").addEventListener("click", function(event){
-        handleMenuEvent(event);
-    });
-
-
-
-}
-
-/**
- *
- * @param pageManager
- */
-export function addMenuEventHandlers(pageManager) {
-    "use strict";
-
-    addTopMenuEventHandlers();
-
-    var commandFactory = new PlotCommandFactory();
-    var commandManager = new CommandManager(commandFactory);
-
-    var currentSelections = {
-        activeExperiment: "expA",
-        dataPoints: "reset",
-        symbol: "dot",
-        symbolColor: "blue",
-        plotStyle: "bar"
-    };
-
-    document.getElementById("addPointButton").addEventListener("click", function(event) {
-        updateSelected(["removePointButton", "changePointButton", "resetPointsButton"], "addPointButton");
-
-        var data = null;
-
-        switch(currentSelections.activeExperiment) {
-            case "expA" : data = experimentAddData;
-                break;
-            case "expB" : data = experimentBAddData;
-                break;
-
-        }
-        pageManager.updatePoints(data);
-        currentSelections.dataPoints = data;
-        event.stopPropagation();
-
-    });
-
-    document.getElementById("removePointButton").addEventListener("click", function(event) {
-        updateSelected(["addPointButton", "changePointButton", "resetPointsButton"], "removePointButton");
-
-        var data = null;
-
-        switch(currentSelections.activeExperiment) {
-            case "expA" : data = experimentRemoveData;
-                break;
-            case "expB" : data = experimentBRemoveData;
-                break;
-
-        }
-        pageManager.updatePoints(data);
-        currentSelections.dataPoints = data;
-        event.stopPropagation();
-
-    });
-
-    document.getElementById("changePointButton").addEventListener("click", function(event) {
-        updateSelected(["addPointButton", "removePointButton", "resetPointsButton"], "changePointButton");
-
-        var data = null;
-
-        switch(currentSelections.activeExperiment) {
-            case "expA" : data = experimentDifferentTimesData;
-                break;
-            case "expB" : data = experimentBDifferentTimesData;
-                break;
-
-        }
-        pageManager.updatePoints(data);
-        currentSelections.dataPoints = data;
-        event.stopPropagation();
-
-    });
-
-    document.getElementById("resetPointsButton").addEventListener("click", function(event) {
-        updateSelected(["addPointButton", "removePointButton", "changePointButton"], "resetPointsButton");
-
-        var data = null;
-
-        switch(currentSelections.activeExperiment) {
-            case "expA" : data = experimentOriginalData;
-                break;
-            case "expB" : data = experimentBOriginalData;
-                break;
-        }
-
-        pageManager.updatePoints(data);
-        currentSelections.dataPoints = data;
-        event.stopPropagation();
-    });
-
-    function handleSymbolChange( pageManager, symbolName, oldSymbolName) {
+        var newSelection = selectionMap[selectedId];
 
         var newParams = {
-            symbol: symbolName,
-            chartDiv: "chart1"
+            color:   newSelection,
+            chartDiv: htmlTags.chart1Id
         };
 
         var oldParams = {
-            symbol: oldSymbolName,
-            chartDiv: "chart1"
+            color:   currentSelections.symbolColor,
+            chartDiv: htmlTags.chart1Id
         };
 
-        switch(currentSelections.activeExperiment) {
+        switch (currentSelections.activeExperiment) {
+            case "expA" :
+                newParams.plotName = "Test";
+                oldParams.plotName = "Test";
+                break;
+            case "expB" :
+                newParams.plotName = "Incongruent";
+                oldParams.plotName = "Incongruent";
+                break;
+        }
+
+        updateSelection(menuIds.colors, selectedId);
+        commandManager.run("execute", commandNames.colorChange, oldParams, newParams);
+        currentSelections.symbolColor = newSelection;
+    }
+
+
+    /**
+     *
+     * @param selectedId
+     */
+    function handleDataChange(selectedId) {
+
+        var selectionMap = {
+            "removePointButton": {
+                "expA": experimentRemoveData,
+                "expB": experimentBRemoveData
+            },
+            "changePointButton": {
+                "expA": experimentDifferentTimesData,
+                "expB": experimentBDifferentTimesData
+            },
+            "resetPointsButton": {
+                "expA": experimentOriginalData,
+                "expB": experimentBOriginalData
+            },
+            "addPointButton":    {
+                "expA": experimentAddData,
+                "expB": experimentBAddData
+            }
+        };
+
+        var newSelection = selectionMap[selectedId][currentSelections.activeExperiment];
+
+        var newParams = {
+            data: newSelection
+        };
+
+        var oldParams = {
+            symbol: currentSelections.dataPoints
+        };
+
+        updateSelection(menuIds.data, selectedId);
+        commandManager.run(commandNames.execute, commandNames.dataChange, oldParams, newParams);
+        currentSelections.dataPoints = newSelection;
+    }
+
+
+    /**
+     *
+     * @param selectedId
+     */
+    function handleSymbolChange(selectedId) {
+
+        var selectionMap = {
+            "circleSymbol":   "dot",
+            "triangleSymbol": "triangle",
+            "iconSymbol":     "icon",
+            "squareSymbol":   "square"
+        };
+
+        var newSelection = selectionMap[selectedId];
+
+        var newParams = {
+            symbol:   newSelection,
+            chartDiv: htmlTags.chart1Id
+        };
+
+        var oldParams = {
+            symbol:   currentSelections.symbol,
+            chartDiv: htmlTags.chart1Id
+        };
+
+        switch (currentSelections.activeExperiment) {
             case "expA" :
                 newParams.plotName = "Control";
                 oldParams.plotName = "Control";
@@ -272,195 +255,197 @@ export function addMenuEventHandlers(pageManager) {
                 break;
         }
 
-        commandManager.run("execute", "symbolChange", oldParams, newParams );
+        updateSelection(menuIds.symbols, selectedId);
+        commandManager.run(commandNames.execute, commandNames.symbolChange, oldParams, newParams);
+        currentSelections.symbol = newSelection;
     }
 
-    document.getElementById("circleSymbol").addEventListener("click", function(event) {
-
-        updateSelected(["triangleSymbol", "iconSymbol", "squareSymbol"], "circleSymbol");
-
-        var newSymbol = "dot";
-        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
-        currentSelections.symbol = newSymbol;
-        event.stopPropagation();
-    });
-
-    document.getElementById("triangleSymbol").addEventListener("click", function(event) {
-
-        updateSelected(["iconSymbol", "circleSymbol", "squareSymbol"], "triangleSymbol");
-
-        var newSymbol = "triangle";
-        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
-
-        currentSelections.symbol = newSymbol;
-        event.stopPropagation();
-    });
-
-    document.getElementById("iconSymbol").addEventListener("click", function(event) {
-
-        updateSelected(["triangleSymbol", "circleSymbol", "squareSymbol"], "iconSymbol");
-
-        var newSymbol = "icon";
-        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
-
-        currentSelections.symbol = newSymbol;
-        event.stopPropagation();
-    });
-
-    document.getElementById("squareSymbol").addEventListener("click", function(event) {
-
-        updateSelected(["triangleSymbol", "circleSymbol", "iconSymbol"], "squareSymbol");
-
-        var newSymbol = "square";
-        handleSymbolChange(pageManager, newSymbol, currentSelections.symbol);
-
-        currentSelections.symbol = newSymbol;
-        event.stopPropagation();
-    });
-
     /**
-     *  update of the incongruent plot
+     *
+     * @param selectedId
      */
-    document.getElementById("blueColor").addEventListener("click", function(event) {
+    function handlePlotStyleChange(selectedId) {
 
-        updateSelected(["pinkColor"], "blueColor");
+        var selectionMap     = {
+            "scatter":   "scatter",
+            "barChart": "bar"
+        };
 
+        var newSelection = selectionMap[selectedId];
 
-        switch(currentSelections.activeExperiment) {
+        var newParams = {
+            plotStyle:   newSelection
+        };
+
+        var oldParams = {
+            plotStyle:   currentSelections.plotStyle
+        };
+
+        switch (currentSelections.activeExperiment) {
             case "expA" :
-                pageManager.setSymbolColor("blue", "Test", "chart1");
+                newParams.chartDiv = htmlTags.chart2Id;
+                newParams.plotName = "Difference";
                 break;
             case "expB" :
-                pageManager.setSymbolColor("blue", "Incongruent", "chart1");
+                newParams.chartDiv = "htmlTags.chart1Id";
+                newParams.plotName = "Difference";
                 break;
         }
 
-        currentSelections.symbolColor = "blue";
-        event.stopPropagation();
-    });
-
-
-    /**
-     *  update
-     */
-    document.getElementById("pinkColor").addEventListener("click", function(event) {
-
-        updateSelected(["blueColor"], "pinkColor");
-
-
-        switch(currentSelections.activeExperiment) {
-            case "expA" :
-                pageManager.setSymbolColor("purple",  "Test", "chart1");
-                break;
-            case "expB" :
-                pageManager.setSymbolColor("purple",  "Incongruent", "chart1");
-                break;
-        }
-        currentSelections.symbolColor = "purple";
-        event.stopPropagation();
-    });
+        updateSelection(menuIds.experiment, selectedId);
+        commandManager.run(commandNames.execute, commandNames.plotStyleChange, oldParams, newParams);
+        currentSelections.plotStyle = newSelection;
+    }
 
     /**
-     *  update of the Difference plot
+     *
      */
-    document.getElementById("scatter").addEventListener("click", function(event) {
-
-        updateSelected(["barChart"], "scatter");
-        var chartDiv = null;
-
-        switch(currentSelections.activeExperiment) {
-            case "expA" :
-                chartDiv = "chart2";
-                pageManager.setPlotStyle("scatter",  "Difference", chartDiv);
-                break;
-            case "expB" :
-                chartDiv = "chart1";
-                pageManager.setPlotStyle("scatter",  "Difference", chartDiv);
-                break;
-        }
-
-        currentSelections.plotStyle = "scatter";
-        event.stopPropagation();
-    });
-
-    /**
-     *  update of the Difference plot
-     */
-    document.getElementById("barChart").addEventListener("click", function(event) {
-
-        updateSelected(["scatter"], "barChart");
-
-        var chartDiv = null;
-
-        switch(currentSelections.activeExperiment) {
-            case "expA" :
-                chartDiv = "chart2";
-                pageManager.setPlotStyle("bar",  "Difference", chartDiv);
-                break;
-            case "expB" :
-                chartDiv = "chart1";
-                pageManager.setPlotStyle("bar",  "Difference", chartDiv);
-                break;
-        }
-        currentSelections.plotStyle = "bar";
-        event.stopPropagation();
-
-
-    });
-
-    /**
-     *  Experiment A
-     */
-    document.getElementById("expA").addEventListener("click", function(event) {
+    function handleExperimentChange(selectedId) {
 
         initializeSelectedMenus();
-        updateSelected(["expB"], "expA");
-        pageManager.switchExperiment("expA");
-        currentSelections.activeExperiment = "expA";
-        event.stopPropagation();
-    });
+
+        var selectionMap     = {
+            "expA":   "expA",
+            "expB": "expB"
+        };
+
+        var newSelection = selectionMap[selectedId];
+
+        var newParams = {
+            experiment:   newSelection
+        };
+
+        var oldParams = {
+            experiment:   currentSelections.activeExperiment
+        };
+
+        updateSelection(menuIds.experiment, selectedId);
+        commandManager.run(commandNames.execute, commandNames.experimentChange, oldParams, newParams);
+        currentSelections.activeExperiment = newSelection;
+    }
 
     /**
-     *  Experment B
+     *
+     * @param selectedId
      */
-    document.getElementById("expB").addEventListener("click", function(event) {
-        initializeSelectedMenus();
-        updateSelected(["expA"], "expB");
-        pageManager.switchExperiment("expB");
-        currentSelections.activeExperiment = "expB";
-        event.stopPropagation();
-    });
+    function handleStateChange(selectedId) {
 
-    document.getElementById("undo").addEventListener("click", function(event) {
+        var stateMap     = {
+            "undo":  commandNames.undo,
+            "redo": commandNames.redo,
+            "unwind" : commandNames.unwind,
+            "rewind": commandNames.rewind
+        };
 
-        updateSelected(["redo", "unwind", "rewind"], "undo");
-        commandManager.run("undo");
-        event.stopPropagation();
-    });
+        var newState = stateMap[selectedId];
 
-    document.getElementById("redo").addEventListener("click", function(event) {
+        updateSelection(menuIds.experiment, selectedId);
+        commandManager.run(newState);
+        currentSelections.undo = newState;
+    }
 
-        updateSelected(["undo", "unwind", "rewind"], "redo");
-        commandManager.run("redo");
-        event.stopPropagation();
-    });
+    /**
+     *
+     * @param selectedId
+     */
+    function handleLanguageChange(selectedId) {
 
-    document.getElementById("unwind").addEventListener("click", function(event) {
+        var selectionMap     = {
+            "fr": "fr",
+            "en": "en"
+        };
 
-        updateSelected(["undo", "redo", "rewind"], "unwind");
-        commandManager.run("unwind");
-        event.stopPropagation();
-    });
+        var newSelection = selectionMap[selectedId];
 
-    document.getElementById("rewind").addEventListener("click", function(event) {
+        var newParams = {
+            language:   newSelection
+        };
 
-        updateSelected(["undo", "unwind", "redo"], "rewind");
-        commandManager.run("rewind");
-        event.stopPropagation();
-    });
+        var oldParams = {
+            language:   currentSelections.language
+        };
+
+        updateSelection(menuIds.language, selectedId);
+        commandManager.run(commandNames.execute, commandNames.languageChange, oldParams, newParams);
+        currentSelections.language = newSelection;
+    }
+
+    /**
+     *
+     * @param event
+     */
+    function handleClickEvent(event) {
+
+        switch (event.target.id) {
+            case "circleSymbol":
+            case "triangleSymbol":
+            case "iconSymbol":
+            case "squareSymbol":
+                handleSymbolChange(event.target.id);
+                event.stopPropagation();
+                break;
+
+            case "removePointButton":
+            case "changePointButton":
+            case "resetPointsButton":
+            case"addPointButton":
+                handleDataChange(event.target.id);
+                event.stopPropagation();
+                break;
+
+            case "blueColor" :
+            case "pinkColor":
+                handleColorChange(event.target.id);
+                event.stopPropagation();
+                break;
+
+            case "dataMenu":
+            case "symbolMenu":
+            case"colorMenu":
+            case "plotStyleMenu":
+            case "experimentMenu":
+            case "undo_redoMenu":
+            case "langMenu":
+                handleTopMenuEvent(event.target.id);
+                event.stopPropagation();
+                break;
+
+            case "scatter":
+            case "barChart":
+                handlePlotStyleChange(event.target.id);
+                event.stopPropagation();
+                break;
+
+            case "expA":
+            case "expB":
+                handleExperimentChange(event.target.id);
+                event.stopPropagation();
+                break;
+
+            case "undo":
+            case "redo":
+            case "unwind":
+            case "rewind":
+                handleStateChange(event.target.id);
+                event.stopPropagation();
+                break;
+
+            case "fr":
+            case "en":
+                handleLanguageChange(event.target.id);
+                event.stopPropagation();
+                break;
+
+        }
+
+    }
 
     initializeSelectedMenus();
 
+    document.body.addEventListener("click", function (event) {
+        closeAllMenus();
+        handleClickEvent(event);
+    });
 }
 
 
