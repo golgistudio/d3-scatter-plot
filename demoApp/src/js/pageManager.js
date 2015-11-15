@@ -237,6 +237,10 @@ export function PageManager() {
             case "circle" :
                 configItem.display.radius = 5;
                 break;
+            case "square":
+                configItem.display.width  = 20;
+                configItem.display.height = 20;
+                break;
         }
     }
 
@@ -342,56 +346,11 @@ export function PageManager() {
 
     }
 
-
-    /**
-     *
-     * @param params
-     */
-    function handleExperimentChange(params) {
-
-        var length = _chartCollection.length;
-
-        for (var iii = 0; iii < length; iii++) {
-            var chartItem = _chartCollection[iii];
-            var olddiv = document.getElementById(chartItem.divId);
-
-            while (olddiv.firstChild) {
-                olddiv.removeChild(olddiv.firstChild);
-            }
-        }
-
-        _currentExperiment = params.experiment;
-
-        var expInfoCollection = getExperimentInfo();
-
-        for (var jjj=0; jjj < expInfoCollection.length; jjj++) {
-
-            var expInfo = expInfoCollection[jjj];
-
-            var chart = createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
-            var item = {
-                uuid: expInfo.uuid,
-                chart: chart,
-                experiment: expInfo.experiment,
-                divId : expInfo.divId
-            };
-            _chartCollection.push(item);
-
-        }
-
-        /* jshint validthis: true */
-        d3.select(window).on('resize', resize.bind(this));
-    }
-
-    function handleLanguageChange(params) {
-
-    }
-
     /**
      *
      * @returns {Array}
      */
-     function getExperimentInfo() {
+    function getExperimentInfo() {
 
         var expInfoCollection = [];
 
@@ -446,6 +405,67 @@ export function PageManager() {
     /**
      *
      */
+    function drawCharts() {
+
+        var expInfoCollection = getExperimentInfo();
+
+        for (var jjj=0; jjj < expInfoCollection.length; jjj++) {
+
+            var expInfo = expInfoCollection[jjj];
+
+            var chart = createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
+            var item = {
+                uuid: expInfo.uuid,
+                chart: chart,
+                experiment: expInfo.experiment,
+                divId : expInfo.divId
+            };
+            _chartCollection.push(item);
+
+        }
+
+        /* jshint validthis: true */
+        d3.select(window).on('resize', resize.bind(this));
+
+    }
+
+
+    /**
+     *
+     * @param params
+     */
+    function handleExperimentChange(params) {
+
+        var length = _chartCollection.length;
+
+        for (var iii = 0; iii < length; iii++) {
+            var chartItem = _chartCollection[iii];
+            var olddiv = document.getElementById(chartItem.divId);
+
+            while (olddiv.firstChild) {
+                olddiv.removeChild(olddiv.firstChild);
+            }
+        }
+
+        _currentExperiment = params.experiment;
+        _chartCollection.length = 0;
+
+        drawCharts();
+
+
+    }
+
+    /**
+     *
+     * @param params
+     */
+    function handleLanguageChange(params) {
+
+    }
+
+    /**
+     *
+     */
     this.init =  function () {
 
         _dataStoreManager = dataStoreManager.getInstance();
@@ -461,25 +481,7 @@ export function PageManager() {
 
         _currentExperiment = "expA";
 
-        var expInfoCollection = getExperimentInfo();
-
-        for (var i=0; i < expInfoCollection.length; i++) {
-
-            var expInfo = expInfoCollection[i];
-
-            var chart = createChart(expInfo.divId, expInfo.experiment, expInfo.uuid, expInfo.data, expInfo.properties);
-            var chartItem = {
-                uuid: expInfo.uuid,
-                chart: chart,
-                experiment: expInfo.experiment,
-                divId : expInfo.divId
-            };
-            _chartCollection.push(chartItem);
-
-        }
-
-        /* jshint validthis: true */
-        d3.select(window).on('resize', resize.bind(this));
+        drawCharts();
 
     };
 

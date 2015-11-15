@@ -20,7 +20,7 @@
       "entries": {
         "main": ["./main.js"]
       },
-      "extensions": ["js"]
+      "extensions": ["js", "jsx"]
     },
 
     "jshint": {

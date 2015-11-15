@@ -37,6 +37,8 @@ export function LegendManager() {
     }
 
 
+
+
     /**
      *
      * @param legendCollection
@@ -46,6 +48,42 @@ export function LegendManager() {
     function addLegendItems(legendCollection, legendData, properties) {
 
         "use strict";
+
+        /**
+         *
+         * @param d
+         */
+        function handleHoverStart(d) {
+            var symbol           = d3.svg.symbol().type('diamond');
+
+            /* jshint validthis: true */
+            var currentFillColor = d3.select(this).style("fill");
+            var transitionColor  = d3.rgb(currentFillColor).darker();
+
+            /* jshint validthis: true */
+            var hoverSize        = d3.select(this).size() * properties.hoverSizeFactor;
+
+            /* jshint validthis: true */
+            d3.select(this)
+                .style("fill", transitionColor)
+                .attr('d', symbol.size(hoverSize));
+        }
+
+        /**
+         *
+         * @param d
+         */
+        function handleHoverEnd(d) {
+            var symbol    = d3.svg.symbol().type('diamond');
+            /* jshint validthis: true */
+            var hoverSize = d3.select(this).size() * properties.sizeFactor;
+            /* jshint validthis: true */
+            d3.select(this)
+                .style("fill", d.color)
+                .attr('d', symbol.size(hoverSize));
+        }
+
+
         legendCollection.selectAll("text")
             .data(legendData)
             .enter()
@@ -82,37 +120,20 @@ export function LegendManager() {
                 legendItemClickedHandler(d);
             })
             .on("mouseover", function (d) {
-
-                var symbol           = d3.svg.symbol().type('diamond');
-                var currentFillColor = d3.select(this).style("fill");
-                var transitionColor  = d3.rgb(currentFillColor).darker();
-                var hoverSize        = d3.select(this).size() * properties.hoverSizeFactor;
-                d3.select(this)
-                    .style("fill", transitionColor)
-                    .attr('d', symbol.size(hoverSize));
+                /* jshint validthis: true */
+                handleHoverStart.call(this, d);
             })
             .on("mouseout", function (d) {
-                var symbol    = d3.svg.symbol().type('diamond');
-                var hoverSize = d3.select(this).size() * properties.sizeFactor;
-                d3.select(this)
-                    .style("fill", d.color)
-                    .attr('d', symbol.size(hoverSize));
+                /* jshint validthis: true */
+                handleHoverEnd.call(this,d);
             })
             .on("touchstart", function (d) {
-                var symbol           = d3.svg.symbol().type('diamond');
-                var currentFillColor = d3.select(this).style("fill");
-                var transitionColor  = d3.rgb(currentFillColor).darker();
-                var hoverSize        = d3.select(this).size() * properties.hoverSizeFactor;
-                d3.select(this)
-                    .style("fill", transitionColor)
-                    .attr('d', symbol.size(hoverSize));
+                /* jshint validthis: true */
+                handleHoverStart.call(this,d);
             })
             .on("touchend", function (d) {
-                var symbol    = d3.svg.symbol().type('diamond');
-                var hoverSize = d3.select(this).size() * properties.sizeFactor;
-                d3.select(this)
-                    .style("fill", d.color)
-                    .attr('d', symbol.size(hoverSize));
+                /* jshint validthis: true */
+                handleHoverEnd.call(this,d);
             });
     }
 

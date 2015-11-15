@@ -10,56 +10,30 @@
  */
 export var experimentBPlotProperties = [
     {
-        plotClassName: "incongruent",
-        xProp: "Participant",
-        yProp: "Incongruent",
-        name: "Incongruent",
-        display: {
-            width:        20,
-            height:       20,
-            fillColor:    "#17becf",
-            strokeColor:  "black",
-            symbol:       "square",
-            plotRenderer: null,
-            plotStyle:    "scatter"
-        }
-    },
-
-    {
-        plotClassName: "congruent",
-        xProp: "Participant",
-        yProp: "Congruent",
-        name: "Congruent",
-        display: {
-            radius:      10,
-            fillColor:   "#dbdb8d",
-            symbol:      "dot",
-            strokeColor: "black",
-            plotRenderer: null,
-            plotStyle:    "scatter"
-        }
-    },
-
-    {
         plotClassName: "difference",
         xProp: "Participant",
         yProp: "Difference",
         name: "Difference",
         display : {
             radius:     10,
-            fillColor:  "#ffbb78",
+            fillColor:  "#dfc27d",
             textStroke: "black",
-            textFill:   "#ffbb78",
-            symbol:     "font",
+            textFill:   "#dfc27d",
+            strokeColor: "black",
+            symbol:     "triangle",
+            size:       150,
             fontSize:     "3em",
             unicode:      "\uf0e7",
             textOffset:   5,
             plotRenderer: null,
-            plotStyle:    "bar",
+            plotStyle:    "scatter",
             width:        20,
-            height:       20
+            height:       20,
+            hoverColor:   "#a6611a",
+            strokeHoverWidth: 5
         }
-    }];
+    }
+];
 
 
 

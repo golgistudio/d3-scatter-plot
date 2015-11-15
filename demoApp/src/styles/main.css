@@ -61,6 +61,7 @@ h1 {
     color: black;
     fill: black;
     cursor: pointer;
+    font-size: 1em;
 }
 
 .legendText:hover {

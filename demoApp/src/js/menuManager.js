@@ -61,7 +61,7 @@ export function addMenuEventHandlers() {
         data: ["removePointButton", "changePointButton", "resetPointsButton", "addPointButton"],
         language: ["fr", "en"],
         undo:["redo", "unwind", "rewind", "undo"],
-        experiment:["expB", "expB"],
+        experiment:["expA", "expB"],
         plotStyle:["scatter", "barChart"]
     };
 
@@ -152,23 +152,25 @@ export function addMenuEventHandlers() {
         var newSelection = selectionMap[selectedId];
 
         var newParams = {
-            color:   newSelection,
-            chartDiv: htmlTags.chart1Id
+            color:   newSelection
         };
 
         var oldParams = {
-            color:   currentSelections.symbolColor,
-            chartDiv: htmlTags.chart1Id
+            color:   currentSelections.symbolColor
         };
 
         switch (currentSelections.activeExperiment) {
             case "expA" :
                 newParams.plotName = "Test";
                 oldParams.plotName = "Test";
+                newParams.chartDiv = htmlTags.chart1Id;
+                oldParams.chartDiv = htmlTags.chart1Id;
                 break;
             case "expB" :
                 newParams.plotName = "Incongruent";
                 oldParams.plotName = "Incongruent";
+                newParams.chartDiv = htmlTags.chart2Id;
+                oldParams.chartDiv = htmlTags.chart2Id;
                 break;
         }
 
@@ -236,22 +238,24 @@ export function addMenuEventHandlers() {
 
         var newParams = {
             symbol:   newSelection,
-            chartDiv: htmlTags.chart1Id
         };
 
         var oldParams = {
             symbol:   currentSelections.symbol,
-            chartDiv: htmlTags.chart1Id
         };
 
         switch (currentSelections.activeExperiment) {
             case "expA" :
                 newParams.plotName = "Control";
                 oldParams.plotName = "Control";
+                newParams.chartDiv = htmlTags.chart1Id;
+                oldParams.chartDiv = htmlTags.chart1Id;
                 break;
             case "expB" :
                 newParams.plotName = "Congruent";
                 oldParams.plotName = "Congruent";
+                newParams.chartDiv = htmlTags.chart2Id;
+                oldParams.chartDiv = htmlTags.chart2Id;
                 break;
         }
 
@@ -287,12 +291,12 @@ export function addMenuEventHandlers() {
                 newParams.plotName = "Difference";
                 break;
             case "expB" :
-                newParams.chartDiv = "htmlTags.chart1Id";
+                newParams.chartDiv = htmlTags.chart1Id;
                 newParams.plotName = "Difference";
                 break;
         }
 
-        updateSelection(menuIds.experiment, selectedId);
+        updateSelection(menuIds.plotStyle, selectedId);
         commandManager.run(commandNames.execute, commandNames.plotStyleChange, oldParams, newParams);
         currentSelections.plotStyle = newSelection;
     }

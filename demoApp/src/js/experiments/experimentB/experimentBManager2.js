@@ -127,9 +127,9 @@ export function ExperimentBManager2() {
      */
     this.updateLabelProperties  = function(labelProperties) {
 
-        labelProperties.xAxisLabelProperties.labelText = "Subjects";
+        labelProperties.xAxisLabelProperties.labelText = "Participants";
         labelProperties.yAxisLabelProperties.labelText = "Count";
-        labelProperties.titleProperties.labelText      = "Golgi Lab Study Results - Experiment B";
+        labelProperties.titleProperties.labelText      = "Golgi Lab - Experiment B - Counts";
     };
 
 }

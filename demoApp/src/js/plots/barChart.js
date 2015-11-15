@@ -172,7 +172,7 @@ export function BarChart() {
             .style('opacity', 1e-6)
             .transition()
             .style('fill', transitionProperties.enterColor)
-            .style('opacity', 0.5)
+            .style('opacity', 1.0)
             .transition()
             .style('stroke', plotProp.display.strokeColor)
             .duration(transitionProperties.startDurationTime)
