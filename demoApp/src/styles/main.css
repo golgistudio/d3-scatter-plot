@@ -228,6 +228,10 @@ h1 {
     height:100%;
 }
 
+/*
+* Media settings
+*/
+
 @media all and (max-width: 500px) {
     #chartContainer {
         margin-top: 100px;
@@ -281,5 +285,24 @@ h1 {
 @media screen and (max-height: 34em) and (max-width: 500px){
     .menu{
         height:3.5em;
+    }
+}
+
+@media print and (orientation:portrait) {
+    #menuArea {
+        display: none;
+    }
+
+    #chart1 {
+        float: none;
+    }
+    #chart2 {
+        float: none;
+    }
+}
+
+@media print and (orientation:landscape) {
+    #menuArea {
+        display: none;
     }
 }

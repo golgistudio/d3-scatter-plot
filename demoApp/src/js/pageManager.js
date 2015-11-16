@@ -466,7 +466,7 @@ export function PageManager() {
     /**
      *
      */
-    this.init =  function () {
+    this.init =  function (experiment) {
 
         _dataStoreManager = dataStoreManager.getInstance();
 
@@ -479,7 +479,7 @@ export function PageManager() {
         EventMediator.getInstance().register(eventChannelNames.colorChange, _uuid , handleColorChange);
         EventMediator.getInstance().register(eventChannelNames.languageChange, _uuid , handleLanguageChange);
 
-        _currentExperiment = "expA";
+        _currentExperiment = experiment;
 
         drawCharts();
 
