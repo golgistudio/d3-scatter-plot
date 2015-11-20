@@ -1,12 +1,18 @@
 
 [![Build Status](https://travis-ci.org/golgistudio/d3-scatter-plot.svg?branch=master)](https://travis-ci.org/golgistudio/d3-scatter-plot)
 
-[Demo](http://golgistudio.github.io/d3-scatter-plot)
-
 D3 Scatter Plot demo application
+================================
 
-Table of contents
-=================
+**Demo compiled and deployed with gulp-starter:** http://golgistudio.github.io/d3-scatter-plot
+
+(view files on [gh-pages](https://github.com/golgistudio/d3-scatter-plot/tree/gh-pages) branch)
+
+<img src="https://raw.githubusercontent.com/golgistudio/d3-scatter-plot/master/docs/images/InitialScreen.png" alt="D3 Scatter Plot initial screen" width="400">
+
+
+## Table of contents
+
 
   * [Table of contents](#table-of-contents)
   * [Overview](#overview)
@@ -19,14 +25,14 @@ Table of contents
   * [Resources](#resources)
 
 
-Overview
-========
+## Overview
+
 
 This is an example scatter plot built with D3.   It is a simple application that can be used to explore data interactions and design data applications.
 
 
-Getting started
-===============
+## Getting started
+
 
 The build system is based on vigetlabs excellent build system - [gulp-starter](https://github.com/vigetlabs/gulp-starter) and works on Linux and Mac computers.
 
@@ -76,25 +82,25 @@ npm run deploy
 
 
 
-Running the application
-=======================
-
-Components
-==========
+## Running the application
 
 
-Chart
------
+## Components
 
 
 
-Design Patterns
----------------
+### Chart
 
 
 
 
-Resources
-=========
+### Design Patterns
+
+
+
+
+
+## Resources
+
 
 
