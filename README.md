@@ -31,12 +31,12 @@ Getting started
 The build system is based on vigetlabs excellent build system - [gulp-starter](https://github.com/vigetlabs/gulp-starter) and works on Linux and Mac computers.
 
 Clone the repository, install the node dependencies and run the commands below to run the development version of the site.   Note node is only used for the build system. This will run gulp with the following tasks
-1) Compile with webpack all js files
-2) Publish a local version of the site to demoApp/public
-3) Combine  all the JS and css files into single js and css files.
-4) Update path references to js, css and image files.
-5) Launch the site in a browser window (http://localhost:3000)
-6) Launch browsersync (http://localhost:3001)
+1.  Compile with webpack all js files
+2.  Publish a local version of the site to demoApp/public
+3.  Combine  all the JS and css files into single js and css files.
+4.  Update path references to js, css and image files.
+5.  Launch the site in a browser window (http://localhost:3000)
+6.  Launch browsersync (http://localhost:3001)
 
 ```bash
 git clone https://github.com/golgistudio/d3-scatter-plot.git MyApp
