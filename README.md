@@ -18,10 +18,10 @@ D3 Scatter Plot demo application
   * [Overview](#overview)
   * [Getting Started](#getting-started)
   * [Running the application](#running-the-application)
-  * [Conmponents](#components)
     *  [Navigation](#navigation)
-    *  [Chart](#chart)
-    *  [Design Patterns](#design)
+    *  [Responsiveness](#responsiveness)
+    *  [Plot Interactions](#plot-interactions)
+  * [Design Patterns](#design-patterns)
   * [Resources](#resources)
 
 
@@ -123,11 +123,11 @@ The navigation is intentionally basic.
 
 #### Language (ToDo)
 
-#### Responsiveness
+### Responsiveness
 * Resizes with the window resize
 * Responds to orientation changes
 
-#### Plot interactions
+### Plot interactions
 * Tooltip on hover
 * Highlight points on both charts with the same x-axis value
 * Y axis zoom
@@ -137,7 +137,7 @@ The navigation is intentionally basic.
 
 
 
-### Design Patterns
+## Design Patterns
 * Command pattern - all menu commands, undo & redo
 * Mediator pattern - event manager
 * Singleton - Datastore
