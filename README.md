@@ -52,8 +52,6 @@ npm install
 npm run gulp
 ```
 
-But wait, there is more...
-
 To run a production version of the site...
 ```bash
 npm run demo
@@ -80,27 +78,105 @@ in package.json, set the homepage to be your gh-pages site.
 npm run deploy
 ```
 
-
+Travis integration - .travise.yml
 
 ## Running the application
 
+Navigate to one the following sites:
+[Experiment A](http://golgistudio.github.io/d3-scatter-plot/?exp=ExpA)
+[Experiment B](http://golgistudio.github.io/d3-scatter-plot/?exp=ExpB)
 
-## Components
+### Navigation
+
+The navigation is intentionally basic.   
+
+#### Data
+* Reset - Restore original data set
+* Add - Update data set with new points
+* Remove - Updae data set by removing points
+* Change - Update data set by changing the values of existing points
+
+#### Symbol
+* Circle
+* Triangle
+* Icon 
+* Square
 
 
+#### Color
+* Blue
+* Purple
 
-### Chart
+#### Plot Style
+* Scatter
+* Barchart
+
+#### Experiment - change the experiment including titles, leged, tooltips, labels
+* Experiment A
+* Experiment B
+
+#### Undo & Redo
+* Undo
+* Redo
+* Unwind (ToDo)
+* Rewind (ToDo)
+
+#### Language (ToDo)
+
+#### Responsiveness
+* Resizes with the window resize
+* Responds to orientation changes
+
+#### Plot interactions
+* Tooltip on hover
+* Highlight points on both charts with the same x-axis value
+* Y axis zoom
+* Click legend item to toggle plot on/off
+* 
 
 
 
 
 ### Design Patterns
-
-
-
-
+* Command pattern - all menu commands, undo & redo
+* Mediator pattern - event manager
+* Singleton - Datastore
 
 ## Resources
 
+#### D3 
+* [D3js.org](d3js.org)
+* [Tutorials | Blogs | Books | etc](https://github.com/mbostock/d3/wiki/Tutorials)
+* [Gallery](https://github.com/mbostock/d3/wiki/Gallery)
 
+#### D3 Code Snippets
+* [zoom, pan, and axis rescale by stepheneb](http://bl.ocks.org/stepheneb/1182434)
+* [Zoomable Scatterplot by petersonjonas](http://bl.ocks.org/peterssonjonas/4a0e7cb8d23231243e0e)
+* [Zoom Ordinal scales](http://jsfiddle.net/9rypxf10/)
+* [Hover behavior with lines drawn to axes by nsonnad](http://bl.ocks.org/nsonnad/4481531)
+* [Simple D3 Line chart with Legend and Tooltips by bobmonteverde](http://bl.ocks.org/bobmonteverde/2070123)
+* [Vertical icon navigation with slide-out menu by nikhil](http://codepen.io/nikhil/pen/sicrK)
+* [Linking plots by jvadams](http://jsfiddle.net/JVAdams/bTHk2/2/)
+* [Handline clipping on zoom](http://bl.ocks.org/mbostock/4015254)
+
+
+#### Build Tools
+* [Web Developer Checklist](http://webdevchecklist.com/)
+* [Gulp starter](http://golgistudio.github.io/d3-scatter-plot)
+* [Gulp](http://gulpjs.com/)
+* [Webpack](https://webpack.github.io/)
+* [JS Docs - generate documentation from annotated comments](http://usejsdoc.org/)
+* [JSHint - syntax checker for javascript](http://jshint.com/)
+* [browsersync](http://www.browsersync.io/)
+* [Karma - javascript test runner](http://karma-runner.github.io/0.13/index.html)
+* [babel - javascript compiler](https://babeljs.io/)
+* [mocha - testing framework](https://mochajs.org/)
+* [Sinon.js - javascript mocks](http://sinonjs.org/docs/)
+* [Uglify](https://github.com/mishoo/UglifyJS2)
+* [npm - package manager](https://www.npmjs.com/)
+
+
+#### Design Patterns
+* [Design Patterns: Elements of Reusable Object-Oriented Software by Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides](http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented-ebook/dp/B000SEIBB8)
+* [Learning Javascript Design Patterns by Addy Osmani](http://addyosmani.com/resources/essentialjsdesignpatterns/book/)
 
