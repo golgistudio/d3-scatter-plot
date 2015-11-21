@@ -28,7 +28,13 @@ D3 Scatter Plot demo application
 ## Overview
 
 
-This is an example scatter plot built with D3.   It is a simple application that can be used to explore data interactions and design data applications.
+This is an example scatter plot built with D3.   It is a simple application that can be used to explore data interactions and design data applications.   Many D3 examples are static and hard coded, which makes it harder to explore interactions.  This example demonstrates the variety of changes and interactions one would expect in a D3 application.  It also separates out not only the data, but the properties that define the behavior so they can be changed via menu commands.  Finally, it uses design patterns to decouple components.  
+
+A couple of guiding principles that were used
+* Used only D3.js, no other external javascript libraries
+* The navigation is intentionally very basic for quick prototyping
+* Used Es6 modules
+
 
 
 ## Getting started
@@ -88,8 +94,6 @@ Navigate to one the following sites:
 
 ### Navigation
 
-The navigation is intentionally basic.   
-
 #### Data
 * Reset - Restore original data set
 * Add - Update data set with new points
@@ -132,15 +136,12 @@ The navigation is intentionally basic.
 * Highlight points on both charts with the same x-axis value
 * Y axis zoom
 * Click legend item to toggle plot on/off
-* 
-
-
-
 
 ## Design Patterns
 * Command pattern - all menu commands, undo & redo
 * Mediator pattern - event manager
 * Singleton - Datastore
+* Factory - ScatterPlot
 
 ## Resources
 
@@ -174,6 +175,7 @@ The navigation is intentionally basic.
 * [Sinon.js - javascript mocks](http://sinonjs.org/docs/)
 * [Uglify](https://github.com/mishoo/UglifyJS2)
 * [npm - package manager](https://www.npmjs.com/)
+* [Github](https://github.com/)
 
 
 #### Design Patterns
