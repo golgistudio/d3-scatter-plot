@@ -48,7 +48,7 @@ Clone the repository, install the node dependencies and run the commands below t
 2.  Publish a local version of the site to demoApp/public
 3.  Combine  all the JS and css files into single js and css files.
 4.  Update path references to js, css and image files.
-5.  Launch the site in a browser window (http://localhost:3000)
+5.  Launch the site in a browser window using express (http://localhost:3000)
 6.  Launch browsersync (http://localhost:3001)
 
 ```bash
