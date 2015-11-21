@@ -26,19 +26,6 @@ export function BarChart() {
     var _name = dataStoreManager.getInstance().generateUUID();
     var _selector = null;
 
-    /**
-     *
-     * @param parameters
-     */
-    function updatePlot(parameters) {
-
-        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
-
-        updateElements(plot, parameters.data, parameters.scales, parameters.plotProp, parameters.transitionProperties);
-        addElements(parameters.uuid, plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
-        removeElements(plot, parameters.transitionProperties);
-
-    }
 
     /**
      *
@@ -306,6 +293,21 @@ export function BarChart() {
         svg.transition().delay(transitionProperties.endDurationTime).remove();
 
     }
+
+    /**
+     *
+     * @param parameters
+     */
+    function updatePlot(parameters) {
+
+        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
+
+        updateElements(plot, parameters.data, parameters.scales, parameters.plotProp, parameters.transitionProperties);
+        addElements(parameters.uuid, plot, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        removeElements(plot, parameters.transitionProperties);
+
+    }
+
 
 
     /**

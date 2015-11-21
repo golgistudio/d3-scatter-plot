@@ -1,6 +1,7 @@
 /**
- * Created by laurie on 11/13/15.
+ * @file
  */
+
 
 
 export var eventChannelNames = {

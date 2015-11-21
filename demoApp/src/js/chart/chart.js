@@ -48,19 +48,93 @@ export function Chart(dataManager, uuid, containerId) {
 
     var _chartComponents = null;
 
-    this.handleRequest = function (request, parameters) {
 
-        switch(request) {
-            case "create" : create(parameters);
-                break;
-            case "update" : updateData(parameters);
-                break;
-            case "resize" : resize(parameters);
-                break;
-            case "updatePlotStyle" : updatePlotStyle(parameters);
-                break;
+    /**
+     *
+     */
+    function stopped() {
+        if (d3.event.defaultPrevented) {
+            d3.event.stopPropagation();
         }
-    };
+    }
+
+    /**
+     *
+     */
+    function zoomHandler() {
+
+        var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
+        var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
+
+        var tx, ty;
+        tx = d3.event.translate[0];
+        ty = d3.event.translate[1];
+
+        _axesManager.translate([tx, ty]);
+
+        var svg = d3.select("#" + _containerId).select("svg");
+
+        var zoomAxes = {yAxis: axes.yAxis};
+        _axesManager.updateAxes(svg, zoomAxes);
+
+        var plotParams = {
+            "data" : _data,
+            "plotProperties" : plotProps,
+            "svg": svg,
+            "scales": axes.scales
+        };
+        _plotManager.plotManagerInterface("zoom", plotParams);
+    }
+
+    /**
+     *
+     * @param data
+     * @param experiment
+     * @param chartProps
+     * @param that
+     * @param axesManager
+     * @returns {{svg: *, chartBody: *}}
+     */
+    function initializeChart (data, experiment, chartProps, that, axesManager) {
+        var zoomListener = axesManager.createZoomListener(that, zoomHandler);
+
+        var svg = d3.select("#" + _containerId).append("svg")
+            .attr("width", chartProps.width + chartProps.margin.left + chartProps.margin.right)
+            .attr("height", chartProps.height + chartProps.margin.top + chartProps.margin.bottom)
+            .attr("style", "outline=thin solid lightgrey;")
+            .append("g")
+            .attr("transform", "translate(" + chartProps.margin.left + "," + chartProps.margin.top + ")");
+
+        svg.append("defs").append("svg:clipPath")
+            .attr("id", "clip")
+            .append("svg:rect")
+            .attr("id", "clip-rect")
+            .attr("x", "0")
+            .attr("y", "0")
+            .attr("width", chartProps.width)
+            .attr("height", chartProps.height);
+
+        var chartBody = svg.append("g")
+            .attr("clip-path", "url(#clip)")
+            .call(zoomListener)
+            .on("click", stopped, true);
+
+        chartBody.append('svg:rect')
+            .attr('width', chartProps.width)
+            .attr('height', chartProps.height)
+            .attr('fill', 'white');
+
+        chartBody.selectAll("g.node").data(data, function (d) {
+            return experiment.mapData(d);
+        });
+
+        return {
+            "svg" : svg,
+            "chartBody" : chartBody
+        };
+
+    }
+
 
     /**
      *
@@ -131,66 +205,6 @@ export function Chart(dataManager, uuid, containerId) {
 
     /**
      *
-     */
-    function stopped() {
-        if (d3.event.defaultPrevented) {
-            d3.event.stopPropagation();
-        }
-    }
-
-
-    /**
-     *
-     * @param data
-     * @param experiment
-     * @param chartProps
-     * @param that
-     * @param axesManager
-     * @returns {{svg: *, chartBody: *}}
-     */
-    function initializeChart (data, experiment, chartProps, that, axesManager) {
-        var zoomListener = axesManager.createZoomListener(that, zoomHandler);
-
-        var svg = d3.select("#" + _containerId).append("svg")
-            .attr("width", chartProps.width + chartProps.margin.left + chartProps.margin.right)
-            .attr("height", chartProps.height + chartProps.margin.top + chartProps.margin.bottom)
-            .attr("style", "outline=thin solid lightgrey;")
-            .append("g")
-            .attr("transform", "translate(" + chartProps.margin.left + "," + chartProps.margin.top + ")");
-
-        svg.append("defs").append("svg:clipPath")
-            .attr("id", "clip")
-            .append("svg:rect")
-            .attr("id", "clip-rect")
-            .attr("x", "0")
-            .attr("y", "0")
-            .attr("width", chartProps.width)
-            .attr("height", chartProps.height);
-
-        var chartBody = svg.append("g")
-            .attr("clip-path", "url(#clip)")
-            .call(zoomListener)
-            .on("click", stopped, true);
-
-        chartBody.append('svg:rect')
-            .attr('width', chartProps.width)
-            .attr('height', chartProps.height)
-            .attr('fill', 'white');
-
-        chartBody.selectAll("g.node").data(data, function (d) {
-            return experiment.mapData(d);
-        });
-
-        return {
-            "svg" : svg,
-            "chartBody" : chartBody
-        };
-
-    }
-
-
-    /**
-     *
      * @param params
      */
      function resize (params) {
@@ -239,33 +253,6 @@ export function Chart(dataManager, uuid, containerId) {
         _legendManager.drawLegend(_chartComponents.svg, chartProps.width , chartProps.height, legendProps, legendData);
     }
 
-    /**
-     *
-     */
-    function zoomHandler() {
-
-        var plotProps = _dataStoreManager.getData(_uuid, dataStoreNames.experiment);
-        var axes = _dataStoreManager.getData(_uuid, dataStoreNames.axesValues);
-
-        var tx, ty;
-        tx = d3.event.translate[0];
-        ty = d3.event.translate[1];
-
-        _axesManager.translate([tx, ty]);
-
-        var svg = d3.select("#" + _containerId).select("svg");
-
-        var zoomAxes = {yAxis: axes.yAxis};
-        _axesManager.updateAxes(svg, zoomAxes);
-
-        var plotParams = {
-            "data" : _data,
-            "plotProperties" : plotProps,
-            "svg": svg,
-            "scales": axes.scales
-        };
-        _plotManager.plotManagerInterface("zoom", plotParams);
-    }
 
     /**
      *
@@ -350,5 +337,20 @@ export function Chart(dataManager, uuid, containerId) {
 
         _legendManager.updateLegend(_chartComponents.svg, legendProps, legendData);
     }
+
+
+    this.handleRequest = function (request, parameters) {
+
+        switch(request) {
+            case "create" : create(parameters);
+                break;
+            case "update" : updateData(parameters);
+                break;
+            case "resize" : resize(parameters);
+                break;
+            case "updatePlotStyle" : updatePlotStyle(parameters);
+                break;
+        }
+    };
 }
 

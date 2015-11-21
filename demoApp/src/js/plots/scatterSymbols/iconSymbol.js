@@ -7,8 +7,8 @@
 /*jshint unused:true */
 /*exported addIconSymbol, updateIconSymbols, zoomIconSymbol */
 
-import {dropLinesToAxes} from './scatterSymbolUtils.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
+import {dropLinesToAxes} from './scatterSymbolUtils.js';
 import {EventMediator} from '../../events/eventMediator.js';
 import {eventChannelNames} from '../../events/eventChannelNames.js';
 

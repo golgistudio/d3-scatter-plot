@@ -64,16 +64,6 @@ export function ScatterPlot(symbol) {
 
     var _symbol = getSymbolPlot(symbol);
 
-    /**
-     *
-     * @param parameters
-     */
-    function renderPlot (parameters) {
-
-        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
-
-        addSymbols(parameters.uuid, plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
-    }
 
     /**
      *
@@ -107,6 +97,18 @@ export function ScatterPlot(symbol) {
 
     /**
      *
+     * @param parameters
+     */
+    function renderPlot (parameters) {
+
+        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
+
+        addSymbols(parameters.uuid, plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+    }
+
+
+    /**
+     *
      * @param plot
      * @param plotProp
      * @param scales
@@ -128,19 +130,6 @@ export function ScatterPlot(symbol) {
     }
 
 
-    /**
-     *
-     * @param parameters
-     */
-    function updatePlot(parameters) {
-
-        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
-
-        updateSymbols( plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
-        addSymbols(parameters.uuid, plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
-        removeSymbols(plot,  parameters.transitionProperties);
-
-    }
 
     /**
      *
@@ -170,6 +159,21 @@ export function ScatterPlot(symbol) {
         svg = _symbol.updateSymbol(svg, plotProp, scales, data, transitionProperties);
         return svg;
     }
+
+    /**
+     *
+     * @param parameters
+     */
+    function updatePlot(parameters) {
+
+        var plot = setData(parameters.svg, parameters.data, parameters.plotProp.plotClassName);
+
+        updateSymbols( plot, parameters.data, parameters.scales,  parameters.plotProp, parameters.transitionProperties);
+        addSymbols(parameters.uuid, plot, parameters.svg, parameters.plotProp, parameters.scales, parameters.toolTip, parameters.transitionProperties);
+        removeSymbols(plot,  parameters.transitionProperties);
+
+    }
+
 
     /**
      *

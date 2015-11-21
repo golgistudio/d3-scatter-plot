@@ -14,20 +14,6 @@
 export function ExperimentBManager() {
     "use strict";
 
-    /**
-     *
-     * @param data
-     */
-    this.init =  function (data ) {
-
-        var dataDomains = calcDomains(data);
-        var zoomScaleFactors = initializeZoomFactors();
-
-        return {
-            domains: dataDomains,
-            zoomScaleFactors: zoomScaleFactors
-        };
-    };
 
     function initializeZoomFactors() {
 
@@ -83,6 +69,22 @@ export function ExperimentBManager() {
         item.Difference = +d.Difference;
         return item;
     };
+
+    /**
+     *
+     * @param data
+     */
+    this.init =  function (data ) {
+
+        var dataDomains = calcDomains(data);
+        var zoomScaleFactors = initializeZoomFactors();
+
+        return {
+            domains: dataDomains,
+            zoomScaleFactors: zoomScaleFactors
+        };
+    };
+
 
     /**
      *

@@ -7,8 +7,8 @@
 /*jshint unused:false */
 /*exported addTriangleSymbol, updateTriangleSymbols, zoomTriangleSymbol */
 
-import {dropLinesToAxes} from './scatterSymbolUtils.js';
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
+import {dropLinesToAxes} from './scatterSymbolUtils.js';
 import {EventMediator} from '../../events/eventMediator.js';
 import {eventChannelNames} from '../../events/eventChannelNames.js';
 
@@ -31,6 +31,10 @@ export function TriangleSymbol() {
      * @returns {*}
      */
     this.addSymbol = function(uuid, plot, parentSVG, plotProp, scales, toolTip, transitionProperties) {
+
+
+        var symbolType = 'triangle-up';
+        var symbol     = d3.svg.symbol().type(symbolType);
 
         function hoverStartEventHandler(params) {
 
@@ -97,8 +101,6 @@ export function TriangleSymbol() {
          */
         function handleHoverEnd(d, that) {
 
-            var symbol = d3.svg.symbol().type('triangle-up');
-
             toolTip.hide();
 
 
@@ -116,8 +118,6 @@ export function TriangleSymbol() {
             EventMediator.getInstance().notify(eventChannelNames.hoverEnd, _name, d[plotProp.xProp]  );
         }
 
-        var symbolType = 'triangle-up';
-        var symbol     = d3.svg.symbol().type(symbolType);
 
         plot = plot.enter().append("path")
             .attr("class", plotProp.plotClassName)

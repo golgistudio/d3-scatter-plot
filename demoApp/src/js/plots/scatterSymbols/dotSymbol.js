@@ -7,7 +7,6 @@
 /*jshint unused:true */
 /*exported addDotSymbol, updateDotSymbols, zoomDotSymbol */
 
-
 import {dataStoreManager} from '../../dataStore/dataStoreManager.js';
 import {EventMediator} from '../../events/eventMediator.js';
 import {eventChannelNames} from '../../events/eventChannelNames.js';

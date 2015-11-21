@@ -1,6 +1,7 @@
 /**
- * Created by laurie on 11/12/15.
+ * @file
  */
+
 
 import {eventChannelNames} from '../events/eventChannelNames.js';
 import {dataStoreManager} from '../dataStore/dataStoreManager.js';

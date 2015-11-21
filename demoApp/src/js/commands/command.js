@@ -1,6 +1,7 @@
 /**
- * Created by laurie on 11/14/15.
+ * @file
  */
+
 
 import {EventMediator} from '../events/eventMediator.js';
 

@@ -14,20 +14,6 @@ export function ExperimentManager2() {
     "use strict";
 
 
-    /**
-     *
-     * @param data
-     */
-    this.init =  function (data) {
-
-        var dataDomains = calcDomains(data);
-        var zoomScaleFactors = initializeZoomFactors();
-
-        return {
-            domains: dataDomains,
-            zoomScaleFactors: zoomScaleFactors
-        };
-    };
 
     /**
      *
@@ -71,6 +57,22 @@ export function ExperimentManager2() {
         return {"xDomain": xDomain,
                 "yDomain": yDomain};
     }
+
+    /**
+     *
+     * @param data
+     */
+    this.init =  function (data) {
+
+        var dataDomains = calcDomains(data);
+        var zoomScaleFactors = initializeZoomFactors();
+
+        return {
+            domains: dataDomains,
+            zoomScaleFactors: zoomScaleFactors
+        };
+    };
+
 
     /**
      *
