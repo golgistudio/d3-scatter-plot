@@ -1,5 +1,6 @@
 
-[![Build Status](https://travis-ci.org/golgistudio/d3-scatter-plot.svg?branch=master)](https://travis-ci.org/golgistudio/d3-scatter-plot) [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/golgistudio/visualizations)
+[![Build Status](https://travis-ci.org/golgistudio/d3-scatter-plot.svg?branch=master)](https://travis-ci.org/golgistudio/d3-scatter-plot) [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/golgistudio/visualizations) (https://david-dm.org/golgistudio/d3-scatter-plot.svg)
+.svg
 
 D3 Scatter Plot demo application
 ================================
