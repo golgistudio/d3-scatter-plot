@@ -3,6 +3,7 @@
 [![devDependency Status](https://david-dm.org/golgistudio/d3-scatter-plot/dev-status.svg)](https://david-dm.org/davezuko/react-redux-starter-kit#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/) [![npm](https://img.shields.io/npm/v/npm.svg)]()
 
+
 D3 Scatter Plot demo application
 ================================
 
