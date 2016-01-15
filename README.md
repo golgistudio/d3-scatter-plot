@@ -1,8 +1,7 @@
 
 [![Build Status](https://travis-ci.org/golgistudio/d3-scatter-plot.svg?branch=master)](https://travis-ci.org/golgistudio/d3-scatter-plot) [![Stack Share](http://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](http://stackshare.io/golgistudio/visualizations) [![dependencies](https://david-dm.org/golgistudio/d3-scatter-plot.svg)](https://david-dm.org/golgistudio/d3-scatter-plot)
 [![devDependency Status](https://david-dm.org/golgistudio/d3-scatter-plot/dev-status.svg)](https://david-dm.org/golgistudio/d3-scatter-plot#info=devDependencies)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/) 
-
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/) [![github-version](https://badge.fury.io/gh/golgistudio%2Fd3-scattter-plot.svg)](http://badge.fury.io) 
 
 D3 Scatter Plot demo application
 ================================
